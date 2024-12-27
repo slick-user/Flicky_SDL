@@ -1,1 +1,6 @@
 => so we are going to change up our setup this time around
+=> So we are now rendering images we need to make them be the texture for our main character and we need to get images to be rendered by layer somehow
+
+Phase 1:
+  Got the image to render on a rectangle as was required (do I have to do this for every single thing that will be rendered?)
+Now I have to change it for the flicky sprite, add the platformer mechanics which also means we need collision detection, and platform types.... this is definitely going to be a project that takes a while

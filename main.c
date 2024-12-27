@@ -1,8 +1,7 @@
 #include <stdio.h>
 
 #include "include/SDL2/SDL.h"
-#include "include/SDL2/SDL_render.h"
-#include "include/SDL2/SDL_video.h"
+#include "include/SDL2/SDL_image.h"
 
 void scc(int code);
 void *scp(void *ptr);
@@ -12,12 +11,18 @@ void kill();
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
+SDL_Texture *texture = NULL; 
 
 int main(int argc, char* args[]) {
 
+//                                          ====INITIALIZATION====
   if (init() != 0)
-    return 1;
- 
+    return 1; 
+
+  // "Entity" Setup
+  SDL_Rect Player = (SDL_Rect) {0, 40, 40, 40};
+
+
   SDL_Event event;
 
   unsigned int gameLoop = 1;
@@ -35,25 +40,32 @@ int main(int argc, char* args[]) {
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
     if (state[SDL_SCANCODE_UP]) {
-      // whatever the heck will be the movement
+      Player.y -= 10;
     }
 
     if (state[SDL_SCANCODE_DOWN]) {
-
+      Player.y += 10;
     }
 
     if (state[SDL_SCANCODE_RIGHT]) {
-
+      Player.x += 10;
     }
 
     if (state[SDL_SCANCODE_LEFT]) {
-
+      Player.x -= 10;
     }
+   
     
-    scc(SDL_SetRenderDrawColor(renderer, 0, 0, 20, 0));
+    // This is to set background color and to reset the render
     scc(SDL_RenderClear(renderer));
 
+    scc(SDL_SetRenderDrawColor(renderer, 0, 0, 20, 0));
+
+    // This is used to render the image (and overwrite)``
+    scc(SDL_RenderCopy(renderer, texture, NULL, &Player));
     SDL_RenderPresent(renderer);
+
+    SDL_Delay(10);
   }
    
   kill();
@@ -90,6 +102,17 @@ int init(){
 
   renderer = scp(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED));
 
+  IMG_Init(IMG_INIT_JPG);
+
+  SDL_Surface *image = scp(IMG_Load("./assets/4k-Abstract-Red-Alien-World-4K-Wallpaper.jpg"));
+  texture = scp(SDL_CreateTextureFromSurface(renderer, image));
+  SDL_FreeSurface(image);
+
+  if (!texture) {
+    printf("Unable to load image %s\n", IMG_GetError());
+    return 1;
+  }
+
   return 0;
 }
 
@@ -100,6 +123,8 @@ void kill(){
   renderer = NULL;
   window = NULL;
 
+  IMG_Quit();
+  
   SDL_Quit();
 }
 
