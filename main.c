@@ -1,7 +1,7 @@
-#include <float.h>
 #include <stdio.h>
 
 #include "include/SDL2/SDL.h"
+#include "include/SDL2/SDL_render.h"
 #include "include/SDL2/SDL_video.h"
 
 void scc(int code);
@@ -49,7 +49,11 @@ int main(int argc, char* args[]) {
     if (state[SDL_SCANCODE_LEFT]) {
 
     }
+    
+    scc(SDL_SetRenderDrawColor(renderer, 0, 0, 20, 0));
+    scc(SDL_RenderClear(renderer));
 
+    SDL_RenderPresent(renderer);
   }
    
   kill();
@@ -89,11 +93,13 @@ int init(){
   return 0;
 }
 
-
 void kill(){
+  SDL_DestroyRenderer(renderer);
+
   SDL_DestroyWindow(window);
   renderer = NULL;
   window = NULL;
 
   SDL_Quit();
 }
+
