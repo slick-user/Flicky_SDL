@@ -1,6 +1,14 @@
+gcc -o Flicky main.c -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+
 => so we are going to change up our setup this time around
 => So we are now rendering images we need to make them be the texture for our main character and we need to get images to be rendered by layer somehow
 
 Phase 1:
   Got the image to render on a rectangle as was required (do I have to do this for every single thing that will be rendered?)
 Now I have to change it for the flicky sprite, add the platformer mechanics which also means we need collision detection, and platform types.... this is definitely going to be a project that takes a while
+
+* So made a change and kind of added the jumping mechanics will change the jump mechanics a bit, as right now it is more of a teleport type of thing and is not at all flexible
+
+=> Trying to render the assets kind of a pain right now.. don't know if it's me being stupid or this character Sheet being a pain
+
+* Added Initial Animation Player needs refactoring (cannot keep this as a permanent system)
