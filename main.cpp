@@ -3,8 +3,13 @@
 
 #include "include/SDL2/SDL.h"
 #include "include/SDL2/SDL_image.h"
-#include "include/SDL2/SDL_render.h"
 
+// The class stuff we will modify later
+#include "game.cpp" 
+
+Game game;
+
+/*
 // CONSTANT PARAMETERS
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -26,9 +31,10 @@ const Uint32 FRAME_DELAY = 100; // Milliseconds per frame
 #define GRAVITY 10
 #define SPEED 5
 
-int init();
+int initSDL();
 void init_platforms(SDL_Rect Platform[]);
 void kill();
+
 
 enum {
   IDLE,
@@ -45,10 +51,20 @@ SDL_Renderer *renderer = NULL;
 SDL_Texture *player_texture = NULL; 
 SDL_Texture *background_texture = NULL;
 
+*/
+
 int main(int argc, char* args[]) {
 
 //                                          ====INITIALIZATION====
-  if (init() != 0)
+  game.init();
+
+  bool d = true;
+  while (d) {
+    game.run();
+    d = false;
+  }
+  /*
+  if (initSDL() != 0)
     return 1; 
 
   // "Entity" Setup
@@ -64,6 +80,7 @@ int main(int argc, char* args[]) {
   SDL_Event event;
 
   bool gameLoop = true;
+
   while (gameLoop) {
     Uint32 currentTime = SDL_GetTicks();
 
@@ -146,12 +163,15 @@ int main(int argc, char* args[]) {
    
   kill();
 
+*/
+
   return 0;
 }
 
+/*
 //          INITIALIZATION FUNCTION
 
-int init() {
+int initSDL() {
 
   SDL_InitSubSystem(SDL_INIT_VIDEO);
 
@@ -222,10 +242,11 @@ void init_platforms(SDL_Rect Platform[]) {
   Platform[6].w = 435;
   Platform[6].h = 90;
 
-}
+} */
 
 //          ANIMATION FUNCTIONS
 
+/*
 SDL_Texture* load_texture(const char* texture_file, SDL_Renderer* renderer) {
   SDL_Surface *image = IMG_Load(texture_file); 
   SDL_SetColorKey(image, SDL_TRUE, SDL_MapRGB(image->format, 0, 136, 136)); // Magenta as transparent 
@@ -261,6 +282,10 @@ void updateAnimation(Uint32 currentTime) {
 
 //          KILL FUNCTION
 
+*/
+
+/*
+
 void kill(){
   SDL_DestroyTexture(player_texture);
   SDL_DestroyRenderer(renderer);
@@ -274,3 +299,4 @@ void kill(){
   SDL_Quit();
 }
 
+*/

@@ -16,3 +16,4 @@ Now I have to change it for the flicky sprite, add the platformer mechanics whic
 => Want to refactor the code and add level editor so for that decided that OOP would be beneficial so I moved the game to be written in C++ from C.
 => Adding Level Editor, Refactoring the code
 
+=> Set up some classes for Game, Player and extra functionalities. Not a fan of how all the implementations have been done completely and I will be changing quite a bunch of things later 
