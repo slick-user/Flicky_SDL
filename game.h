@@ -18,10 +18,6 @@
 const int PLAYER_HEIGHT = PLAYER_IMAGE_HEIGHT * 2;
 const int PLAYER_WIDTH = PLAYER_IMAGE_WIDTH * 2;
 
-// PLAYER PROPERTIES
-#define GRAVITY 2;
-#define SPEED 5
-
 enum {
   IDLE,
   RUNNING,

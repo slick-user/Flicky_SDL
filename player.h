@@ -5,6 +5,10 @@
 
 #include "util.h"
 
+// PLAYER PROPERTIES
+#define GRAVITY 2;
+#define SPEED 3
+
 class Entity {
 
   private:

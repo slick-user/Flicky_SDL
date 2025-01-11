@@ -20,7 +20,18 @@ void Entity::init(SDL_Renderer *renderer) {
 
 void Entity::update(int movement_x, int movement_y) {
 
-  x = x + (movement_x + velocity[0]);
+  if (velocity[1] > 0) {
+    velocity[1] = 0;
+  }
+
+  if (velocity[0] > 2) {
+    velocity[0] = 0;
+  }
+  if (velocity[0] < -2) {
+    velocity[0] = 0;
+  }
+
+  x += (movement_x + velocity[0]);
   y += (movement_y + velocity[1]);
 
   P.x = x;

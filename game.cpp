@@ -49,8 +49,8 @@ void Game::run() {
     int moved = 0;
 
     if (state[SDL_SCANCODE_UP] && can_jump) {
-      Player.y -= 90;
       //movement[3] = true;
+      Player.velocity[1] = -15;
       can_jump = false;
     }
 
@@ -86,10 +86,12 @@ void Game::run() {
     }
     else if (Player.y < SCREEN_HEIGHT - 70 && on_platform == false) {
       //Player.y += GRAVITY;
-      movement[2] = true;
+      movement[2] = true; 
+      Player.velocity[1]++;
     }
     else {
       movement[2] = false;
+      //Player.velocity[1] = 0;
       can_jump = true;
     } 
     
@@ -102,10 +104,9 @@ void Game::run() {
     // Render the Background
     SDL_RenderCopy(renderer, background_texture, Background_Image, NULL);
 
-    Player.render(renderer, Flicky_Image, img.currentFrame, moved);
-
     Player.update((movement[1] - movement[0]), (movement[2] - movement[3]));
 
+    Player.render(renderer, Flicky_Image, img.currentFrame, moved);
     //SDL_SetRenderDrawColor(renderer, 0, 0, 20, 0);
 
     // This is used to render the image (and overwrite)
