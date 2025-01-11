@@ -1,5 +1,8 @@
 g++ -o Flicky main.cpp game.cpp player.cpp util.cpp -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
+For the Editor version:
+g++ -o Flicky main.cpp editor.cpp util.cpp -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+
 => so we are going to change up our setup this time around
 => So we are now rendering images we need to make them be the texture for our main character and we need to get images to be rendered by layer somehow
 

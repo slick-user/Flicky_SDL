@@ -1,12 +1,19 @@
 #include "game.h"
 
+// PLAYER PROPERTIES
+#define GRAVITY 2;
+#define SPEED 3
+
 int Game::init() {
-//                                          ====INITIALIZATION====
+
+  //                                          ====INITIALIZATION====
   if (initSDL() != 0)
     return 1; 
 
   // "Entity" Setup
- 
+  
+  initPlatforms();
+
   Player.init(renderer);
 
   Flicky_Image->x = 1;
@@ -18,9 +25,7 @@ int Game::init() {
   Background_Image->y = 0;
   Background_Image->w = 255;
   Background_Image->h = 223;
-
-  Game::initPlatforms(Platform);
-
+  
   return 0;
 }
  
@@ -74,8 +79,8 @@ void Game::run() {
     bool on_platform = false;
     
     // Collision Check
-    for (int i=0; i<11; i++) {
-      if ( (Player.x > Platform[i].x && Player.x < Platform[i].w) && (Player.y > Platform[i].y && Player.y < Platform[i].h) ) {
+    for (int i=0; i<27; i++) {
+      if ( (Player.x > Platform[i].x && Player.x < Platform[i].x + Platform[i].w) && (Player.y > Platform[i].y && Player.y < Platform[i].y + Platform[i].h) ) {
         on_platform = true;
         break;
       }
@@ -137,70 +142,27 @@ bool Game::initSDL() {
   IMG_Init(IMG_INIT_JPG);
 
   background_texture = img.load_texture("./assets/Sega Genesis 32X - Flicky - Area 1.png", renderer);
-  //player_texture = img.load_texture("./assets/Arcade - Flicky - Flicky.png", renderer);
 
   return 0;
 
 }
 
-void Game::initPlatforms(SDL_Rect Platform[]) {
-  Platform[0].x = -20;
-  Platform[0].y = 342;
-  Platform[0].w = 115;
-  Platform[0].h = 345;
+void Game::initPlatforms() {
+ 
+  std::ifstream read;
 
-  Platform[1].x = -20;
-  Platform[1].y = 240;
-  Platform[1].w = 115;
-  Platform[1].h = 245;
+  read.open("./levels/level1.txt");
 
-  Platform[2].x = -20;
-  Platform[2].y = 135;
-  Platform[2].w = 115;
-  Platform[2].h = 140;
+  int no_of_platforms = 0;
+  read >> no_of_platforms;
 
-  Platform[3].x = -20;
-  Platform[3].y = 32;
-  Platform[3].w = 115;
-  Platform[3].h = 37;
+  Platform = new SDL_Rect[no_of_platforms];
 
-  // MIDDLE PLATFORMS
-  Platform[4].x = 185;
-  Platform[4].y = 290;
-  Platform[4].w = 435;
-  Platform[4].h = 295;
-  
-  Platform[5].x = 185;
-  Platform[5].y = 188;
-  Platform[5].w = 435;
-  Platform[5].h = 193;
+  for (int i=0; i<no_of_platforms; i++) {
+    read >> Platform[i].x >> Platform[i].y >> Platform[i].w >> Platform[i].h;
+  }
 
-  Platform[6].x = 185;
-  Platform[6].y = 85;
-  Platform[6].w = 435;
-  Platform[6].h = 90;
-
-  // Right Side Platforms 
-  Platform[7].x = 500;
-  Platform[7].y = 342;
-  Platform[7].w = 645;
-  Platform[7].h = 345;
-
-  Platform[8].x = 500;
-  Platform[8].y = 240;
-  Platform[8].w = 645;
-  Platform[8].h = 245;
-
-  Platform[9].x = 500;
-  Platform[9].y = 135;
-  Platform[9].w = 645;
-  Platform[9].h = 140;
-
-  Platform[10].x = 500;
-  Platform[10].y = 32;
-  Platform[10].w = 645;
-  Platform[10].h = 37;
-
+  read.close();
 
 }
 

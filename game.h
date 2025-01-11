@@ -3,9 +3,12 @@
 
 #include "include/SDL2/SDL.h"
 #include "include/SDL2/SDL_image.h"
+#include <fstream>
 
 #include "player.h"
 #include "util.h"
+
+class Util;
 
 // CONSTANT PARAMETERS
 #define SCREEN_WIDTH 640
@@ -35,8 +38,9 @@ class Game {
 
     Util img;
 
-    SDL_Rect Platform[11];
- 
+    //SDL_Rect Platform[11];
+    SDL_Rect *Platform;
+  
     bool initSDL();
 
     // temporary    
@@ -49,7 +53,7 @@ class Game {
     Game() = default;
 
     int init();
-    void initPlatforms(SDL_Rect Platform[]);
+    void initPlatforms();
     void run();
     void kill();
  
