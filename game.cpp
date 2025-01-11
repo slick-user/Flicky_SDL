@@ -1,62 +1,4 @@
-#include <stdio.h>
-
-#include "include/SDL2/SDL.h"
-#include "include/SDL2/SDL_image.h"
-
-#include "player.cpp"
-#include "util.cpp"
-
-// CONSTANT PARAMETERS
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
-
-// ANIMATION RELATED MACROS
-#define PLAYER_IMAGE_HEIGHT 18
-#define PLAYER_IMAGE_WIDTH 9
-
-const int PLAYER_HEIGHT = PLAYER_IMAGE_HEIGHT * 2;
-const int PLAYER_WIDTH = PLAYER_IMAGE_WIDTH * 2;
-
-const int NUM_FRAMES = 2;
-
-// PLAYER PROPERTIES
-#define GRAVITY 10
-#define SPEED 5
-
-enum {
-  IDLE,
-  RUNNING,
-};
-
-class Game {
- 
-  private:
-     // Properties
-    SDL_Window *window = NULL;
-    SDL_Renderer *renderer = NULL;
-
-    Entity Player;
-    Util img;
-
-    SDL_Rect Platform[11];
- 
-    bool initSDL();
-    
-    // temporary    
-    SDL_Texture *player_texture = NULL; 
-    SDL_Texture *background_texture = NULL;
-    SDL_Rect *Flicky_Image = new SDL_Rect;
-    SDL_Rect *Background_Image = new SDL_Rect;
-
-  public:
-    Game() = default;
-
-    int init();
-    void initPlatforms(SDL_Rect Platform[]);
-    void run();
-    void kill();
- 
-};
+#include "game.h"
 
 int Game::init() {
 //                                          ====INITIALIZATION====
@@ -65,7 +7,7 @@ int Game::init() {
 
   // "Entity" Setup
  
-  Player.init();
+  Player.init(renderer);
 
   Flicky_Image->x = 1;
   Flicky_Image->y = 1;
@@ -91,7 +33,6 @@ void Game::run() {
 
   while (gameLoop) {
     img.update();
-
     while (SDL_PollEvent(&event)) {
 
       switch(event.type) {
@@ -104,21 +45,30 @@ void Game::run() {
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
     // MOVEMENT
-    
+     
     int moved = 0;
-    
+
     if (state[SDL_SCANCODE_UP] && can_jump) {
-      Player.y -= 100;
+      Player.y -= 90;
+      //movement[3] = true;
       can_jump = false;
     }
 
     if (state[SDL_SCANCODE_RIGHT]) {
       Player.x += SPEED;
+      movement[1] = true;
       moved = 1;
+    }
+    else {
+      movement[1] = false;
     }
     if (state[SDL_SCANCODE_LEFT]) {
       Player.x -= SPEED;
+      movement[0] = true;
       moved = 2;
+    }
+    else {
+      movement[0] = false;
     }
  
     bool on_platform = false;
@@ -131,34 +81,32 @@ void Game::run() {
       }
     }
     if (on_platform == true) {
+      movement[2] = false;
       can_jump = true;
     }
     else if (Player.y < SCREEN_HEIGHT - 70 && on_platform == false) {
-      Player.y += GRAVITY - 9;
+      //Player.y += GRAVITY;
+      movement[2] = true;
     }
     else {
+      movement[2] = false;
       can_jump = true;
-    }
-      
+    } 
     
-    img.updateAnimation();
 
-    // This is to set background color and to reset the render
+    img.updateAnimation();
+    
+    // This is to to reset the render
     SDL_RenderClear(renderer);
 
     // Render the Background
     SDL_RenderCopy(renderer, background_texture, Background_Image, NULL);
-     
-    if (moved == 0){
-      Player.update();
-      SDL_RenderCopy(renderer, player_texture, Flicky_Image, &Player.P);       // IDLE 
-    }
-    else if (moved == 1)
-      img.renderFrame(renderer, player_texture, RUNNING, 0, img.currentFrame, Player.x, Player.y);
-    else if (moved == 2) 
-      img.renderFrame(renderer, player_texture, RUNNING, 1, img.currentFrame, Player.x, Player.y);
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 20, 0);
+    Player.render(renderer, Flicky_Image, img.currentFrame, moved);
+
+    Player.update((movement[1] - movement[0]), (movement[2] - movement[3]));
+
+    //SDL_SetRenderDrawColor(renderer, 0, 0, 20, 0);
 
     // This is used to render the image (and overwrite)
     SDL_RenderPresent(renderer);
@@ -188,12 +136,7 @@ bool Game::initSDL() {
   IMG_Init(IMG_INIT_JPG);
 
   background_texture = img.load_texture("./assets/Sega Genesis 32X - Flicky - Area 1.png", renderer);
-  player_texture = img.load_texture("./assets/Arcade - Flicky - Flicky.png", renderer);
-
-  if (!player_texture) {
-    printf("Unable to load image %s\n", IMG_GetError());
-    return 1;
-  }
+  //player_texture = img.load_texture("./assets/Arcade - Flicky - Flicky.png", renderer);
 
   return 0;
 
@@ -236,12 +179,36 @@ void Game::initPlatforms(SDL_Rect Platform[]) {
   Platform[6].w = 435;
   Platform[6].h = 90;
 
+  // Right Side Platforms 
+  Platform[7].x = 500;
+  Platform[7].y = 342;
+  Platform[7].w = 645;
+  Platform[7].h = 345;
+
+  Platform[8].x = 500;
+  Platform[8].y = 240;
+  Platform[8].w = 645;
+  Platform[8].h = 245;
+
+  Platform[9].x = 500;
+  Platform[9].y = 135;
+  Platform[9].w = 645;
+  Platform[9].h = 140;
+
+  Platform[10].x = 500;
+  Platform[10].y = 32;
+  Platform[10].w = 645;
+  Platform[10].h = 37;
+
 
 }
 
 void Game::kill() {
-  SDL_DestroyTexture(player_texture);
+  SDL_DestroyTexture(Player.texture);
   SDL_DestroyRenderer(renderer);
+
+  delete Flicky_Image;
+  delete Background_Image;
 
   SDL_DestroyWindow(window);
   renderer = NULL;

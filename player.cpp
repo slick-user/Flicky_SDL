@@ -1,33 +1,40 @@
 #include <iostream>
+#include "player.h"
 
-#include "include/SDL2/SDL_rect.h"
-
-class Entity {
-   
-  public:
-    int x = 20; 
-    int y = 200;
-    int w = 18;
-    int h = 36;
-     
-    SDL_Rect P;  // replace back with PLAYER_WIDTH AND PLAYER_HEIGHT 
-
-    void init();
-    void update();
-};
-
-void Entity::init() {
+void Entity::init(SDL_Renderer *renderer) {
   
   P.x = x;
   P.y = y;
   P.w = w;
   P.h = h;
 
+  texture = p_img.load_texture("./assets/Arcade - Flicky - Flicky.png", renderer); 
+
+  if (!texture) {
+    std::cout << "Unable to load image %s\n" <<  IMG_GetError();
+    exit(1);
+  }
+
+
 }
 
-void Entity::update() {
-  
+void Entity::update(int movement_x, int movement_y) {
+
+  x = x + (movement_x + velocity[0]);
+  y += (movement_y + velocity[1]);
+
   P.x = x;
   P.y = y;
+
+}
+
+void Entity::render(SDL_Renderer *renderer, SDL_Rect *Flicky_Image, Uint32 currentFrame, int moved) {
+  if (moved == 0){
+    SDL_RenderCopy(renderer, texture, Flicky_Image, &P);       // IDLE 
+  }
+  else if (moved == 1)
+    p_img.renderFrame(renderer, texture, RUNNING, 0, currentFrame, P.x, P.y);
+  else if (moved == 2) 
+    p_img.renderFrame(renderer, texture, RUNNING, 1, currentFrame, P.x, P.y);
 
 }

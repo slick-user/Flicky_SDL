@@ -1,4 +1,4 @@
-g++ -o Flicky main.cpp -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+g++ -o Flicky main.cpp game.cpp player.cpp util.cpp -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
 => so we are going to change up our setup this time around
 => So we are now rendering images we need to make them be the texture for our main character and we need to get images to be rendered by layer somehow
@@ -17,3 +17,9 @@ Now I have to change it for the flicky sprite, add the platformer mechanics whic
 => Adding Level Editor, Refactoring the code
 
 => Set up some classes for Game, Player and extra functionalities. Not a fan of how all the implementations have been done completely and I will be changing quite a bunch of things later 
+-> So we will need to move most the player variables into the player class at some point so we can get the player rendered straight from its class instead of having the game handle it
+
+=> So leaving the game and the Player Class in a pretty broken state because I have to figure out how this rendering stuff might have to be configured and right now it is really a tangled mess
+* Fixed the code and got OOP implemented still requires some modifications but for the most part it gets the job done fairly decently
+
+=> Right now I am manipulating the x and y of player directly as well using the new moment array thing..... why? Im thinking on it  
