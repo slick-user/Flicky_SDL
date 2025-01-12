@@ -1,9 +1,5 @@
 #include "game.h"
 
-// PLAYER PROPERTIES
-#define GRAVITY 2;
-#define SPEED 3
-
 int Game::init() {
 
   //                                          ====INITIALIZATION====
@@ -30,7 +26,6 @@ int Game::init() {
 }
  
 void Game::run() {
-  bool can_jump = true;
 
   SDL_Event event;
 
@@ -48,59 +43,12 @@ void Game::run() {
     }
 
     const Uint8 *state = SDL_GetKeyboardState(NULL);
-
-    // MOVEMENT
-     
-    int moved = 0;
-
-    if (state[SDL_SCANCODE_UP] && can_jump) {
-      //movement[3] = true;
-      Player.velocity[1] = -15;
-      can_jump = false;
-    }
-
-    if (state[SDL_SCANCODE_RIGHT]) {
-      Player.x += SPEED;
-      movement[1] = true;
-      moved = 1;
-    }
-    else {
-      movement[1] = false;
-    }
-    if (state[SDL_SCANCODE_LEFT]) {
-      Player.x -= SPEED;
-      movement[0] = true;
-      moved = 2;
-    }
-    else {
-      movement[0] = false;
-    }
- 
-    bool on_platform = false;
     
-    // Collision Check
-    for (int i=0; i<27; i++) {
-      if ( (Player.x > Platform[i].x && Player.x < Platform[i].x + Platform[i].w) && (Player.y > Platform[i].y && Player.y < Platform[i].y + Platform[i].h) ) {
-        on_platform = true;
-        break;
-      }
-    }
-    if (on_platform == true) {
-      movement[2] = false;
-      can_jump = true;
-    }
-    else if (Player.y < SCREEN_HEIGHT - 70 && on_platform == false) {
-      //Player.y += GRAVITY;
-      movement[2] = true; 
-      Player.velocity[1]++;
-    }
-    else {
-      movement[2] = false;
-      //Player.velocity[1] = 0;
-      can_jump = true;
-    } 
+    Player.moved = 0; 
     
-
+    Player.handleInput(state, Platform);
+    // MOVEMENT 
+  
     img.updateAnimation();
     
     // This is to to reset the render
@@ -109,15 +57,13 @@ void Game::run() {
     // Render the Background
     SDL_RenderCopy(renderer, background_texture, Background_Image, NULL);
 
-    Player.update((movement[1] - movement[0]), (movement[2] - movement[3]));
+    Player.update();
 
-    Player.render(renderer, Flicky_Image, img.currentFrame, moved);
+    Player.render(renderer, Flicky_Image, img.currentFrame);
     //SDL_SetRenderDrawColor(renderer, 0, 0, 20, 0);
 
     // This is used to render the image (and overwrite)
     SDL_RenderPresent(renderer);
-    
-    moved = 0;
 
     SDL_Delay(1000/60);
 

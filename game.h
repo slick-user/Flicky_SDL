@@ -34,7 +34,6 @@ class Game {
     SDL_Renderer *renderer = NULL;
 
     Entity Player;
-    bool movement[4] = {false, false, false, false};
 
     Util img;
 
@@ -43,8 +42,7 @@ class Game {
   
     bool initSDL();
 
-    // temporary    
-    //SDL_Texture *player_texture = NULL; 
+    // temporary   
     SDL_Texture *background_texture = NULL;
     SDL_Rect *Flicky_Image = new SDL_Rect;
     SDL_Rect *Background_Image = new SDL_Rect;

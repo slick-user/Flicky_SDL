@@ -26,3 +26,4 @@ Now I have to change it for the flicky sprite, add the platformer mechanics whic
 * Fixed the code and got OOP implemented still requires some modifications but for the most part it gets the job done fairly decently
 
 => Right now I am manipulating the x and y of player directly as well using the new moment array thing..... why? Im thinking on it  
+* Today was wasted trying to make the Player Class a wholly separate entity from anything else
