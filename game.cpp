@@ -46,9 +46,11 @@ void Game::run() {
     
     Player.moved = 0; 
     
-    Player.handleInput(state, Platform);
+    Player.handleInput(state);
     // MOVEMENT 
-  
+ 
+    Player.checkCollisions(Platform);
+
     img.updateAnimation();
     
     // This is to to reset the render

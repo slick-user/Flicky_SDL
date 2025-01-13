@@ -23,12 +23,11 @@ void Entity::update() {
  
 }
 
-void Entity::handleInput(const Uint8 *state, SDL_Rect Platform[]) {
+void Entity::handleInput(const Uint8 *state) {
  
-  checkCollisions(Platform);
-
   if (state[SDL_SCANCODE_UP] && can_jump) {
-    velocity[1] -= 20;
+    P.y -= 10;
+    velocity[1] -= 15;
     can_jump = false;
   }
 
@@ -62,20 +61,27 @@ void Entity::checkCollisions(SDL_Rect Platform[]) {
   
   bool on_platform = false;
   
-  int platform_pos;
+  int i = 0;
 
   // Collision Check
-  for (int i=0; i<11; i++) {
-    if ( (P.x > Platform[i].x && P.x < Platform[i].x + Platform[i].w) && (P.y > Platform[i].y && P.y < Platform[i].y + Platform[i].h) ) {
-      on_platform = true;
-      platform_pos = Platform[i].y;
+  for (i=0; i<11; i++) {
+    
+    //updward collision
+    /*if (P.x > Platform[i].x && P.x < Platform[i].x + Platform[i].w && P.y> Platform[i].y && P.y < Platform[i].y + Platform[i].h) {
+      velocity[1] = 0;
       break;
-    }
+    }*/
+
+    //downwards collision
+    if ( (P.x > Platform[i].x && P.x < Platform[i].x + Platform[i].w) && (P.y>= Platform[i].y && P.y<= Platform[i].y + Platform[i].h) ) {
+      on_platform = true;
+      break;
+    } 
   }
 
   if (on_platform == true) {
     velocity[1] = 0;
-    P.y = platform_pos; 
+    P.y = Platform[i].y; 
     can_jump = true;
   }
   else if (P.y < SCREEN_HEIGHT - 70 && on_platform == false) { // Falling state

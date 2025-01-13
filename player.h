@@ -47,7 +47,7 @@ class Entity {
     void checkCollisions(SDL_Rect Platform[]);
 
     void init(SDL_Renderer *renderer);
-    void handleInput(const Uint8 *state, SDL_Rect Platform[]);
+    void handleInput(const Uint8 *state);
     void update();           // For displaying or describing movement on the x and y axes
     void render(SDL_Renderer *renderer, SDL_Rect *Flicky_Image, Uint32 currentFrame);
   
