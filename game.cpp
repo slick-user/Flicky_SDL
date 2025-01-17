@@ -1,4 +1,7 @@
 #include "game.h"
+#include "include/SDL2/SDL_render.h"
+#include "include/SDL2/SDL_surface.h"
+#include <cstddef>
 
 int Game::init() {
 
@@ -19,13 +22,15 @@ int Game::init() {
 
   Background_Image->x = 0;
   Background_Image->y = 0;
-  Background_Image->w = 255;
-  Background_Image->h = 223;
+  Background_Image->w = 510;
+  Background_Image->h = 446;
   
   return 0;
 }
  
 void Game::run() {
+
+  int offset = 0; // X Offset to move the camera
 
   SDL_Event event;
 
@@ -48,21 +53,46 @@ void Game::run() {
     
     Player.handleInput(state);
     // MOVEMENT 
- 
+
+    if (Player.P.x - offset > SCREEN_WIDTH - 300 && Player.vel[0] > 0) {
+      offset += Player.vel[0];
+      std::cout << offset;
+      camera.x -= 10;
+      Player.P.x -= 1;
+      // this does not seem correct and might be making platforms slide
+      for (int i=0; i<11; i++) {
+        Platform[i].x -= 10;      
+      }
+    }
+    else if (Player.P.x - offset < 300 && Player.vel[0] < 0) {
+      offset += Player.vel[0];
+      std::cout << offset;
+      camera.x += 10;
+      Player.P.x += 1;
+      // this does not seem correct and might be making platforms slide
+      for (int i=0; i<11; i++) {
+        Platform[i].x += 10;      
+      }
+    }
+  
     Player.checkCollisions(Platform);
 
-    img.updateAnimation();
-    
+    img.updateAnimation(); 
+
     // This is to to reset the render
     SDL_RenderClear(renderer);
 
     // Render the Background
-    SDL_RenderCopy(renderer, background_texture, Background_Image, NULL);
+    SDL_RenderCopy(renderer, background_texture, Background_Image, &camera);
+
+    for (int i=0; i<11; i++) {
+      SDL_RenderCopy(renderer, background_texture, Background_Image, &Platform[i]);
+    }
+
 
     Player.update();
 
     Player.render(renderer, Flicky_Image, img.currentFrame);
-    //SDL_SetRenderDrawColor(renderer, 0, 0, 20, 0);
 
     // This is used to render the image (and overwrite)
     SDL_RenderPresent(renderer);

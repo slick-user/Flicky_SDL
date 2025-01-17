@@ -14,6 +14,10 @@ class Util;
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
+// DIMENSIONS OF LEVEL
+#define LEVEL_WIDTH 1280
+#define LEVEL_HEIGHT 480
+
 // ANIMATION RELATED MACROS
 #define PLAYER_IMAGE_HEIGHT 18
 #define PLAYER_IMAGE_WIDTH 9
@@ -46,6 +50,9 @@ class Game {
     SDL_Texture *background_texture = NULL;
     SDL_Rect *Flicky_Image = new SDL_Rect;
     SDL_Rect *Background_Image = new SDL_Rect;
+
+    // Camera
+    SDL_Rect camera = {0,0, LEVEL_WIDTH, LEVEL_HEIGHT};
 
   public:
     Game() = default;
