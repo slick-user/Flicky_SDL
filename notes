@@ -3,29 +3,15 @@ g++ -o Flicky main.cpp game.cpp player.cpp util.cpp -O1 -Wall -I include -L lib/
 For the Editor version:
 g++ -o Flicky main.cpp editor.cpp util.cpp -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
-=> so we are going to change up our setup this time around
-=> So we are now rendering images we need to make them be the texture for our main character and we need to get images to be rendered by layer somehow
+* Added a version of the camera that will work just fine, need to add the level wrapping then we will begin development of enemies, chicks, level complete and projectiles
 
-Phase 1:
-  Got the image to render on a rectangle as was required (do I have to do this for every single thing that will be rendered?)
-Now I have to change it for the flicky sprite, add the platformer mechanics which also means we need collision detection, and platform types.... this is definitely going to be a project that takes a while
-
-* So made a change and kind of added the jumping mechanics will change the jump mechanics a bit, as right now it is more of a teleport type of thing and is not at all flexible
-
-=> Trying to render the assets kind of a pain right now.. don't know if it's me being stupid or this character Sheet being a pain
-
-* Added Initial Animation Player needs refactoring (cannot keep this as a permanent system)
-
-=> Want to refactor the code and add level editor so for that decided that OOP would be beneficial so I moved the game to be written in C++ from C.
-=> Adding Level Editor, Refactoring the code
-
-=> Set up some classes for Game, Player and extra functionalities. Not a fan of how all the implementations have been done completely and I will be changing quite a bunch of things later 
--> So we will need to move most the player variables into the player class at some point so we can get the player rendered straight from its class instead of having the game handle it
-
-=> So leaving the game and the Player Class in a pretty broken state because I have to figure out how this rendering stuff might have to be configured and right now it is really a tangled mess
-* Fixed the code and got OOP implemented still requires some modifications but for the most part it gets the job done fairly decently
-
-=> Right now I am manipulating the x and y of player directly as well using the new moment array thing..... why? Im thinking on it  
-* Today was wasted trying to make the Player Class a wholly separate entity from anything else
-
-=> This camera has been messing with my brain and I have no idea why I am unable to think this through
+=======================================================================================================
+code that can be used for enemies :
+  if (Player.P.x > SCREEN_WIDTH) {
+    Player.P.x = 0;
+    std::cout << "hello";
+  }
+  else if (Player.P.x < 0) {
+    Player.P.x = SCREEN_WIDTH;
+    std::cout << "that seems to be fine?";
+  }

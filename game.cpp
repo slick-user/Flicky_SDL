@@ -1,6 +1,5 @@
 #include "game.h"
 #include "include/SDL2/SDL_render.h"
-#include "include/SDL2/SDL_surface.h"
 #include <cstddef>
 
 int Game::init() {
@@ -52,29 +51,28 @@ void Game::run() {
     Player.moved = 0; 
     
     Player.handleInput(state);
-    // MOVEMENT 
 
-    if (Player.P.x - offset > SCREEN_WIDTH - 300 && Player.vel[0] > 0) {
+    // CAMERA MOVEMENT 
+
+    if (Player.P.x - offset > SCREEN_WIDTH - 300 && Player.vel[0] > 0 && (camera.x > -SCREEN_WIDTH))  {
       offset += Player.vel[0];
-      std::cout << offset;
       camera.x -= 10;
       Player.P.x -= 1;
-      // this does not seem correct and might be making platforms slide
+      // It's somewhat fine
       for (int i=0; i<11; i++) {
         Platform[i].x -= 10;      
       }
     }
-    else if (Player.P.x - offset < 300 && Player.vel[0] < 0) {
+    else if (Player.P.x - offset < 300 && Player.vel[0] < 0 && (camera.x < 0) ) {
       offset += Player.vel[0];
-      std::cout << offset;
       camera.x += 10;
       Player.P.x += 1;
-      // this does not seem correct and might be making platforms slide
+      // moves the platforms relative to the camera as is required
       for (int i=0; i<11; i++) {
         Platform[i].x += 10;      
       }
     }
-  
+ 
     Player.checkCollisions(Platform);
 
     img.updateAnimation(); 
@@ -85,6 +83,7 @@ void Game::run() {
     // Render the Background
     SDL_RenderCopy(renderer, background_texture, Background_Image, &camera);
 
+    // Rendering the Platforms
     for (int i=0; i<11; i++) {
       SDL_RenderCopy(renderer, background_texture, Background_Image, &Platform[i]);
     }
