@@ -5,6 +5,8 @@ g++ -o Flicky main.cpp editor.cpp util.cpp -O1 -Wall -I include -L lib/ -lmingw3
 
 * Added a version of the camera that will work just fine, need to add the level wrapping then we will begin development of enemies, chicks, level complete and projectiles
 
+* Added Screen Wrapping like with most implementations I am not completely happy with how I did this but it gets the job done so I can check that off the list
+
 =======================================================================================================
 code that can be used for enemies :
   if (Player.P.x > SCREEN_WIDTH) {

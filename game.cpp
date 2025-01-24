@@ -1,6 +1,4 @@
 #include "game.h"
-#include "include/SDL2/SDL_render.h"
-#include <cstddef>
 
 int Game::init() {
 
@@ -53,6 +51,29 @@ void Game::run() {
     Player.handleInput(state);
 
     // CAMERA MOVEMENT 
+
+    // Screen wrapping
+                            // from end (right) back to start (left) screen wrapping
+    if (Player.P.x > SCREEN_WIDTH) {
+      for (int i=0; i<11; i++) {
+        std::cout << Platform[i].x << std::endl;
+      }
+      camera.x = 0;
+      Player.P.x = 0;
+      initPlatforms();
+      offset = 0;
+    }
+                            // from start (left) to end (right) screen wrapping
+    else if (Player.P.x < 0) {
+      camera.x = -640;
+      Player.P.x = 640;
+      initPlatforms();
+      for (int i=0; i<11; i++) {
+        Platform[i].x -= 640;
+      }
+      offset = 192;
+    }
+    
 
     if (Player.P.x - offset > SCREEN_WIDTH - 300 && Player.vel[0] > 0 && (camera.x > -SCREEN_WIDTH))  {
       offset += Player.vel[0];
