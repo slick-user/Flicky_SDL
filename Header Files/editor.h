@@ -1,14 +1,14 @@
 #pragma once
 
-#include "include/SDL2/SDL.h"
-#include "include/SDL2/SDL_image.h"
+#include "../include/SDL2/SDL.h"
+#include "../include/SDL2/SDL_image.h"
 #include <iostream>
 #include <fstream>
 
 #include "util.h"
 
 // CONSTANT PARAMETERS
-#define SCREEN_WIDTH 640
+#define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 480
 
 class Editor {

@@ -1,12 +1,12 @@
 #include <stdbool.h>
 
 // The class stuff we will modify later
-#include "game.h" 
-#include "editor.h"
+#include "Header Files/game.h"
+//#include "Header Files/editor.h"
 
 Game game;
 
-Editor editor;
+//Editor editor;
 
 int main(int argc, char* args[]) {
 

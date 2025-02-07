@@ -1,4 +1,4 @@
-#include "player.h"
+#include "../Header Files/player.h"
 
 void Entity::init(SDL_Renderer *renderer) {
   
@@ -25,24 +25,24 @@ void Entity::update() {
 
 void Entity::handleInput(const Uint8 *state) {
  
-  if (state[SDL_SCANCODE_UP] && can_jump) {
+  if (( state[SDL_SCANCODE_UP] && can_jump ) || ( state[SDL_SCANCODE_W] && can_jump )) {
     P.y -= 10;
     velocity[1] -= 15;
     can_jump = false;
   }
 
-  if (state[SDL_SCANCODE_RIGHT]) {
+  if (state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_D]) {
     velocity[0] = SPEED;
     moved = 1;
   }
-  else if (state[SDL_SCANCODE_LEFT]) {
+  else if (state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_A]) {
     velocity[0] = -SPEED;
     moved = 2;
   }
   else {
     velocity[0] = 0;
   }
-  
+
 }
 
 void Entity::render(SDL_Renderer *renderer, SDL_Rect *Flicky_Image, Uint32 currentFrame) {
@@ -64,7 +64,7 @@ void Entity::checkCollisions(SDL_Rect Platform[]) {
   int i = 0;
 
   // Collision Check
-  for (i=0; i<11; i++) {
+  for (i=0; i<15; i++) {
     
     //updward collision
     /*if (P.x > Platform[i].x && P.x < Platform[i].x + Platform[i].w && P.y> Platform[i].y && P.y < Platform[i].y + Platform[i].h) {

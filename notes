@@ -1,7 +1,7 @@
-g++ -o Flicky main.cpp game.cpp player.cpp util.cpp -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+g++ -o Flicky main.cpp "Source Files/game.cpp" "Source Files/player.cpp" "Source Files/util.cpp" -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
 For the Editor version:
-g++ -o Flicky main.cpp editor.cpp util.cpp -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+g++ -o Flicky main.cpp "Source Files/editor.cpp" "Source Files/util.cpp" -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
 * Added a version of the camera that will work just fine, need to add the level wrapping then we will begin development of enemies, chicks, level complete and projectiles
 

@@ -1,4 +1,4 @@
-#include "game.h"
+#include "../Header Files/game.h"
 
 int Game::init() {
 
@@ -55,7 +55,7 @@ void Game::run() {
     // Screen wrapping
                             // from end (right) back to start (left) screen wrapping
     if (Player.P.x > SCREEN_WIDTH) {
-      for (int i=0; i<11; i++) {
+      for (int i=0; i<15; i++) {
         std::cout << Platform[i].x << std::endl;
       }
       camera.x = 0;
@@ -68,19 +68,19 @@ void Game::run() {
       camera.x = -640;
       Player.P.x = 640;
       initPlatforms();
-      for (int i=0; i<11; i++) {
+      for (int i=0; i<15; i++) {
         Platform[i].x -= 640;
       }
       offset = 192;
     }
     
-
+    //Camera scrolling
     if (Player.P.x - offset > SCREEN_WIDTH - 300 && Player.vel[0] > 0 && (camera.x > -SCREEN_WIDTH))  {
       offset += Player.vel[0];
       camera.x -= 10;
       Player.P.x -= 1;
-      // It's somewhat fine
-      for (int i=0; i<11; i++) {
+
+      for (int i=0; i<15; i++) {
         Platform[i].x -= 10;      
       }
     }
@@ -89,11 +89,11 @@ void Game::run() {
       camera.x += 10;
       Player.P.x += 1;
       // moves the platforms relative to the camera as is required
-      for (int i=0; i<11; i++) {
+      for (int i=0; i<15; i++) {
         Platform[i].x += 10;      
       }
     }
- 
+
     Player.checkCollisions(Platform);
 
     img.updateAnimation(); 
@@ -105,7 +105,7 @@ void Game::run() {
     SDL_RenderCopy(renderer, background_texture, Background_Image, &camera);
 
     // Rendering the Platforms
-    for (int i=0; i<11; i++) {
+    for (int i=0; i<15; i++) {
       SDL_RenderCopy(renderer, background_texture, Background_Image, &Platform[i]);
     }
 

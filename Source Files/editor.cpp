@@ -1,4 +1,4 @@
-#include "editor.h"
+#include "../Header Files/editor.h"
 
 int Editor::init() {
   
@@ -17,8 +17,8 @@ int Editor::init() {
 
   Background_Image->x = 0;
   Background_Image->y = 0;
-  Background_Image->w = 255;
-  Background_Image->h = 223;
+  Background_Image->w = 510;
+  Background_Image->h = 446;
 
   for (int i=0; i<no_of_platforms; i++) {
     Platform[i].h = 17;
@@ -61,13 +61,17 @@ void Editor::run() {
       
         case SDL_KEYDOWN:
           if (event.key.keysym.sym == SDLK_SPACE) {
-            saveFile("./levels/level1.txt");  
+            saveFile("./levels/level2.txt");  
           }
 
           break;
-          sad
       }
     }
+    
+    //const Uint8 *state;
+
+    //if (state[SDL_SCANCODE_RIGHT]) {  
+    //}
 
     SDL_RenderClear(renderer);
 

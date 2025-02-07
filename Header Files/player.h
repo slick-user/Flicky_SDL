@@ -1,8 +1,8 @@
 #pragma once
 
-#include "include/SDL2/SDL_rect.h"
-#include "include/SDL2/SDL_render.h"
-#include "include/SDL2/SDL_timer.h"
+#include "../include/SDL2/SDL_rect.h"
+#include "../include/SDL2/SDL_render.h"
+#include "../include/SDL2/SDL_timer.h"
 #include <iostream>
 
 #include "util.h"
