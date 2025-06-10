@@ -2,23 +2,29 @@
 
 #include "../include/SDL2/SDL_rect.h"
 #include <iostream>
+#include <vector>
 
 #include "util.h"
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
+
+const int GROUND_LEVEL = SCREEN_HEIGHT - 70;
+const int JUMP_VELOCITY = 15;
 
 class Entity {
 
   protected:
-    Util p_img;
+    Util pImg;
 
     enum {
       IDLE,
       RUNNING,
     };
 
-    SDL_Texture* loadTexture(SDL_Renderer* renderer, std::string asset);
+    SDL_Texture* texture;
+
+    SDL_Texture* loadTexture(SDL_Renderer* renderer, const std::string& path);
 
   public:
 
@@ -30,12 +36,12 @@ class Entity {
     int moved; //default is 0
 
     SDL_Rect p;
-    
-    SDL_Texture* texture;
-    
+        
     Entity(SDL_Renderer* renderer, int x=20, int y=200, int w=18, int h=36);
 
-    void checkCollision(SDL_Rect Platform[]);
+    ~Entity();
+
+    void checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount);
     
     void update();
     void render(SDL_Renderer* renderer, SDL_Rect* Flicky_Image, Uint32 currentFrame);

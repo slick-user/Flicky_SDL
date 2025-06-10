@@ -11,9 +11,13 @@ Entity::Entity(SDL_Renderer* renderer, int x, int y, int w, int h) {;
 
 }
 
-SDL_Texture* Entity::loadTexture(SDL_Renderer* renderer, std::string asset) {
+Entity::~Entity() {
+  SDL_DestroyTexture(texture);
+}
+
+SDL_Texture* Entity::loadTexture(SDL_Renderer* renderer, const std::string& path) {
   
-  SDL_Texture* texture = p_img.load_texture("./assets/Arcade - Flicky - Flicky.png", renderer); 
+  SDL_Texture* texture = pImg.load_texture("./assets/Arcade - Flicky - Flicky.png", renderer); 
 
   if (!texture) {
     std::cout << "Unable to load image %s\n" <<  IMG_GetError();
@@ -34,23 +38,22 @@ void Entity::render(SDL_Renderer* renderer, SDL_Rect* Flicky_Image, Uint32 curre
     SDL_RenderCopy(renderer, texture, Flicky_Image, &p);       // IDLE 
   }
   else if (moved == 1)
-    p_img.renderFrame(renderer, texture, RUNNING, 0, currentFrame, p.x, p.y);
+    pImg.renderFrame(renderer, texture, RUNNING, 0, currentFrame, p.x, p.y);
   else if (moved == 2) 
-    p_img.renderFrame(renderer, texture, RUNNING, 1, currentFrame, p.x, p.y);
+    pImg.renderFrame(renderer, texture, RUNNING, 1, currentFrame, p.x, p.y);
 
   moved = 0;
 }
 
-void Entity::checkCollision(SDL_Rect Platform[]) {
+void Entity::checkCollision(const std::vector<SDL_Rect>& Platform, const int platformCount) {
   
-  bool on_platform = false;
-  
+  bool on_platform = false; 
   int i = 0;
 
   // Collision Check
-  for (i=0; i<15; i++) {
+  for (i=0; i<platformCount; i++) {
     
-    //updward collision
+    //upward collision
     /*if (P.x > Platform[i].x && P.x < Platform[i].x + Platform[i].w && P.y> Platform[i].y && P.y < Platform[i].y + Platform[i].h) {
       velocity[1] = 0;
       break;
@@ -68,12 +71,12 @@ void Entity::checkCollision(SDL_Rect Platform[]) {
     p.y = Platform[i].y; 
     can_jump = true;
   }
-  else if (p.y < SCREEN_HEIGHT - 70 && on_platform == false) { // Falling state
+  else if (p.y < GROUND_LEVEL && on_platform == false) { // Falling state
     velocity[1] += 1;
   }
   else {
     velocity[1] = 0;
-    p.y = SCREEN_HEIGHT - 70;       // Is snapped to the ground
+    p.y = GROUND_LEVEL;       // Is snapped to the ground
     can_jump = true;
   }
 }

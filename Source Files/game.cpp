@@ -11,27 +11,26 @@ Game::Game() {
   initPlatforms();
 
   // Player Setup
-  Player = new class Player(renderer, 20, 200, 18, 36);
+  player = new Player(renderer, 20, 200, 18, 36);
 
-  Flicky_Image->x = 1;
-  Flicky_Image->y = 1;
-  Flicky_Image->w = PLAYER_IMAGE_WIDTH;
-  Flicky_Image->h = PLAYER_IMAGE_HEIGHT;
+  flickyImage->x = 1;
+  flickyImage->y = 1;
+  flickyImage->w = PLAYER_IMAGE_WIDTH;
+  flickyImage->h = PLAYER_IMAGE_HEIGHT;
 
   // Enemy Setup
-  //Enemy.init(renderer);
 
   // Background setup
-  Background_Image->x = 0;
-  Background_Image->y = 0;
-  Background_Image->w = 510;
-  Background_Image->h = 446;
-  
+  backgroundImage->x = 0;
+  backgroundImage->y = 0;
+  backgroundImage->w = 510;
+  backgroundImage->h = 446;
+
+  run();
+
 }
  
 void Game::run() {
-
-  int offset = 0; // X Offset to move the camera
 
   SDL_Event event;
 
@@ -50,55 +49,13 @@ void Game::run() {
 
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     
-    Player->moved = 0; 
+    player->moved = 0; 
     
-    Player->handleInput(state);
+    player->handleInput(state);
 
-    // CAMERA MOVEMENT 
+    updateCamera();
 
-    // Screen wrapping
-                            // from end (right) back to start (left) screen wrapping
-    if (Player->p.x > SCREEN_WIDTH) {
-      for (int i=0; i<15; i++) {
-        std::cout << Platform[i].x << std::endl;
-      }
-      camera.x = 0;
-      Player->p.x = 0;
-      initPlatforms();
-      offset = 0;
-    }
-                            // from start (left) to end (right) screen wrapping
-    else if (Player->p.x < 0) {
-      camera.x = -640;
-      Player->p.x = 640;
-      initPlatforms();
-      for (int i=0; i<15; i++) {
-        Platform[i].x -= 640;
-      }
-      offset = 192;
-    }
-    
-    //Camera scrolling
-    if (Player->p.x - offset > SCREEN_WIDTH - 300 && Player->vel[0] > 0 && (camera.x > -SCREEN_WIDTH))  {
-      offset += Player->vel[0];
-      camera.x -= 10;
-      Player->p.x -= 1;
-
-      for (int i=0; i<15; i++) {
-        Platform[i].x -= 10;      
-      }
-    }
-    else if (Player->p.x - offset < 300 && Player->vel[0] < 0 && (camera.x < 0) ) {
-      offset += Player->vel[0];
-      camera.x += 10;
-      Player->p.x += 1;
-      // moves the platforms relative to the camera as is required
-      for (int i=0; i<15; i++) {
-        Platform[i].x += 10;      
-      }
-    }
-
-    Player->checkCollision(Platform);
+    player->checkCollision(platform, platformCount);
 
     img.updateAnimation(); 
 
@@ -106,20 +63,20 @@ void Game::run() {
     SDL_RenderClear(renderer);
 
     // Render the Background
-    SDL_RenderCopy(renderer, background_texture, Background_Image, &camera);
+    SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &camera);
 
     // Rendering the Platforms
-    for (int i=0; i<15; i++) {
-      SDL_RenderCopy(renderer, background_texture, Background_Image, &Platform[i]);
+    for (int i=0; i<platformCount; i++) {
+      SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &platform[i]);
     }
 
 
-    Player->update();
+    player->update();
 
-    Player->render(renderer, Flicky_Image, img.currentFrame);
+    player->render(renderer, flickyImage, img.currentFrame);
 
     // Enemy Rendering
-    //Enemy.render(renderer, Flicky_Image, img.currentFrame);
+    //Enemy.render(renderer, flickyImage, img.currentFrame);
 
     // This is used to render the image (and overwrite)
     SDL_RenderPresent(renderer);
@@ -146,7 +103,7 @@ bool Game::initSDL() {
 
   IMG_Init(IMG_INIT_JPG);
 
-  background_texture = img.load_texture("./assets/Sega Genesis 32X - Flicky - Area 1.png", renderer);
+  backgroundTexture = img.load_texture("./assets/Sega Genesis 32X - Flicky - Area 1.png", renderer);
 
   return 0;
 
@@ -155,28 +112,71 @@ bool Game::initSDL() {
 void Game::initPlatforms() {
  
   std::ifstream read;
-
   read.open("./levels/level1.txt");
 
-  int no_of_platforms = 0;
-  read >> no_of_platforms;
+  read >> platformCount;
+  platform.resize(platformCount);
 
-  Platform = new SDL_Rect[no_of_platforms];
-
-  for (int i=0; i<no_of_platforms; i++) {
-    read >> Platform[i].x >> Platform[i].y >> Platform[i].w >> Platform[i].h;
+  for (int i=0; i<platformCount; i++) {
+    read >> platform[i].x >> platform[i].y >> platform[i].w >> platform[i].h;
   }
 
   read.close();
 
 }
 
+void Game::updateCamera() {
+      
+  int offset = 0; // X Offset to move the camera 
+
+  // Screen wrapping
+                            // from end (right) back to start (left) screen wrapping
+  if (player->p.x > SCREEN_WIDTH) {
+    for (int i=0; i<platformCount; i++) {
+       //std::cout << platform[i].x << std::endl;
+    }
+    camera.x = 0;
+    player->p.x = 0;
+    initPlatforms();
+    offset = 0;
+  }
+                            // from start (left) to end (right) screen wrapping
+  else if (player->p.x < 0) {
+    camera.x = -SCREEN_WRAP_OFFSET;
+    player->p.x = SCREEN_WRAP_OFFSET;
+    initPlatforms();
+    for (int i=0; i<platformCount; i++) {
+      platform[i].x -= SCREEN_WRAP_OFFSET;
+    }
+    offset = 192;
+  }
+    
+  //Camera scrolling
+  if (player->p.x - offset > SCREEN_WIDTH - CAMERA_OFFSET_THRESHOLD && player->vel[0] > 0 && (camera.x > -SCREEN_WIDTH))  {
+    offset += player->vel[0];
+    camera.x -= 10;
+    player->p.x -= 1;
+
+    for (int i=0; i<platformCount; i++) {
+      platform[i].x -= 10;      
+    }
+  }
+  else if (player->p.x - offset < CAMERA_OFFSET_THRESHOLD && player->vel[0] < 0 && (camera.x < 0) ) {
+    offset += player->vel[0];
+    camera.x += 10;
+    player->p.x += 1;
+    // moves the platforms relative to the camera as is required
+    for (int i=0; i<platformCount; i++) {
+      platform[i].x += 10;      
+    }
+  }
+}
+
 void Game::kill() {
-  SDL_DestroyTexture(Player->texture);
   SDL_DestroyRenderer(renderer);
 
-  delete Flicky_Image;
-  delete Background_Image;
+  delete flickyImage;
+  delete backgroundImage;
 
   SDL_DestroyWindow(window);
   renderer = NULL;

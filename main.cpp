@@ -1,21 +1,14 @@
-#include <stdbool.h>
-
-// The class stuff we will modify later
 #include "Header Files/game.h"
 //#include "Header Files/editor.h"
 
-Game game;
-
-//Editor editor;
 
 int main(int argc, char* args[]) {
 
-  //game.init();
-
   bool d = true;
   while (d) {
-    game.run();
-    //editor.run();
+
+    Game game;
+    //Editor editor;
     d = false;
   }
   return 0;

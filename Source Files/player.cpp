@@ -10,7 +10,7 @@ void Player::handleInput(const Uint8 *state) {
  
   if (( state[SDL_SCANCODE_UP] && can_jump ) || ( state[SDL_SCANCODE_W] && can_jump )) {
     p.y -= 10;
-    velocity[1] -= 15;
+    velocity[1] -= JUMP_VELOCITY;
     can_jump = false;
   }
 

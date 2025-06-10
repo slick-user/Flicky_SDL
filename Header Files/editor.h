@@ -31,7 +31,6 @@ class Editor {
   public:
     Editor();
 
-    int init();
     void run();
     void kill();
   

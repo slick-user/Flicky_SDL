@@ -24,6 +24,8 @@ Editor::Editor() {
     Platform[i].w = 100; 
   }
 
+  run();
+
 }
 
 void Editor::run() {

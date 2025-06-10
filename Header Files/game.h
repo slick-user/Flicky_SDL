@@ -4,6 +4,7 @@
 #include "../include/SDL2/SDL.h"
 #include "../include/SDL2/SDL_image.h"
 #include <fstream>
+#include <vector>
 
 #include "player.h"
 //#include "enemy.h"
@@ -11,20 +12,16 @@
 
 class Util;
 
-// CONSTANT PARAMETERS
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
-
 // DIMENSIONS OF LEVEL
-#define LEVEL_WIDTH 1280
-#define LEVEL_HEIGHT 480
-
-// ANIMATION RELATED MACROS
-#define PLAYER_IMAGE_HEIGHT 18
-#define PLAYER_IMAGE_WIDTH 9
+const int LEVEL_WIDTH = 1280;
+const int LEVEL_HEIGHT = 480;
 
 const int PLAYER_HEIGHT = PLAYER_IMAGE_HEIGHT * 2;
 const int PLAYER_WIDTH = PLAYER_IMAGE_WIDTH * 2;
+
+// CAMERA CONSTANTS
+const int CAMERA_OFFSET_THRESHOLD = 300;
+const int SCREEN_WRAP_OFFSET = 640;
 
 enum {
   IDLE,
@@ -38,21 +35,21 @@ class Game {
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
 
-    Player* Player; 
+    Player* player; 
 
     //Entity Enemy;
 
     Util img;
 
-    //SDL_Rect Platform[11];
-    SDL_Rect *Platform;
+    int platformCount;
+    std::vector<SDL_Rect> platform;
   
     bool initSDL();
 
     // temporary   
-    SDL_Texture *background_texture = NULL;
-    SDL_Rect *Flicky_Image = new SDL_Rect;
-    SDL_Rect *Background_Image = new SDL_Rect;
+    SDL_Texture *backgroundTexture = NULL;
+    SDL_Rect *flickyImage = new SDL_Rect;
+    SDL_Rect *backgroundImage = new SDL_Rect;
 
     // Camera
     SDL_Rect camera = {0,0, LEVEL_WIDTH, LEVEL_HEIGHT};
@@ -63,5 +60,7 @@ class Game {
     void initPlatforms();
     void run();
     void kill();
+
+    void updateCamera();
  
 };
