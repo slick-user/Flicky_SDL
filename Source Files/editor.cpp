@@ -1,10 +1,9 @@
 #include "../Header Files/editor.h"
 
-int Editor::init() {
-  
+Editor::Editor() {
+   
   if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0) {
     system("pause");
-    return 1;
   }
 
   window = SDL_CreateWindow("Flicky Level Editor", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
@@ -25,7 +24,6 @@ int Editor::init() {
     Platform[i].w = 100; 
   }
 
-  return 0;
 }
 
 void Editor::run() {

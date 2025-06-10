@@ -5,8 +5,8 @@
 #include "../include/SDL2/SDL_timer.h"
 #include <iostream>
 
-#include "util.h"
 #include "../Header Files/entity.h"
+#include "util.h"
 
 // CONSTANT PARAMETERS
 #define SCREEN_WIDTH 640
@@ -16,20 +16,10 @@
 #define GRAVITY 2;
 #define SPEED 3
 
-class Player : public Entity{
-
-  private:
-
-    enum {
-      IDLE, 
-      RUNNING,
-    };
+class Enemy : public Entity { 
+  
+  protected:
 
   public:
- 
-    Player(SDL_Renderer* renderer, int x=20, int y=200, int w=18, int h=36);
-
-    void handleInput(const Uint8 *state);
   
 };
-

@@ -1,28 +1,32 @@
 #include "../Header Files/game.h"
 
-int Game::init() {
+Game::Game() {
 
   //                                          ====INITIALIZATION====
   if (initSDL() != 0)
-    return 1; 
+    return; 
 
   // "Entity" Setup
   
   initPlatforms();
 
-  Player.init(renderer);
+  // Player Setup
+  Player = new class Player(renderer, 20, 200, 18, 36);
 
   Flicky_Image->x = 1;
   Flicky_Image->y = 1;
   Flicky_Image->w = PLAYER_IMAGE_WIDTH;
   Flicky_Image->h = PLAYER_IMAGE_HEIGHT;
 
+  // Enemy Setup
+  //Enemy.init(renderer);
+
+  // Background setup
   Background_Image->x = 0;
   Background_Image->y = 0;
   Background_Image->w = 510;
   Background_Image->h = 446;
   
-  return 0;
 }
  
 void Game::run() {
@@ -46,27 +50,27 @@ void Game::run() {
 
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     
-    Player.moved = 0; 
+    Player->moved = 0; 
     
-    Player.handleInput(state);
+    Player->handleInput(state);
 
     // CAMERA MOVEMENT 
 
     // Screen wrapping
                             // from end (right) back to start (left) screen wrapping
-    if (Player.P.x > SCREEN_WIDTH) {
+    if (Player->p.x > SCREEN_WIDTH) {
       for (int i=0; i<15; i++) {
         std::cout << Platform[i].x << std::endl;
       }
       camera.x = 0;
-      Player.P.x = 0;
+      Player->p.x = 0;
       initPlatforms();
       offset = 0;
     }
                             // from start (left) to end (right) screen wrapping
-    else if (Player.P.x < 0) {
+    else if (Player->p.x < 0) {
       camera.x = -640;
-      Player.P.x = 640;
+      Player->p.x = 640;
       initPlatforms();
       for (int i=0; i<15; i++) {
         Platform[i].x -= 640;
@@ -75,26 +79,26 @@ void Game::run() {
     }
     
     //Camera scrolling
-    if (Player.P.x - offset > SCREEN_WIDTH - 300 && Player.vel[0] > 0 && (camera.x > -SCREEN_WIDTH))  {
-      offset += Player.vel[0];
+    if (Player->p.x - offset > SCREEN_WIDTH - 300 && Player->vel[0] > 0 && (camera.x > -SCREEN_WIDTH))  {
+      offset += Player->vel[0];
       camera.x -= 10;
-      Player.P.x -= 1;
+      Player->p.x -= 1;
 
       for (int i=0; i<15; i++) {
         Platform[i].x -= 10;      
       }
     }
-    else if (Player.P.x - offset < 300 && Player.vel[0] < 0 && (camera.x < 0) ) {
-      offset += Player.vel[0];
+    else if (Player->p.x - offset < 300 && Player->vel[0] < 0 && (camera.x < 0) ) {
+      offset += Player->vel[0];
       camera.x += 10;
-      Player.P.x += 1;
+      Player->p.x += 1;
       // moves the platforms relative to the camera as is required
       for (int i=0; i<15; i++) {
         Platform[i].x += 10;      
       }
     }
 
-    Player.checkCollisions(Platform);
+    Player->checkCollision(Platform);
 
     img.updateAnimation(); 
 
@@ -110,9 +114,12 @@ void Game::run() {
     }
 
 
-    Player.update();
+    Player->update();
 
-    Player.render(renderer, Flicky_Image, img.currentFrame);
+    Player->render(renderer, Flicky_Image, img.currentFrame);
+
+    // Enemy Rendering
+    //Enemy.render(renderer, Flicky_Image, img.currentFrame);
 
     // This is used to render the image (and overwrite)
     SDL_RenderPresent(renderer);
@@ -165,7 +172,7 @@ void Game::initPlatforms() {
 }
 
 void Game::kill() {
-  SDL_DestroyTexture(Player.texture);
+  SDL_DestroyTexture(Player->texture);
   SDL_DestroyRenderer(renderer);
 
   delete Flicky_Image;

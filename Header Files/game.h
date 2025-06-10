@@ -6,6 +6,7 @@
 #include <fstream>
 
 #include "player.h"
+//#include "enemy.h"
 #include "util.h"
 
 class Util;
@@ -37,7 +38,9 @@ class Game {
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
 
-    Entity Player;
+    Player* Player; 
+
+    //Entity Enemy;
 
     Util img;
 
@@ -55,9 +58,8 @@ class Game {
     SDL_Rect camera = {0,0, LEVEL_WIDTH, LEVEL_HEIGHT};
 
   public:
-    Game() = default;
+    Game();
 
-    int init();
     void initPlatforms();
     void run();
     void kill();

@@ -14,8 +14,8 @@
 class Editor {
 
   private:
-    SDL_Window *window = NULL;
-    SDL_Renderer *renderer = NULL;
+    SDL_Window *window;
+    SDL_Renderer *renderer;
 
     Util img;
 
@@ -29,7 +29,8 @@ class Editor {
     int y; 
 
   public:
-    Editor() = default;
+    Editor();
+
     int init();
     void run();
     void kill();

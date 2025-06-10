@@ -10,8 +10,7 @@ Game game;
 
 int main(int argc, char* args[]) {
 
-  //editor.init();
-  game.init();
+  //game.init();
 
   bool d = true;
   while (d) {

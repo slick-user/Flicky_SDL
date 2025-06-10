@@ -1,4 +1,4 @@
-g++ -o Flicky main.cpp "Source Files/game.cpp" "Source Files/player.cpp" "Source Files/util.cpp" -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+g++ -o Flicky main.cpp "Source Files/game.cpp" "Source Files/player.cpp" "Source Files/util.cpp" "Source Files/entity.cpp" -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
 For the Editor version:
 g++ -o Flicky main.cpp "Source Files/editor.cpp" "Source Files/util.cpp" -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
@@ -6,6 +6,8 @@ g++ -o Flicky main.cpp "Source Files/editor.cpp" "Source Files/util.cpp" -O1 -Wa
 * Added a version of the camera that will work just fine, need to add the level wrapping then we will begin development of enemies, chicks, level complete and projectiles
 
 * Added Screen Wrapping like with most implementations I am not completely happy with how I did this but it gets the job done so I can check that off the list
+
++-> Coming back to this after a while yeah there was a lot of changes to make in the code that I just had not done that I have now.
 
 =======================================================================================================
 code that can be used for enemies :
@@ -17,3 +19,9 @@ code that can be used for enemies :
     Player.P.x = SCREEN_WIDTH;
     std::cout << "that seems to be fine?";
   }
+
+
+So we might rewrite a bunch of this mainly how the movement works or more appropriately which parts of the movement are to be considered for which entities,
+All characters, Birds, Enemies, Flicky should be affected by Vector2 (able to change position) and should have hit detection collisions and gravity, so for that we might implement a base class called entity. After that we might implement a Player Class that inherits from the enitity class and and Enemy class that then gives way to the cat enemy class. This will give us our first proper enemy and for that enemies screen wrapping.... well we will see what we can do. So the big problem we now have is we can do what we have done with the screen shift or we shift the entire entites of the game after a certain point instead of the wrapping that we have right now. That seems like the problem that should be addressed earlier. I do believe that the game is uptodate with what is on Github.
+
+I don't think we implemented anything right originally and so we will get to correcting that now.
