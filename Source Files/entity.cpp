@@ -42,15 +42,17 @@ void Entity::update() {
 
 }
 
-void Entity::render(SDL_Renderer* renderer, Uint32 currentFrame) {
+void Entity::render(SDL_Renderer* renderer, Uint32 currentFrame, int cameraX, int cameraY) {
+
+  SDL_Rect renderPos = {p.x - cameraX, p.y - cameraY, p.w, p.h};
 
   if (moved == 0){
-    SDL_RenderCopy(renderer, texture, flickyImage, &p);       // IDLE 
+    SDL_RenderCopy(renderer, texture, flickyImage, &renderPos);       // IDLE 
   }
   else if (moved == 1)
-    pImg.renderFrame(renderer, texture, RUNNING, 0, currentFrame, p.x, p.y);
+    pImg.renderFrame(renderer, texture, RUNNING, 0, currentFrame, p.x - cameraX, p.y - cameraY);
   else if (moved == 2) 
-    pImg.renderFrame(renderer, texture, RUNNING, 1, currentFrame, p.x, p.y);
+    pImg.renderFrame(renderer, texture, RUNNING, 1, currentFrame, p.x - cameraX, p.y - cameraY);
 
   moved = 0;
 }

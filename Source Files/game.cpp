@@ -60,14 +60,16 @@ void Game::run() {
     SDL_RenderClear(renderer);
 
     // Render the Background
-    SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &camera);
+    SDL_Rect backgroundDest = {-camera.x, -camera.y, LEVEL_WIDTH, LEVEL_HEIGHT};
+    SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &backgroundDest);
 
     // Rendering the Platforms
     for (const auto& platform:platform) {
-      SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &platform);
+      SDL_Rect platformDest = {platform.x - camera.x, platform.y - camera.y, platform.w, platform.h};
+      SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &platformDest);
     }
 
-    player->render(renderer, img.currentFrame);
+    player->render(renderer, img.currentFrame, camera.x, camera.y);
 
     // Enemy Rendering
     //Enemy.render(renderer, flickyImage, img.currentFrame);
@@ -119,46 +121,20 @@ void Game::initPlatforms() {
 }
 
 void Game::updateCamera() {
-      
-  int offset = 0; // X Offset to move the camera 
 
-  // Screen wrapping
-                            // from end (right) back to start (left) screen wrapping
-  if (player->p.x > SCREEN_WIDTH) { 
-    camera.x = 0;
+  // Camera Following
+  int targetCameraX = player->p.x - SCREEN_WIDTH/2;
+
+  // Clamping to screen Boundaries
+  camera.x = std::max(0, std::min(targetCameraX, LEVEL_WIDTH - SCREEN_WIDTH));
+
+  // Handling Screen Wrapping
+  if (player->p.x > LEVEL_WIDTH) {
     player->p.x = 0;
-    initPlatforms();
-    offset = 0;
-  }
-                            // from start (left) to end (right) screen wrapping
-  else if (player->p.x < 0) {
-    camera.x = -SCREEN_WRAP_OFFSET;
-    player->p.x = SCREEN_WRAP_OFFSET;
-    initPlatforms();
-    for (int i=0; i<platformCount; i++) {
-      platform[i].x -= SCREEN_WRAP_OFFSET;
-    }
-    offset = 192;
-  }
-    
-  //Camera scrolling
-  if (player->p.x - offset > SCREEN_WIDTH - CAMERA_OFFSET_THRESHOLD && player->vel[0] > 0 && (camera.x > -SCREEN_WIDTH))  {
-    offset += player->vel[0];
-    camera.x -= CAMERA_SCROLL_SPEED;
-    player->p.x -= 1;
-
-    for (int i=0; i<platformCount; i++) {
-      platform[i].x -= CAMERA_SCROLL_SPEED;      
-    }
-  }
-  else if (player->p.x - offset < CAMERA_OFFSET_THRESHOLD && player->vel[0] < 0 && (camera.x < 0) ) {
-    offset += player->vel[0];
-    camera.x += CAMERA_SCROLL_SPEED;
-    player->p.x += 1;
-    // moves the platforms relative to the camera as is required
-    for (int i=0; i<platformCount; i++) {
-      platform[i].x += CAMERA_SCROLL_SPEED;      
-    }
+    camera.x = 0;
+  } else if (player->p.x < 0) {
+    player->p.x = LEVEL_WIDTH;
+    camera.x = LEVEL_WIDTH - SCREEN_WIDTH;
   }
 }
 

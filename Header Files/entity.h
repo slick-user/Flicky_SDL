@@ -53,6 +53,6 @@ class Entity {
     void checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount);
     
     void update();
-    void render(SDL_Renderer* renderer, Uint32 currentFrame);
+    void render(SDL_Renderer* renderer, Uint32 currentFrame, int cameraX, int cameraY);
 
 };
