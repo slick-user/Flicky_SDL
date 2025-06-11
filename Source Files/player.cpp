@@ -9,7 +9,7 @@ Player::Player(SDL_Renderer* renderer, int x, int y, int w, int h) : Entity(rend
 void Player::handleInput(const Uint8 *state) {
  
   if (( state[SDL_SCANCODE_UP] && can_jump ) || ( state[SDL_SCANCODE_W] && can_jump )) {
-    p.y -= 10;
+    //p.y -= 10;
     velocity[1] -= JUMP_VELOCITY;
     can_jump = false;
   }

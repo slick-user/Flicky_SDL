@@ -28,8 +28,12 @@ SDL_Texture* Entity::loadTexture(SDL_Renderer* renderer, const std::string& path
 } 
 
 void Entity::update() {
+  
+  if (vel[1] > MAX_FALL_SPEED) vel[1] = MAX_FALL_SPEED;
+  
   p.x += velocity[0];
   p.y += velocity[1];
+
 }
 
 void Entity::render(SDL_Renderer* renderer, SDL_Rect* Flicky_Image, Uint32 currentFrame) {
@@ -46,38 +50,75 @@ void Entity::render(SDL_Renderer* renderer, SDL_Rect* Flicky_Image, Uint32 curre
 }
 
 void Entity::checkCollision(const std::vector<SDL_Rect>& Platform, const int platformCount) {
-  
-  bool on_platform = false; 
+ 
+  // storing old position for collision response
+  SDL_Rect oldPosition = p;
+
+  //GRAVITY
+  //vel[1] += 1;
+
   int i = 0;
 
+  
+  if (p.y < GROUND_LEVEL){
+    vel[1] += 1;
+  }
+  else if (p.y > GROUND_LEVEL) {
+    vel[1] = 0;
+    can_jump = true;
+    p.y = GROUND_LEVEL;
+  }
+  
   // Collision Check
   for (i=0; i<platformCount; i++) {
+
+    if (SDL_HasIntersection(&p, &Platform[i])) {
+      CollisionSide side = getCollisionSide(oldPosition, p, Platform[i]);
     
-    //upward collision
-    /*if (P.x > Platform[i].x && P.x < Platform[i].x + Platform[i].w && P.y> Platform[i].y && P.y < Platform[i].y + Platform[i].h) {
-      velocity[1] = 0;
-      break;
-    }*/
+      switch (side) {
+        
+        case CollisionSide::TOP:
+          //landing on platform from below
+          p.y = Platform[i].y - p.h;
+          vel[1] = 0;
+          can_jump = true;
+          //onPlatform = true;
+          break;
 
-    //downwards collision
-    if ( (p.x > Platform[i].x && p.x < Platform[i].x + Platform[i].w) && (p.y>= Platform[i].y && p.y<= Platform[i].y + Platform[i].h) ) {
-      on_platform = true;
-      break;
-    } 
+        case CollisionSide::BOTTOM:
+          //Hitting platform from below
+          p.y = Platform[i].y + Platform[i].h;
+          vel[1] = 0;
+          break;
+
+        case CollisionSide::LEFT:
+        case CollisionSide::RIGHT:
+          p.x = oldPosition.x;
+          vel[0] = 0;
+          break;
+      }
+    break;
+    }
+
   }
 
-  if (on_platform == true) {
-    velocity[1] = 0;
-    p.y = Platform[i].y; 
-    can_jump = true;
+}
+
+CollisionSide Entity::getCollisionSide(const SDL_Rect& oldPos, const SDL_Rect& newPos, const SDL_Rect& platform) {
+  int overlapX = std::min(newPos.x + newPos.w, platform.x + platform.w) - std::max(newPos.x, platform.x);
+  int overlapY = std::min(newPos.y + newPos.h, platform.y + platform.h) - std::max(newPos.y, platform.y);
+
+  if (overlapX <= 0 || overlapY <= 0) {
+    return CollisionSide::TOP;
   }
-  else if (p.y < GROUND_LEVEL && on_platform == false) { // Falling state
-    velocity[1] += 1;
-  }
+
+  if (overlapX < overlapY) {
+    // Horizontal Collision
+    return (newPos.x < platform.x) ? CollisionSide::RIGHT : CollisionSide::LEFT;
+  } 
   else {
-    velocity[1] = 0;
-    p.y = GROUND_LEVEL;       // Is snapped to the ground
-    can_jump = true;
+    // Vertical Collision
+    return (newPos.y < platform.y) ? CollisionSide::TOP : CollisionSide::BOTTOM;
   }
 }
 

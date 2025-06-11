@@ -11,6 +11,11 @@ const int SCREEN_HEIGHT = 480;
 
 const int GROUND_LEVEL = SCREEN_HEIGHT - 70;
 const int JUMP_VELOCITY = 15;
+const int MAX_FALL_SPEED = 10;
+
+enum class CollisionSide {
+  TOP, BOTTOM, LEFT, RIGHT
+};
 
 class Entity {
 
@@ -26,12 +31,14 @@ class Entity {
 
     SDL_Texture* loadTexture(SDL_Renderer* renderer, const std::string& path);
 
+    CollisionSide getCollisionSide(const SDL_Rect& oldPos, const SDL_Rect& newPos, const SDL_Rect& platform); 
+
   public:
 
     bool can_jump = true;
 
-    int vel[2] = {0,0};
-    int* velocity = vel;
+    float vel[2] = {0,0};
+    float* velocity = vel;
 
     int moved; //default is 0
 

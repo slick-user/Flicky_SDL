@@ -8,13 +8,9 @@
 #include "util.h"
 #include "../Header Files/entity.h"
 
-// CONSTANT PARAMETERS
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
-
 // PLAYER PROPERTIES
-#define GRAVITY 2;
-#define SPEED 3
+const int GRAVITY = 2;
+const int SPEED = 3;
 
 class Player : public Entity{
 

@@ -55,6 +55,8 @@ void Game::run() {
 
     updateCamera();
 
+    player->update();
+
     player->checkCollision(platform, platformCount);
 
     img.updateAnimation(); 
@@ -66,12 +68,11 @@ void Game::run() {
     SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &camera);
 
     // Rendering the Platforms
-    for (int i=0; i<platformCount; i++) {
-      SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &platform[i]);
+    for (const auto& platform:platform) {
+      SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &platform);
     }
 
-
-    player->update();
+    //player->update();
 
     player->render(renderer, flickyImage, img.currentFrame);
 
@@ -154,20 +155,20 @@ void Game::updateCamera() {
   //Camera scrolling
   if (player->p.x - offset > SCREEN_WIDTH - CAMERA_OFFSET_THRESHOLD && player->vel[0] > 0 && (camera.x > -SCREEN_WIDTH))  {
     offset += player->vel[0];
-    camera.x -= 10;
+    camera.x -= CAMERA_SCROLL_SPEED;
     player->p.x -= 1;
 
     for (int i=0; i<platformCount; i++) {
-      platform[i].x -= 10;      
+      platform[i].x -= CAMERA_SCROLL_SPEED;      
     }
   }
   else if (player->p.x - offset < CAMERA_OFFSET_THRESHOLD && player->vel[0] < 0 && (camera.x < 0) ) {
     offset += player->vel[0];
-    camera.x += 10;
+    camera.x += CAMERA_SCROLL_SPEED;
     player->p.x += 1;
     // moves the platforms relative to the camera as is required
     for (int i=0; i<platformCount; i++) {
-      platform[i].x += 10;      
+      platform[i].x += CAMERA_SCROLL_SPEED;      
     }
   }
 }

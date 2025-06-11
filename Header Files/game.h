@@ -23,6 +23,8 @@ const int PLAYER_WIDTH = PLAYER_IMAGE_WIDTH * 2;
 const int CAMERA_OFFSET_THRESHOLD = 300;
 const int SCREEN_WRAP_OFFSET = 640;
 
+const int CAMERA_SCROLL_SPEED = 10;
+
 enum {
   IDLE,
   RUNNING,
