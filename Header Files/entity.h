@@ -21,6 +21,8 @@ class Entity {
 
   protected:
     Util pImg;
+ 
+    SDL_Rect *flickyImage = new SDL_Rect;
 
     enum {
       IDLE,
@@ -46,11 +48,11 @@ class Entity {
         
     Entity(SDL_Renderer* renderer, int x=20, int y=200, int w=18, int h=36);
 
-    ~Entity();
+    virtual ~Entity();
 
     void checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount);
     
     void update();
-    void render(SDL_Renderer* renderer, SDL_Rect* Flicky_Image, Uint32 currentFrame);
+    void render(SDL_Renderer* renderer, Uint32 currentFrame);
 
 };

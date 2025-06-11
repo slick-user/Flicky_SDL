@@ -50,7 +50,6 @@ class Game {
 
     // temporary   
     SDL_Texture *backgroundTexture = NULL;
-    SDL_Rect *flickyImage = new SDL_Rect;
     SDL_Rect *backgroundImage = new SDL_Rect;
 
     // Camera
@@ -58,10 +57,10 @@ class Game {
 
   public:
     Game();
+    ~Game();
 
     void initPlatforms();
     void run();
-    void kill();
 
     void updateCamera();
  

@@ -7,12 +7,18 @@ Entity::Entity(SDL_Renderer* renderer, int x, int y, int w, int h) {;
   p.w = w;
   p.h = h;
 
+  flickyImage->x = 1;
+  flickyImage->y = 1;
+  flickyImage->w = PLAYER_IMAGE_WIDTH;
+  flickyImage->h = PLAYER_IMAGE_HEIGHT;
+
   texture = loadTexture(renderer, "./assets/Arcade - Flicky - Flicky.png");
 
 }
 
 Entity::~Entity() {
   SDL_DestroyTexture(texture);
+  delete flickyImage;
 }
 
 SDL_Texture* Entity::loadTexture(SDL_Renderer* renderer, const std::string& path) {
@@ -36,10 +42,10 @@ void Entity::update() {
 
 }
 
-void Entity::render(SDL_Renderer* renderer, SDL_Rect* Flicky_Image, Uint32 currentFrame) {
+void Entity::render(SDL_Renderer* renderer, Uint32 currentFrame) {
 
   if (moved == 0){
-    SDL_RenderCopy(renderer, texture, Flicky_Image, &p);       // IDLE 
+    SDL_RenderCopy(renderer, texture, flickyImage, &p);       // IDLE 
   }
   else if (moved == 1)
     pImg.renderFrame(renderer, texture, RUNNING, 0, currentFrame, p.x, p.y);
@@ -54,12 +60,9 @@ void Entity::checkCollision(const std::vector<SDL_Rect>& Platform, const int pla
   // storing old position for collision response
   SDL_Rect oldPosition = p;
 
-  //GRAVITY
-  //vel[1] += 1;
-
   int i = 0;
 
-  
+  // Gravity  
   if (p.y < GROUND_LEVEL){
     vel[1] += 1;
   }

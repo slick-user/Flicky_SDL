@@ -12,12 +12,7 @@ Game::Game() {
 
   // Player Setup
   player = new Player(renderer, 20, 200, 18, 36);
-
-  flickyImage->x = 1;
-  flickyImage->y = 1;
-  flickyImage->w = PLAYER_IMAGE_WIDTH;
-  flickyImage->h = PLAYER_IMAGE_HEIGHT;
-
+ 
   // Enemy Setup
 
   // Background setup
@@ -72,9 +67,7 @@ void Game::run() {
       SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &platform);
     }
 
-    //player->update();
-
-    player->render(renderer, flickyImage, img.currentFrame);
+    player->render(renderer, img.currentFrame);
 
     // Enemy Rendering
     //Enemy.render(renderer, flickyImage, img.currentFrame);
@@ -86,7 +79,6 @@ void Game::run() {
 
   }
 
-  kill();
 }
 
 bool Game::initSDL() {
@@ -132,10 +124,7 @@ void Game::updateCamera() {
 
   // Screen wrapping
                             // from end (right) back to start (left) screen wrapping
-  if (player->p.x > SCREEN_WIDTH) {
-    for (int i=0; i<platformCount; i++) {
-       //std::cout << platform[i].x << std::endl;
-    }
+  if (player->p.x > SCREEN_WIDTH) { 
     camera.x = 0;
     player->p.x = 0;
     initPlatforms();
@@ -173,10 +162,9 @@ void Game::updateCamera() {
   }
 }
 
-void Game::kill() {
+Game::~Game() {
   SDL_DestroyRenderer(renderer);
 
-  delete flickyImage;
   delete backgroundImage;
 
   SDL_DestroyWindow(window);
