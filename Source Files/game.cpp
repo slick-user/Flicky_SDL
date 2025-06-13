@@ -60,17 +60,21 @@ void Game::run() {
     SDL_RenderClear(renderer);
 
     // Render the Background
-    SDL_Rect backgroundDest = {-camera.x, -camera.y, LEVEL_WIDTH, LEVEL_HEIGHT};
-    SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &backgroundDest);
+    for (int offset = -1; offset <= 1; offset++) {
+      SDL_Rect dest = {-camera.x + offset * LEVEL_WIDTH, -camera.y, LEVEL_WIDTH, LEVEL_HEIGHT};
+      SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &dest);
+    }
 
     // Rendering the Platforms
     for (const auto& platform:platform) {
-      SDL_Rect platformDest = {platform.x - camera.x, platform.y - camera.y, platform.w, platform.h};
-      SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &platformDest);
-    }
+      for (int offset = - 1; offset <= 1; offset++) {
+        SDL_Rect platformDest = {platform.x - camera.x, platform.y - camera.y, platform.w, platform.h};
+        SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &platformDest);
+     }
+    }  
 
-    player->render(renderer, img.currentFrame, camera.x, camera.y);
-
+    player->render(renderer, img.currentFrame, camera.x, camera.y);    
+   
     // Enemy Rendering
     //Enemy.render(renderer, flickyImage, img.currentFrame);
 
@@ -125,17 +129,23 @@ void Game::updateCamera() {
   // Camera Following
   int targetCameraX = player->p.x - SCREEN_WIDTH/2;
 
-  // Clamping to screen Boundaries
-  camera.x = std::max(0, std::min(targetCameraX, LEVEL_WIDTH - SCREEN_WIDTH));
+  camera.x = targetCameraX;
+  //                          SMOOTH CAMERA
+  //int cameraDiff = targetCameraX - camera.x;
+  //camera.x += cameraDiff * 0.1f;
 
-  // Handling Screen Wrapping
-  if (player->p.x > LEVEL_WIDTH) {
-    player->p.x = 0;
-    camera.x = 0;
-  } else if (player->p.x < 0) {
-    player->p.x = LEVEL_WIDTH;
-    camera.x = LEVEL_WIDTH - SCREEN_WIDTH;
+  // Handling Screen Wrapping 
+  if (targetCameraX < -LEFT_WRAP_BOUNDS) {
+    // Moving left past boundary
+    player->p.x += LEVEL_WIDTH;
+    targetCameraX += LEVEL_WIDTH;
+  } else if (targetCameraX >= RIGHT_WRAP_BOUNDS) {
+    // Moving right past boundary  
+    player->p.x -= LEVEL_WIDTH;
+    targetCameraX -= LEVEL_WIDTH;
   }
+
+  //std::cout << "Camera.x : " << camera.x << "    Player.x : " << player->p.x << std::endl;
 }
 
 Game::~Game() {
