@@ -1,11 +1,11 @@
-g++ -o Flicky main.cpp "Source Files/game.cpp" "Source Files/player.cpp" "Source Files/util.cpp" "Source Files/entity.cpp" -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+g++ -o Flicky main.cpp "Source Files/game.cpp" "Source Files/player.cpp" "Source Files/util.cpp" "Source Files/entity.cpp" "Source Files/enemy.cpp" -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
 For the Editor version:
 g++ -o Flicky main.cpp "Source Files/editor.cpp" "Source Files/util.cpp" -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
-* Added a version of the camera that will work just fine, need to add the level wrapping then we will begin development of enemies, chicks, level complete and projectiles
+* Added Camera. we will begin development of enemies, chicks, level complete and projectiles
 
-* Added Screen Wrapping like with most implementations I am not completely happy with how I did this but it gets the job done so I can check that off the list
+* Added Screen Wrapping
 
 =======================================================================================================
 code that can be used for enemies :
@@ -19,9 +19,7 @@ code that can be used for enemies :
   }
 
 
-Enemy class that then gives way to the cat enemy class. This will give us our first proper enemy and for that enemies screen wrapping..... So the big problem we now have is we can do what we have done with the screen shift or we shift the entire entities of the game after a certain point instead of the wrapping that we have right now. That seems like a problem that should be addressed earlier.
-
-need to get player and objects relative positions and have those compared with what we have. That would mean x,y subtracted by the camera positions. The X and Y also needs to be updated each frame. Relative position
+Enemy class that then gives way to the cat enemy class. This will give us our first proper enemy and for that enemies screen wrapping.....
 
 ========================================================================================
 code for a debug hitbox for the player :
@@ -29,3 +27,4 @@ code for a debug hitbox for the player :
   SDL_Rect debugBox = { player->p.x - camera.x, player->p.y - camera.y, PLAYER_WIDTH, PLAYER_HEIGHT };
   SDL_RenderDrawRect(renderer, &debugBox);
 
+Actually to be honest we don't need this we should set a raycast for this instead

@@ -16,11 +16,6 @@ class Player : public Entity{
 
   private:
 
-    enum {
-      IDLE, 
-      RUNNING,
-    };
-
   public:
  
     Player(SDL_Renderer* renderer, int x=20, int y=200, int w=18, int h=36);

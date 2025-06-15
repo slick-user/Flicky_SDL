@@ -4,16 +4,15 @@ Game::Game() {
 
   //                                          ====INITIALIZATION====
   if (initSDL() != 0)
-    return; 
+    return;  
 
-  // "Entity" Setup
-  
   initPlatforms();
 
   // Player Setup
   player = new Player(renderer, 20, 200, 18, 36);
  
   // Enemy Setup
+  enemy = new Enemy(player, renderer, 0, 100, 18, 36);
 
   // Background setup
   backgroundImage->x = 0;
@@ -44,16 +43,16 @@ void Game::run() {
 
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     
-    player->moved = 0; 
-    
-    player->handleInput(state);
-
     updateCamera();
 
-    player->update();
+    player->update(platform, platformCount);
+    
+    enemy->update(platform, platformCount);
 
-    player->checkCollision(platform, platformCount);
+    player->handleInput(state);
 
+    enemy->move();
+  
     img.updateAnimation(); 
 
     // This is to to reset the render
@@ -71,12 +70,12 @@ void Game::run() {
         SDL_Rect platformDest = {platform.x - camera.x, platform.y - camera.y, platform.w, platform.h};
         SDL_RenderCopy(renderer, backgroundTexture, backgroundImage, &platformDest);
      }
-    }  
+    } 
 
     player->render(renderer, img.currentFrame, camera.x, camera.y);    
    
     // Enemy Rendering
-    //Enemy.render(renderer, flickyImage, img.currentFrame);
+    enemy->render(renderer, img.currentFrame, camera.x, camera.y);
 
     // This is used to render the image (and overwrite)
     SDL_RenderPresent(renderer);
@@ -120,6 +119,12 @@ void Game::initPlatforms() {
     read >> platform[i].x >> platform[i].y >> platform[i].w >> platform[i].h;
   }
 
+  read >> spawnerCount;
+
+  for (int i=0; i<spawnerCount; i++) {
+    read >> spawner[i].x >> spawner[i].y >> spawner[i].w >> spawner[i].h;
+  }
+
   read.close();
 
 }
@@ -139,10 +144,12 @@ void Game::updateCamera() {
     // Moving left past boundary
     player->p.x += LEVEL_WIDTH;
     targetCameraX += LEVEL_WIDTH;
+    enemy->p.x += LEVEL_WIDTH;
   } else if (targetCameraX >= RIGHT_WRAP_BOUNDS) {
     // Moving right past boundary  
     player->p.x -= LEVEL_WIDTH;
     targetCameraX -= LEVEL_WIDTH;
+    enemy->p.x -= LEVEL_WIDTH;
   }
 
   //std::cout << "Camera.x : " << camera.x << "    Player.x : " << player->p.x << std::endl;

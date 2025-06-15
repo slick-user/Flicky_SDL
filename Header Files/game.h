@@ -1,4 +1,5 @@
 #pragma once
+
 #include <stdio.h>
 
 #include "../include/SDL2/SDL.h"
@@ -7,7 +8,7 @@
 #include <vector>
 
 #include "player.h"
-//#include "enemy.h"
+#include "enemy.h"
 #include "util.h"
 
 class Util;
@@ -41,12 +42,16 @@ class Game {
     Player* player; 
 
     //Entity Enemy;
+    Enemy* enemy;
+
+    int spawnerCount;
+    std::vector<SDL_Rect> spawner;
 
     Util img;
 
     int platformCount;
     std::vector<SDL_Rect> platform;
-  
+ 
     bool initSDL();
 
     // temporary   

@@ -16,11 +16,6 @@ Entity::Entity(SDL_Renderer* renderer, int x, int y, int w, int h) {;
 
 }
 
-Entity::~Entity() {
-  SDL_DestroyTexture(texture);
-  delete flickyImage;
-}
-
 SDL_Texture* Entity::loadTexture(SDL_Renderer* renderer, const std::string& path) {
   
   SDL_Texture* texture = pImg.load_texture("./assets/Arcade - Flicky - Flicky.png", renderer); 
@@ -33,12 +28,16 @@ SDL_Texture* Entity::loadTexture(SDL_Renderer* renderer, const std::string& path
   return texture;
 } 
 
-void Entity::update() {
+void Entity::update(const std::vector<SDL_Rect>& platform, const int platformCount) {
   
+  moved = 0;
+
   if (vel[1] > MAX_FALL_SPEED) vel[1] = MAX_FALL_SPEED;
   
-  p.x += velocity[0];
-  p.y += velocity[1];
+  p.x += vel[0];
+  p.y += vel[1];
+
+  checkCollision(platform, platformCount);
 
 }
 
@@ -57,7 +56,12 @@ void Entity::render(SDL_Renderer* renderer, Uint32 currentFrame, int cameraX, in
   moved = 0;
 }
 
-void Entity::checkCollision(const std::vector<SDL_Rect>& Platform, const int platformCount) {
+void Entity::jump() {
+  vel[1] -= JUMP_VELOCITY;
+  can_jump = false;
+}
+
+void Entity::checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount) {
  
   // storing old position for collision response
   SDL_Rect oldPosition = p;
@@ -77,14 +81,14 @@ void Entity::checkCollision(const std::vector<SDL_Rect>& Platform, const int pla
   // Collision Check
   for (i=0; i<platformCount; i++) {
 
-    if (SDL_HasIntersection(&p, &Platform[i])) {
-      CollisionSide side = getCollisionSide(oldPosition, p, Platform[i]);
+    if (SDL_HasIntersection(&p, &platform[i])) {
+      CollisionSide side = getCollisionSide(oldPosition, p, platform[i]);
     
       switch (side) {
         
         case CollisionSide::TOP:
           //landing on platform from below
-          p.y = Platform[i].y - p.h;
+          p.y = platform[i].y - p.h;
           vel[1] = 0;
           can_jump = true;
           //onPlatform = true;
@@ -92,7 +96,7 @@ void Entity::checkCollision(const std::vector<SDL_Rect>& Platform, const int pla
 
         case CollisionSide::BOTTOM:
           //Hitting platform from below
-          p.y = Platform[i].y + Platform[i].h;
+          p.y = platform[i].y + platform[i].h;
           vel[1] = 0;
           break;
 
@@ -125,5 +129,10 @@ CollisionSide Entity::getCollisionSide(const SDL_Rect& oldPos, const SDL_Rect& n
     // Vertical Collision
     return (newPos.y < platform.y) ? CollisionSide::TOP : CollisionSide::BOTTOM;
   }
+}
+
+Entity::~Entity() {
+  SDL_DestroyTexture(texture);
+  delete flickyImage;
 }
 

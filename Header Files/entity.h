@@ -24,6 +24,12 @@ class Entity {
  
     SDL_Rect *flickyImage = new SDL_Rect;
 
+    bool can_jump = true;
+    
+    float vel[2] = {0,0};
+
+    int moved; //default is 0
+
     enum {
       IDLE,
       RUNNING,
@@ -33,16 +39,11 @@ class Entity {
 
     SDL_Texture* loadTexture(SDL_Renderer* renderer, const std::string& path);
 
-    CollisionSide getCollisionSide(const SDL_Rect& oldPos, const SDL_Rect& newPos, const SDL_Rect& platform); 
+    CollisionSide getCollisionSide(const SDL_Rect& oldPos, const SDL_Rect& newPos, const SDL_Rect& platform);  
+
+    virtual void jump();
 
   public:
-
-    bool can_jump = true;
-
-    float vel[2] = {0,0};
-    float* velocity = vel;
-
-    int moved; //default is 0
 
     SDL_Rect p;
         
@@ -50,9 +51,9 @@ class Entity {
 
     virtual ~Entity();
 
-    void checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount);
+    virtual void checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount);
     
-    void update();
+    void update(const std::vector<SDL_Rect>& platform, const int platformCount);
     void render(SDL_Renderer* renderer, Uint32 currentFrame, int cameraX, int cameraY);
 
 };
