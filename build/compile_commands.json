@@ -1,0 +1,44 @@
+[
+{
+  "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",
+  "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\Flicky.dir\\main.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\main.cpp\"",
+  "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\main.cpp",
+  "output": "CMakeFiles\\Flicky.dir\\main.cpp.obj"
+},
+{
+  "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",
+  "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\Flicky.dir\\source\\core\\game.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\core\\game.cpp\"",
+  "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\core\\game.cpp",
+  "output": "CMakeFiles\\Flicky.dir\\source\\core\\game.cpp.obj"
+},
+{
+  "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",
+  "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\Flicky.dir\\source\\entities\\enemy.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\enemy.cpp\"",
+  "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\enemy.cpp",
+  "output": "CMakeFiles\\Flicky.dir\\source\\entities\\enemy.cpp.obj"
+},
+{
+  "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",
+  "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\Flicky.dir\\source\\entities\\entity.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\entity.cpp\"",
+  "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\entity.cpp",
+  "output": "CMakeFiles\\Flicky.dir\\source\\entities\\entity.cpp.obj"
+},
+{
+  "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",
+  "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\Flicky.dir\\source\\entities\\player.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\player.cpp\"",
+  "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\player.cpp",
+  "output": "CMakeFiles\\Flicky.dir\\source\\entities\\player.cpp.obj"
+},
+{
+  "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",
+  "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\Flicky.dir\\source\\entities\\projectile.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\projectile.cpp\"",
+  "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\projectile.cpp",
+  "output": "CMakeFiles\\Flicky.dir\\source\\entities\\projectile.cpp.obj"
+},
+{
+  "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",
+  "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\Flicky.dir\\source\\util\\util.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\util\\util.cpp\"",
+  "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\util\\util.cpp",
+  "output": "CMakeFiles\\Flicky.dir\\source\\util\\util.cpp.obj"
+}
+]

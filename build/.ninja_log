@@ -1,0 +1,12 @@
+# ninja log v6
+30	2891	7868457712351746	CMakeFiles/Flicky.dir/source/entities/entity.cpp.obj	c46b4b465ac18dbb
+91	2565	7868467675590375	CMakeFiles/Flicky.dir/source/entities/projectile.cpp.obj	b8b549b92f3da6d2
+67	2619	7868467675350378	CMakeFiles/Flicky.dir/source/entities/enemy.cpp.obj	d1d5cae558f53292
+49	2476	7868467675110411	CMakeFiles/Flicky.dir/main.cpp.obj	bb672503905ca108
+86	1425	7868461308456618	CMakeFiles/Flicky.dir/source/util/util.cpp.obj	811f336fa982956b
+78	2414	7868467675430372	CMakeFiles/Flicky.dir/source/entities/player.cpp.obj	90456cb49b5bbbbb
+62	1561	7868469743370113	CMakeFiles/Flicky.dir/source/core/game.cpp.obj	5a75cbf5e790797c
+2756	3123	7868467702233806	Flicky.exe	13297b9325264a25
+37	1333	7868470214295091	CMakeFiles/Flicky.dir/main.cpp.obj	bb672503905ca108
+52	1255	7868470316483895	CMakeFiles/Flicky.dir/source/core/game.cpp.obj	5a75cbf5e790797c
+1256	1549	7868470328510186	Flicky.exe	13297b9325264a25

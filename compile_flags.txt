@@ -1,0 +1,2 @@
+-I./include
+-Isome/other/include/paths

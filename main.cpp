@@ -1,15 +1,15 @@
-#include "Header Files/game.h"
+#include "include/core/game.h"
 //#include "Header Files/editor.h"
 
 
 int main(int argc, char* args[]) {
 
-  bool d = true;
-  while (d) {
+  Game game;
+  if (!game.init())
+    return -1;
 
-    Game game;
+  game.run();
+  game.shutdown();
     //Editor editor;
-    d = false;
-  }
   return 0;
 }
