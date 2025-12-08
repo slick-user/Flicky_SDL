@@ -1,5 +1,5 @@
-#include "include/core/game.h"
-//#include "Header Files/editor.h"
+#include "include/core/game.hpp"
+//#include "Header Files/editor.hpp"
 
 
 int main(int argc, char* args[]) {

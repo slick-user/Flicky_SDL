@@ -1,4 +1,4 @@
-#include "../../include/util/util.h"
+#include "../../include/util/util.hpp"
 
 Uint32 Util::update() {
   currentTime = SDL_GetTicks();

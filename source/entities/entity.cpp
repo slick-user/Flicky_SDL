@@ -1,4 +1,4 @@
-#include "../../include/entities/entity.h"
+#include "../../include/entities/entity.hpp"
 
 Entity::Entity(SDL_Renderer* renderer, int x, int y, int w, int h) {;
 

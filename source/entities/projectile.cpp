@@ -1,4 +1,4 @@
-#include "../../include/entities/projectile.h"
+#include "../../include/entities/projectile.hpp"
 
 Projectile::Projectile(Player* player, SDL_Renderer* renderer, int x, int y, int w, int h) : Entity(renderer, x, y, w, h), player(player) {
   texture = loadTexture(renderer, "./assets/Custom Edited - Sonic the Hedgehog Customs - Flicky Sonic 1-Style Expanded.png");

@@ -1,4 +1,4 @@
-#include "../../include/entities/player.h"
+#include "../../include/entities/player.hpp"
 
 Player::Player(SDL_Renderer* renderer, int x, int y, int w, int h) : Entity(renderer, x, y, w, h){
 

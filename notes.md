@@ -5,10 +5,10 @@ g++ -o Flicky main.cpp "Source Files/game.cpp" "Source Files/player.cpp" "Source
 For the Editor version:
 g++ -o Flicky main.cpp "Source Files/editor.cpp" "Source Files/util.cpp" -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
-# Changelist
+# To do
 
-* Added Camera. we will begin development of enemies, chicks, level complete and projectiles
-* Added Screen Wrapping
+    - Added Camera. we will begin development of enemies, chicks, level complete and projectiles
+    - Rewriting Game Engine
 
 ----------------------------------------------------------------
 
@@ -44,4 +44,24 @@ I think I just found out about one of the best additions I can have to my proces
 ## Architecture and Design Questions
 
 # The Rewrite
+
+## Rewriting the engine
+Starting out with **game.cpp** we have simplified the logic, we want the right functions in the right areas so I don't have to worry about everything and take too long in configurations and setups
+
+After that we write the **renderer** that will handle all our **SDL** video functions so that we form an abstraction layer that never touches SDL
+
+Then we made World which should load entities, levels, and assets for the current levels
+
+```
+main.cpp
+ └── Game
+        ├── Renderer
+        ├── World
+        │     ├── platforms
+        │     ├── entities (Player, Enemy, Projectile)
+        │     ├── loading + updating + rendering
+        └── loop (processEvents → update → render)
+```
+
+So we implemented the Camera Model as it will be now and to be honest the engine is kind of looking quite a bit like our old one just instead slightly cleaner as less broken? Can't even be sure about that yet, good programming still has a long way to go. I need to be a lot more independent when it comes to programming.
 

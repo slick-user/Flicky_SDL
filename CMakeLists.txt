@@ -1,3 +1,5 @@
+add_compile_definitions(PROJECT_ROOT=\"${CMAKE_SOURCE_DIR}\")
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 cmake_minimum_required(VERSION 3.20)
@@ -18,13 +20,29 @@ include_directories(
     ${SDL3_IMAGE_INCLUDE_DIRS}
 )
 
-file(GLOB_RECURSE SOURCES
-    "source/*.cpp"
+# Engine source files
+file(GLOB_RECURSE ENGINE_SOURCES "source/*.cpp")
+
+# -----------------------------
+#  Build Engine as a library
+# -----------------------------
+add_library(FlickyEngine ${ENGINE_SOURCES})
+
+target_link_libraries(FlickyEngine PRIVATE
+    SDL3::SDL3
+    SDL3_image::SDL3_image
 )
 
-add_executable(Flicky main.cpp ${SOURCES})
+target_include_directories(FlickyEngine PUBLIC include)
 
-target_link_libraries(Flicky PRIVATE 
-  SDL3::SDL3
-  SDL3_image::SDL3_image
-)
+# -----------------------------
+#  Build main executable
+# -----------------------------
+add_executable(Flicky main.cpp)
+target_link_libraries(Flicky PRIVATE FlickyEngine)
+
+# -----------------------------
+# Enable tests
+# -----------------------------
+enable_testing()
+add_subdirectory(test)

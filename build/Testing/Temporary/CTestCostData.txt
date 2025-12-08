@@ -1,0 +1,57 @@
+Math 0 0
+Clamp 0 1
+Math 0 0
+Clamp 0 0
+Math 0 0
+Clamp 0 0
+Renderer 0 0
+Renderer 0 0
+Texture 0 1
+Renderer 0 0
+Texture 0 1
+Renderer 0 0
+Texture 0 1
+Renderer 0 0
+Texture 0 1
+Game 0 1
+Renderer 0 0
+Texture 0 1
+Game 0 1
+Renderer 0 0
+Texture 0 1
+Game 0 0
+Renderer 0 0
+Texture 0 1
+World 0 0
+Game 0 0
+Renderer 0 0
+Texture 0 1
+World 0 0
+Game 0 0
+Renderer 0 0
+Texture 0 1
+World 0 0
+Game 0 0
+Renderer 0 0
+Texture 0 1
+World 0 0
+Game 0 0
+Renderer 0 0
+Texture 0 1
+World 0 0
+Game 0 0
+Renderer 0 0
+Texture 0 1
+World 0 0
+Game 0 0
+Renderer 0 0
+Texture 0 1
+World 0 0
+Game 0 0
+Renderer Initializes Correctly 1 0.171406
+Texture loads 1 0.193277
+World loads level from file 0 0
+Game initializes (headless) 0 0
+---
+World loads level from file
+Game initializes (headless)
