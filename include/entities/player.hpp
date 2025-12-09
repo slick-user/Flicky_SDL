@@ -2,6 +2,7 @@
 
 //#include <util/headers.hpp>
 #include <entities/entity.hpp>
+#include <core/renderer.hpp>
 
 class Enemy;
 class Projectile;
@@ -14,25 +15,17 @@ class Projectile;
 
 class Player : public Entity{
 
-  private:
-    bool hasPot = false;
+public:
+  SDL_Texture* texture = nullptr;
 
-    Projectile* projectile;
+  Player(SDL_Texture* tex, float x, float y) : Entity(x,y,18,36), texture(tex) {}
+  Player(float x, float y, Renderer& r) : Entity(x,y,18,36) { 
+    std::string path = std::string(PROJECT_ROOT) + "/assets/Arcade - Flicky - Flicky.png"; 
+    texture = r.loadTexture("player", path);
+    textureId = "player";
+  }
 
-    void shoot();
-
-  public:
- 
-    Player(SDL_Renderer* renderer, int x=20, int y=200, int w=18, int h=36);
-
-    // GETTTERS
-    bool getPot();
-
-    // SETTERS
-    void setPot(bool i);
-    void setProjectile(Projectile* projectile); 
-
-    void handleInput(const bool *state);
-    
+  void update(float dt, const std::vector<SDL_FRect>& platforms) override;
+  void render(Renderer& r, const Camera& cam) override;
 };
 

@@ -65,3 +65,13 @@ main.cpp
 
 So we implemented the Camera Model as it will be now and to be honest the engine is kind of looking quite a bit like our old one just instead slightly cleaner as less broken? Can't even be sure about that yet, good programming still has a long way to go. I need to be a lot more independent when it comes to programming.
 
+```
+GAME LOOP
+   ├── update world
+   └── render:
+          renderer.beginFrame()
+          renderer.renderWorld(world)
+          renderer.endFrame()
+```
+
+

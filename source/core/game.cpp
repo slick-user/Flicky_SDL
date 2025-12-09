@@ -5,16 +5,20 @@ Game::Game() : running(true) {}
 Game::~Game() {}
 
 bool Game::init() {
-  if (!renderer.init("Flicky", SCREEN_WIDTH, SCREEN_HEIGHT)) {
-    std::cout << "Failed to render";
-    return false;
-  }
+  if (!renderer.init("Flicky", SCREEN_WIDTH, SCREEN_HEIGHT)) return false;
 
-  camera = new Camera(0, 0, SCREEN_WIDTH, SCREEN_WIDTH);
+  std::string BGpath = std::string(PROJECT_ROOT) + "/assets/Sega Genesis 32X - Flicky - Area 1.png";
+  renderer.loadBackground(BGpath);
 
-  world = new World(renderer.getSDLRenderer());
+  world = new World(SCREEN_WIDTH, SCREEN_HEIGHT);
   world->loadLevel((std::string(PROJECT_ROOT) + "/levels/level1.txt").c_str());
-  
+
+  SDL_Texture* playerText = renderer.loadTexture("Player", PROJECT_ROOT "/assets/Arcade - Flicky - Flicky.png");
+  Entity* player = new Player(20, 200, renderer);
+  player->texture = playerText;
+
+  world->entities.push_back(player);
+
   return true;
 } 
 
@@ -35,11 +39,8 @@ void Game::run() {
 }
 
 void Game::shutdown() {
-  delete camera;
   delete world;
   renderer.shutdown(); 
-
-  //delete backgroundImage;
  
   SDL_Quit();
 }
@@ -55,17 +56,12 @@ void Game::processEvents() {
 
 void Game::update(float dt) {
   world->update(dt);
-
-  float PlayerX = world->player->p.x;
-  float PlayerY = world->player->p.y;
-
-  camera->follow(PlayerX, PlayerY);
-
 }
 
 void Game::render() {
   renderer.clear();
-  world->render(renderer.getSDLRenderer(), *camera);
+  renderer.renderBackground(world->camera);
+  renderer.renderWorld(*world);
   renderer.present();
 }
 

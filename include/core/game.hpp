@@ -53,7 +53,6 @@ class Game {
   private:
     Renderer renderer;
     World* world = nullptr;
-    Camera* camera = nullptr;
     
     bool running = true;
  

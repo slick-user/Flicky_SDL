@@ -1,7 +1,1 @@
-add_test( [==[Renderer Initializes Correctly]==] [==[D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe]==] [==[Renderer Initializes Correctly]==]  )
-set_tests_properties( [==[Renderer Initializes Correctly]==] PROPERTIES WORKING_DIRECTORY [==[D:/Programming/C++ Scripts/Flicky Remake/build/test]==])
-add_test( [==[Texture loads]==] [==[D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe]==] [==[Texture loads]==]  )
-set_tests_properties( [==[Texture loads]==] PROPERTIES WORKING_DIRECTORY [==[D:/Programming/C++ Scripts/Flicky Remake/build/test]==])
-add_test( [==[Game initializes]==] [==[D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe]==] [==[Game initializes]==]  )
-set_tests_properties( [==[Game initializes]==] PROPERTIES WORKING_DIRECTORY [==[D:/Programming/C++ Scripts/Flicky Remake/build/test]==])
-set( FlickyTests_TESTS [==[Renderer Initializes Correctly]==] [==[Texture loads]==] [==[Game initializes]==])
+set( FlickyTests_TESTS)

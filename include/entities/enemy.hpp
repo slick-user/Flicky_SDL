@@ -1,8 +1,8 @@
 #pragma once
-
-
+/*
 #include <vector>
-#include <util/headers.hpp>
+#include <entities/entity.hpp>
+//#include <util/headers.hpp>
 
 static constexpr int ENEMY_GRAVITY = 2;
 static constexpr int ENEMY_SPEED = 3;
@@ -30,3 +30,4 @@ class Enemy : public Entity {
     virtual void checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount);
 
 };
+*/

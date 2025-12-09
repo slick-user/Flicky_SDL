@@ -1,5 +1,16 @@
-#include "../../include/entities/entity.hpp"
+#include <entities/entity.hpp>
+#include <core/renderer.hpp>
+#include <core/camera.hpp>
 
+void Entity::render(Renderer& renderer, const Camera& cam) {
+  if (!texture) return;
+  SDL_FRect dst { x, y, w, h };
+  dst = cam.apply(dst);
+
+  renderer.drawTexture(textureId, dst);
+}
+
+/*
 Entity::Entity(SDL_Renderer* renderer, int x, int y, int w, int h) {;
 
   p.x = x;
@@ -16,20 +27,9 @@ Entity::Entity(SDL_Renderer* renderer, int x, int y, int w, int h) {;
 
 }
 
+
 // GETTERS
 int Entity::getMoved() { return moved; }
-
-SDL_Texture* Entity::loadTexture(SDL_Renderer* renderer, const char* path) {
- 
-  SDL_Texture* texture = pImg.load_texture(path, renderer); 
-
-  if (!texture) {
-    std::cout << "Unable to load image %s\n" <<  SDL_GetError();
-    exit(1);
-  }
-
-  return texture;
-} 
 
 void Entity::update(const std::vector<SDL_Rect>& platform, const int platformCount) {
   
@@ -43,6 +43,7 @@ void Entity::update(const std::vector<SDL_Rect>& platform, const int platformCou
   checkCollision(platform, platformCount);
 
 }
+
 
 void Entity::render(SDL_Renderer* renderer, Uint32 currentFrame, int cameraX, int cameraY) {
 
@@ -147,9 +148,11 @@ CollisionSide Entity::getCollisionSide(const SDL_Rect& oldPos, const SDL_Rect& n
     return (newPos.y < platform.y) ? CollisionSide::TOP : CollisionSide::BOTTOM;
   }
 }
+*/
 
+/*
 Entity::~Entity() {
   SDL_DestroyTexture(texture);
   delete flickyImage;
 }
-
+*/

@@ -1,4 +1,4 @@
-#include "../../include/entities/enemy.hpp"
+/*#include "../../include/entities/enemy.hpp"
 
 Enemy::Enemy(Player* player, SDL_Renderer* renderer, int x, int y, int w, int h) : Entity(renderer, x, y, w, h), player(player) {
  
@@ -137,4 +137,4 @@ void Enemy::checkCollision(const std::vector<SDL_Rect>& platform, const int plat
   }
 
 }
-
+*/

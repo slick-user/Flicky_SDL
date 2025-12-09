@@ -2,8 +2,11 @@
 
 #include <iostream>
 #include <vector>
-
+#include <SDL3/SDL.h>
 #include <util/util.hpp>
+
+class Renderer;
+class Camera;
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -18,44 +21,23 @@ enum class CollisionSide {
 
 class Entity {
 
-  protected:
-    Util pImg;
- 
-    SDL_Rect *flickyImage = new SDL_Rect;
+public:
+  float x = 0, y = 0;
+  float w = 0, h = 0;
 
-    bool can_jump = true;
-    
-    float vel[2] = {0,0};
+  float vx = 0, vy = 0;
 
-    int moved; //default is 0
+  std::string textureId;
+  SDL_Texture* texture;
 
-    enum {
-      IDLE,
-      RUNNING,
-    };
+public:
 
-    SDL_Texture* texture;
+  Entity(float x, float y, float w, float h) : x(x), y(y), w(w), h(h) {}
 
-    SDL_Texture* loadTexture(SDL_Renderer* renderer, const char* path);
+  virtual ~Entity() = default;
+  
+  virtual void update(float dt, const std::vector<SDL_FRect>& platforms) = 0;
+  virtual void render(Renderer& r, const Camera& cam) = 0;
 
-    CollisionSide getCollisionSide(const SDL_Rect& oldPos, const SDL_Rect& newPos, const SDL_Rect& platform);  
-
-    virtual void jump();
-
-  public:
-
-    SDL_Rect p;
-        
-    Entity(SDL_Renderer* renderer, int x=20, int y=200, int w=18, int h=36);
-
-    virtual ~Entity();
-
-    // GETTERS
-    int getMoved();
-
-    virtual void checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount);
-    
-    virtual void update(const std::vector<SDL_Rect>& platform, const int platformCount);
-    void render(SDL_Renderer* renderer, Uint32 currentFrame, int cameraX, int cameraY);
-
+  SDL_FRect bounds() const { return SDL_FRect {x,y,w,h}; }
 };

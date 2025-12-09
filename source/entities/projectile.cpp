@@ -1,3 +1,4 @@
+/*
 #include "../../include/entities/projectile.hpp"
 
 Projectile::Projectile(Player* player, SDL_Renderer* renderer, int x, int y, int w, int h) : Entity(renderer, x, y, w, h), player(player) {
@@ -102,6 +103,6 @@ void Projectile::checkCollision(const std::vector<SDL_Rect>& platform, const int
     }
 
   }
-
-
 }
+
+*/
