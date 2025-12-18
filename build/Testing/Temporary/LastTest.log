@@ -1,81 +1,43 @@
-Start testing: Dec 08 15:08 Pakistan Standard Time
+Start testing: Dec 18 19:35 Pakistan Standard Time
 ----------------------------------------------------------
-1/4 Testing: Renderer Initializes Correctly
-1/4 Test: Renderer Initializes Correctly
+1/2 Testing: Renderer Initializes Correctly
+1/2 Test: Renderer Initializes Correctly
 Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "Renderer Initializes Correctly"
 Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
-"Renderer Initializes Correctly" start time: Dec 08 15:08 Pakistan Standard Time
+"Renderer Initializes Correctly" start time: Dec 18 19:35 Pakistan Standard Time
 Output:
 ----------------------------------------------------------
 Filters: "Renderer Initializes Correctly"
-Randomness seeded to: 3461912416
+Randomness seeded to: 152429088
 ===============================================================================
 All tests passed (1 assertion in 1 test case)
 
 <end of output>
-Test time =   0.17 sec
+Test time =   0.18 sec
 ----------------------------------------------------------
 Test Passed.
-"Renderer Initializes Correctly" end time: Dec 08 15:08 Pakistan Standard Time
+"Renderer Initializes Correctly" end time: Dec 18 19:35 Pakistan Standard Time
 "Renderer Initializes Correctly" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-2/4 Testing: Texture loads
-2/4 Test: Texture loads
-Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "Texture loads"
+2/2 Testing: Animator advances frames correctly
+2/2 Test: Animator advances frames correctly
+Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "Animator advances frames correctly"
 Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
-"Texture loads" start time: Dec 08 15:08 Pakistan Standard Time
+"Animator advances frames correctly" start time: Dec 18 19:35 Pakistan Standard Time
 Output:
 ----------------------------------------------------------
-Filters: "Texture loads"
-Randomness seeded to: 2754727135
+Filters: "Animator advances frames correctly"
+Randomness seeded to: 2020174792
 ===============================================================================
-All tests passed (2 assertions in 1 test case)
+All tests passed (3 assertions in 1 test case)
 
 <end of output>
-Test time =   0.19 sec
+Test time =   0.06 sec
 ----------------------------------------------------------
 Test Passed.
-"Texture loads" end time: Dec 08 15:08 Pakistan Standard Time
-"Texture loads" time elapsed: 00:00:00
+"Animator advances frames correctly" end time: Dec 18 19:35 Pakistan Standard Time
+"Animator advances frames correctly" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-3/4 Testing: World loads level from file
-3/4 Test: World loads level from file
-Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "World loads level from file"
-Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
-"World loads level from file" start time: Dec 08 15:08 Pakistan Standard Time
-Output:
-----------------------------------------------------------
-Filters: "World loads level from file"
-Randomness seeded to: 3719788240
-Unable to load image %s
-Parameter 'SDL_CreateTextureFromSurface(): surface' is invalid
-<end of output>
-Test time =   0.16 sec
-----------------------------------------------------------
-Test Failed.
-"World loads level from file" end time: Dec 08 15:08 Pakistan Standard Time
-"World loads level from file" time elapsed: 00:00:00
-----------------------------------------------------------
-
-4/4 Testing: Game initializes (headless)
-4/4 Test: Game initializes (headless)
-Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "Game initializes (headless)"
-Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
-"Game initializes (headless)" start time: Dec 08 15:08 Pakistan Standard Time
-Output:
-----------------------------------------------------------
-Filters: "Game initializes (headless)"
-Randomness seeded to: 2777571215
-Unable to load image %s
-Parameter 'SDL_CreateTextureFromSurface(): surface' is invalid
-<end of output>
-Test time =   0.20 sec
-----------------------------------------------------------
-Test Failed.
-"Game initializes (headless)" end time: Dec 08 15:08 Pakistan Standard Time
-"Game initializes (headless)" time elapsed: 00:00:00
-----------------------------------------------------------
-
-End testing: Dec 08 15:08 Pakistan Standard Time
+End testing: Dec 18 19:35 Pakistan Standard Time
