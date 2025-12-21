@@ -1,5 +1,1 @@
-add_test( [==[Renderer Initializes Correctly]==] [==[D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe]==] [==[Renderer Initializes Correctly]==]  )
-set_tests_properties( [==[Renderer Initializes Correctly]==] PROPERTIES WORKING_DIRECTORY [==[D:/Programming/C++ Scripts/Flicky Remake/build/test]==])
-add_test( [==[Animator advances frames correctly]==] [==[D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe]==] [==[Animator advances frames correctly]==]  )
-set_tests_properties( [==[Animator advances frames correctly]==] PROPERTIES WORKING_DIRECTORY [==[D:/Programming/C++ Scripts/Flicky Remake/build/test]==])
-set( FlickyTests_TESTS [==[Renderer Initializes Correctly]==] [==[Animator advances frames correctly]==])
+set( FlickyTests_TESTS)
