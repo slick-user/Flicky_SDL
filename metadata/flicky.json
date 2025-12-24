@@ -1,0 +1,23 @@
+{
+  "image": "Arcade - Flicky - Playable Characters - Flicky.png",
+
+  "frames": [
+    { "name": "idle_0", "x":   1, "y":   1, "w": 9, "h": 18 },
+    { "name": "walk_0", "x":  1, "y":   54, "w": 9, "h": 18 },
+    { "name": "walk_1", "x":  18, "y":  54, "w": 9, "h": 18 },
+
+    { "name": "jump_0", "x":   1, "y":  37, "w": 9, "h": 16 },
+    { "name": "fall_0", "x":  18, "y":  37, "w": 9, "h": 16 },
+
+    { "name": "peck_0", "x":   0, "y":  68, "w": 9, "h": 18 },
+    { "name": "peck_1", "x":  20, "y":  68, "w": 9, "h": 18 }
+  ],
+
+  "animations": {
+    "idle": { "frames": ["idle_0"], "fps": 1 },
+    "walk": { "frames": ["walk_0","walk_1","walk_0","walk_1"], "fps": 8 },
+    "jump": { "frames": ["jump_0"], "fps": 1 },
+    "fall": { "frames": ["fall_0"], "fps": 1 },
+    "peck": { "frames": ["peck_0","peck_1"], "fps": 10 }
+  }
+}

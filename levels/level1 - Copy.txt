@@ -1,0 +1,25 @@
+# entities
+player 20 0
+enemy 400 0
+
+# platforms
+platform -20   380   140   8
+platform -20   280   140   8
+platform -20   180   140   8
+platform -20    80   140   8
+
+platform 180   330   260   8
+platform 180   230   260   8
+platform 180   130   260   8
+
+platform 180   330   260   8
+platform 180   230   260   8
+platform 180   130   260   8
+
+platform 640   245   260   8
+
+platform 700   340   520   8
+platform 700   140   520   8
+
+platform 1020  245   300   8
+platform -20   485   900   8

@@ -1,3 +1,5 @@
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_keycode.h>
 #include <core/game.hpp>
 #include <entities/entity.hpp>
 
@@ -5,19 +7,16 @@ Game::Game() : running(true) {}
 Game::~Game() {}
 
 bool Game::init() {
+
   if (!renderer.init("Flicky", SCREEN_WIDTH, SCREEN_HEIGHT)) return false;
 
+  // Background Rendering
   std::string BGpath = std::string(PROJECT_ROOT) + "/assets/Sega Genesis 32X - Flicky - Area 1.png";
   renderer.loadBackground(BGpath);
 
-  world = new World(SCREEN_WIDTH, SCREEN_HEIGHT);
+  world = new World(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
   world->loadLevel((std::string(PROJECT_ROOT) + "/levels/level1.txt").c_str());
-
-  SDL_Texture* playerText = renderer.loadTexture("Player", PROJECT_ROOT "/assets/Arcade - Flicky - Flicky.png");
-  Entity* player = new Player(20, 200, renderer);
-  player->texture = playerText;
-
-  world->entities.push_back(player);
+  //world->loadLevel((std::string(PROJECT_ROOT) + "/levels/level1 - Copy.txt"));
 
   return true;
 } 
@@ -40,8 +39,8 @@ void Game::run() {
 
 void Game::shutdown() {
   delete world;
-  renderer.shutdown(); 
- 
+  renderer.shutdown();  
+
   SDL_Quit();
 }
 
@@ -51,7 +50,15 @@ void Game::processEvents() {
     if (e.type == SDL_EVENT_QUIT) {
       running = false;
     }
+
+    if (e.type == SDL_EVENT_KEY_DOWN) {
+
+      if (e.key.key == SDLK_R) {
+        world->loadLevel((std::string(PROJECT_ROOT) + "/levels/level1 - Copy.txt"));
+      }
+    }
   }
+
 }
 
 void Game::update(float dt) {

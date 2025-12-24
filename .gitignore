@@ -1,0 +1,71 @@
+# --------------------
+# Build artifacts
+# --------------------
+build/
+out/
+bin/
+lib/*.a
+lib/*.dll
+lib/*.dll.a
+lib/*.lib
+*.exe
+*.dll
+*.so
+*.dylib
+
+# --------------------
+# CMake
+# --------------------
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+CTestTestfile.cmake
+Makefile
+
+# --------------------
+# Object files
+# --------------------
+*.o
+*.obj
+*.lo
+*.slo
+
+# --------------------
+# Dependency files
+# --------------------
+*.d
+
+# --------------------
+# IDE / Editor
+# --------------------
+.vscode/
+.idea/
+*.user
+*.suo
+*.log
+
+# --------------------
+# OS junk
+# --------------------
+.DS_Store
+Thumbs.db
+
+# --------------------
+# Debug / profiling
+# --------------------
+*.pdb
+*.ilk
+
+# --------------------
+# Assets (IMPORTANT)
+# --------------------
+# Keep source assets, ignore generated ones
+assets/exported/
+assets/temp/
+
+# --------------------
+# CI artifacts
+# --------------------
+*.zip
+*.tar.gz

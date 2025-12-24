@@ -23,7 +23,7 @@ void Util::renderFrame(SDL_Renderer* renderer, SDL_Texture* spriteSheet, int ani
         (float)PLAYER_HEIGHT
     };
 
-    SDL_FPoint center = { 0.0f, 0.0f };
+    SDL_FPoint center = { dstF.w * 0.5f, dstF.h * 0.5f };
 
     SDL_RenderTextureRotated(
         renderer,

@@ -1,33 +1,49 @@
 #pragma once
-/*
+
 #include <vector>
 #include <entities/entity.hpp>
-//#include <util/headers.hpp>
+#include <core/renderer.hpp>
 
-static constexpr int ENEMY_GRAVITY = 2;
-static constexpr int ENEMY_SPEED = 3;
+class Player;
 
-// CONSTANT PARAMETERS
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+enum class EnemyState {
+  Idle, 
+  Walk,
+  Jump,
+  Fall
+};
 
 class Enemy : public Entity { 
-  
+  public:  
+    SDL_Texture* texture = nullptr;
+    spriteSheet* sprite = nullptr;
+
+    EnemyState state;
+
+    Enemy(float x, float y, Renderer& r, Player* p) : Entity(x,y,32,38) { 
+      player = p;
+      state = EnemyState::Idle;
+
+      sheet = r.loadSpriteSheetJSON("Enemy", std::string(PROJECT_ROOT) + "/metadata/enemy.json");
+
+      animator = new Animator();
+      animator->setSheet(sheet);
+      animator->play("idle");
+  }
+
+  virtual void ai(float dt, const std::vector<Platform>& platforms) = 0;
+
+  virtual void updateState(float dt);
+  virtual void updateAnimation(float dt, EnemyState s); 
+  virtual void update(float dt, const std::vector<Platform>& platforms) override;
+
+
   protected:
-
-    int dir = 1;
-    bool stateUpdate = false;
-
-  public:
+    int frame = 0;
+    float animTimer = 0.0f;
+    float animSpeed = 0.0f;
+    std::string spriteId;
 
     Player* player;
 
-    Enemy(Player* player, SDL_Renderer* renderer, int x=20, int y=200, int w=18, int h=36);  
-
-    void move();
-    void jump();
-    void updateState(int i=0);
-    virtual void checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount);
-
 };
-*/

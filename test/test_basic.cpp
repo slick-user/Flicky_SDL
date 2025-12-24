@@ -1,4 +1,3 @@
-
 /*
 #include <catch2/catch_test_macros.hpp>
 
@@ -6,40 +5,33 @@
 #include <core/game.hpp>
 #include <core/world.hpp>
 #include <entities/entity.hpp>
+
 TEST_CASE("Renderer Initializes Correctly", "[renderer]") {
     Renderer r;
     REQUIRE(r.init("Test Init", 200, 200) == true);
     r.shutdown();
 }
 
-TEST_CASE("Texture loads", "[renderer]") {
-    Renderer r;
-    REQUIRE(r.init("Test Init", 200, 200) == true);
+TEST_CASE("Animator advances frames correctly", "[animator]") {
+  Animation walk;
+  walk.frames = {0 ,1 ,2};
+  walk.frameDuration = 0.1f;
+  walk.loop = true;
 
-    SDL_Texture* tex = r.loadTexture("player", std::string(PROJECT_ROOT) + "/assets/Arcade - Flicky - Flicky.png");
-    REQUIRE(tex != nullptr);
+  spriteSheet sheet;
+  sheet.animations["walk"] = walk;
 
-    r.shutdown();
-}
+  Animator a;
+  a.setSheet(&sheet);
+  a.play("walk");
 
-TEST_CASE("World loads level from file", "[world]") {
-  Renderer r;
-  r.init("Test", 200, 200);
-  World w();   
+  a.update(0.1f);
+  REQUIRE(a.currentFrame() == 1);
 
-  std::string path = std::string(PROJECT_ROOT) + "/levels/test_level.txt";
+  a.update(0.1f);
+  REQUIRE(a.currentFrame() == 2);
 
-  REQUIRE_NOTHROW(w.loadLevel(path));
-
-  REQUIRE(w.platforms.size() > 0);
-  REQUIRE(w.platforms[0].w > 0);
-}
-
-TEST_CASE("Game initializes", "[game]") {
-    Game g;
-
-    REQUIRE(g.init() == true);
-
-    g.shutdown();
+  a.update(0.1f);
+  REQUIRE(a.currentFrame() == 0);
 }
 */

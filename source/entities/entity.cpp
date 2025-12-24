@@ -2,157 +2,137 @@
 #include <core/renderer.hpp>
 #include <core/camera.hpp>
 
-void Entity::render(Renderer& renderer, const Camera& cam) {
-  if (!texture) return;
-  SDL_FRect dst { x, y, w, h };
-  dst = cam.apply(dst);
-
-  renderer.drawTexture(textureId, dst);
+bool intersects(const SDL_FRect& a, const SDL_FRect& b) {
+  return !(a.x + a.w <= b.x ||  // a hpos is <= b hpos
+           a.x >= b.x + b.w ||  // b hpos is >= a hpos
+           a.y + a.h <= b.y ||  // a vpos is <= b vpos
+           a.y >= b.y + b.h);   // a vpos is >= b vpos
 }
 
-/*
-Entity::Entity(SDL_Renderer* renderer, int x, int y, int w, int h) {;
-
-  p.x = x;
-  p.y = y;
-  p.w = w;
-  p.h = h;
-
-  flickyImage->x = 1;
-  flickyImage->y = 1;
-  flickyImage->w = PLAYER_IMAGE_WIDTH;
-  flickyImage->h = PLAYER_IMAGE_HEIGHT;
-
-  texture = loadTexture(renderer, "./assets/Arcade - Flicky - Flicky.png");
-
-}
-
-
-// GETTERS
-int Entity::getMoved() { return moved; }
-
-void Entity::update(const std::vector<SDL_Rect>& platform, const int platformCount) {
-  
-  moved = 0;
-
-  if (vel[1] > MAX_FALL_SPEED) vel[1] = MAX_FALL_SPEED;
-  
-  p.x += vel[0];
-  p.y += vel[1];
-
-  checkCollision(platform, platformCount);
-
-}
-
-
-void Entity::render(SDL_Renderer* renderer, Uint32 currentFrame, int cameraX, int cameraY) {
-
-  SDL_Rect renderPos = {p.x - cameraX, p.y - cameraY, p.w, p.h};
-
-  if (moved == 0){
-    SDL_FRect src = {
-      (float)flickyImage->x,
-      (float)flickyImage->y,
-      (float)flickyImage->w,
-      (float)flickyImage->h
-    };
-
-    SDL_FRect dst = {
-      (float)renderPos.x,
-      (float)renderPos.y,
-      (float)renderPos.w,
-      (float)renderPos.h
-    };
-
-    SDL_RenderTexture(renderer, texture, &src, &dst);       // IDLE 
-  }
-  else if (moved == 1)
-    pImg.renderFrame(renderer, texture, RUNNING, 0, currentFrame, p.x - cameraX, p.y - cameraY);
-  else if (moved == 2) 
-    pImg.renderFrame(renderer, texture, RUNNING, 1, currentFrame, p.x - cameraX, p.y - cameraY);
-
-  moved = 0;
-}
-
-void Entity::jump() {
-  vel[1] -= JUMP_VELOCITY;
-  can_jump = false;
-}
-
-void Entity::checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount) {
- 
-  // storing old position for collision response
-  SDL_Rect oldPosition = p;
-
-  int i = 0;
-
-  // Gravity  
-  if (p.y < GROUND_LEVEL){
-    vel[1] += 1;
-  }
-  else if (p.y > GROUND_LEVEL) {
-    vel[1] = 0;
-    can_jump = true;
-    p.y = GROUND_LEVEL;
-  }
-  
-  // Collision Check
-  for (i=0; i<platformCount; i++) {
-
-    if (SDL_HasRectIntersection(&p, &platform[i])) {
-      CollisionSide side = getCollisionSide(oldPosition, p, platform[i]);
+Facing atEdge(const SDL_FRect& a, const SDL_FRect& b) {
+  // Check if enemy's left side is near platform's left edge
+  bool nearLeftEdge = std::abs(a.x - b.x) <=0.1f;
     
-      switch (side) {
-        
-        case CollisionSide::TOP:
-          //landing on platform from below
-          p.y = platform[i].y - p.h;
-          vel[1] = 0;
-          can_jump = true;
-          //onPlatform = true;
-          break;
+  // Check if enemy's right side is near platform's right edge
+  bool nearRightEdge = std::abs((a.x + a.w) - (b.x + b.w)) <= 0.1f;
+  
+  if (nearLeftEdge) return Facing::Left;
+  else if (nearRightEdge) return Facing::Right;
+  else return Facing::None;
+}
 
-        case CollisionSide::BOTTOM:
-          //Hitting platform from below
-          p.y = platform[i].y + platform[i].h;
-          vel[1] = 0;
-          break;
+void Entity::render(Renderer& renderer, const Camera& cam) {
+  int frame = animator->currentFrame();
+  if (frame < 0 || frame >= (int)sheet->frames.size())
+    return;
 
-        case CollisionSide::LEFT:
-        case CollisionSide::RIGHT:
-          p.x = oldPosition.x;
-          vel[0] = 0;
-          break;
-      }
-    break;
+  SDL_FRect& src = sheet->frames[frame];
+  SDL_FRect dst = cam.apply({std::floor(x),std::floor(y),w,h});
+
+  bool flip = (facing == Facing::Left);
+
+  renderer.drawSprite(sheet->texture, src, dst, flip); 
+}
+
+void Entity::update(float dt, const std::vector<Platform>& platforms) {
+  applyPhysics(dt, platforms);
+  wrapHorizontal();
+
+  if (onGround)
+    coyoteTimer = COYOTE_TIME;
+  else
+    coyoteTimer -= dt;
+}
+
+void Entity::applyPhysics(float dt, const std::vector<Platform>& platforms) {
+  if (!onGround) {
+    v.y += GRAVITY * dt;
+    v.y = std::min(v.y, MAX_FALL_SPEED);
+  }
+
+  y += v.y * dt;
+  resolveVertical(platforms);
+  x += v.x * dt;
+  resolveHorizontal(platforms);
+
+  /* Debug
+  static float lastX = x;
+  if (std::abs(x - lastX) > 0.01f)
+    std::cout << "x changed: " << x << "\n";
+  lastX = x;
+  */
+}
+
+void Entity::resolveVertical(const std::vector<Platform>& platforms) {
+    bool groundedThisFrame = false;
+    SDL_FRect box = bounds();
+
+    for (const auto& p : platforms) {
+
+        // Must overlap horizontally
+        bool overlapX =
+            box.x + box.w > p.bounds.x &&
+            box.x < p.bounds.x + p.bounds.w;
+
+        if (!overlapX)
+            continue;
+
+        // ---- 1️⃣ PENETRATION-BASED COLLISION ----
+        if (intersects(box, p.bounds)) {
+
+            if (v.y > 0) {
+                // Falling → land
+                y = p.bounds.y - h;
+                v.y = 0;
+                groundedThisFrame = true;
+                box.y = y;
+            }
+            else if (v.y < 0) {
+                // Jumping → hit ceiling
+                y = p.bounds.y + p.bounds.h;
+                v.y = 0;
+                box.y = y;
+            }
+        }
+
+        // ---- 2️⃣ EPSILON-BASED GROUND STICKINESS ----
+        float footDist = (box.y + box.h) - p.bounds.y;
+
+        if (v.y == 0 &&
+            footDist >= -GROUND_EPS &&
+            footDist <= GROUND_EPS) {
+
+            groundedThisFrame = true;
+            y = p.bounds.y - h;
+            box.y = y;
+        }
     }
 
-  }
-
+    onGround = groundedThisFrame;
 }
 
-CollisionSide Entity::getCollisionSide(const SDL_Rect& oldPos, const SDL_Rect& newPos, const SDL_Rect& platform) {
-  int overlapX = std::min(newPos.x + newPos.w, platform.x + platform.w) - std::max(newPos.x, platform.x);
-  int overlapY = std::min(newPos.y + newPos.h, platform.y + platform.h) - std::max(newPos.y, platform.y);
+void Entity::resolveHorizontal(const std::vector<Platform>& platforms) {
+    SDL_FRect box = bounds();
 
-  if (overlapX <= 0 || overlapY <= 0) {
-    return CollisionSide::TOP;
+    for (const auto& p : platforms) {
+        if (!intersects(box, p.bounds)) continue;
+
+        if (v.x > 0)
+            x = p.bounds.x - w;
+        else if (v.x < 0)
+            x = p.bounds.x + p.bounds.w;
+
+        v.x = 0;
+        box.x = x;
+    }
+}
+
+void Entity::wrapHorizontal() {
+  if (x + w < 0) {
+    x = SCREEN_WIDTH;
   }
-
-  if (overlapX < overlapY) {
-    // Horizontal Collision
-    return (newPos.x < platform.x) ? CollisionSide::RIGHT : CollisionSide::LEFT;
-  } 
-  else {
-    // Vertical Collision
-    return (newPos.y < platform.y) ? CollisionSide::TOP : CollisionSide::BOTTOM;
+  else if (x > SCREEN_WIDTH) {
+    x = -w;
   }
 }
-*/
 
-/*
-Entity::~Entity() {
-  SDL_DestroyTexture(texture);
-  delete flickyImage;
-}
-*/

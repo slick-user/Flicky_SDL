@@ -11,13 +11,12 @@
 
 class World {
 public:
-  World(int screenW, int screenH);
+  World(int screenW, int screenH, Renderer& r);
   ~World();
 
   void loadLevel(const std::string& filename);
 
   void update(float dt);
-  //void render(SDL_Renderer* renderer, Camera& cam);
 
 private:
 
@@ -26,12 +25,13 @@ private:
   //later have to implement the remaining items
 
 public:
-  std::vector<SDL_FRect> platforms;
+  std::vector<Platform> platforms;
   std::vector<Entity*> entities;
   
   Player* player;
   Enemy* enemy;
   Projectile* projectile;
+  Renderer* r;
   
   Camera camera;
 

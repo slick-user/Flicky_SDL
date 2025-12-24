@@ -12,17 +12,11 @@ g++ -o Flicky main.cpp "Source Files/editor.cpp" "Source Files/util.cpp" -O1 -Wa
 
 ----------------------------------------------------------------
 
-Ok so we were programming enemies that is the point we had reached, This is supposed to be a super modular and easy to use engine more than anything
-
-Enemy class that then gives way to the cat enemy class. This will give us our first proper enemy and for that enemies screen wrapping.....
-
 ========================================================================================
 code for a debug hitbox for the player :
   SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
   SDL_Rect debugBox = { player->p.x - camera.x, player->p.y - camera.y, PLAYER_WIDTH, PLAYER_HEIGHT };
   SDL_RenderDrawRect(renderer, &debugBox);
-
-Wow this is a really broken almost garbage software and it took me way to long to write it, hopefully I write a way better version this time around
 
 Lets start with the system, I feel like I should document this game a lot better than I have, for that I should have a place where I can document the development of this game, I know I will write a website that I will host and that is where I will write about the development of this software. I don't really feel like doing that... I can do that and do this, lets do both
 
@@ -74,4 +68,43 @@ GAME LOOP
           renderer.endFrame()
 ```
 
+After that we have been working on our animation player and changing the responsibilities of items. The game is basically being completely rewritten in the hope that this will make development a lot faster for this one and future game implementations
 
+### Animation Player
+Since our Sprite Sheets are irregular in their spacing and how they have the frames set
+
+so we had 2 ways we could have done this that were sensible
+
+Classic arcade games would manually set their frames and then have animations reference frame indices
+```
+sheet->frames = {
+    {  0,  0, 16, 32 },
+    { 18,  0, 16, 32 },
+    { 36,  0, 15, 32 },
+    { 52,  0, 16, 32 },
+    // etc
+};
+
+walk.frames = {0,1,2,1};
+idle.frames = {0};
+```
+
+or we could have the frame data saved in a JSON style format and then read the metadata
+```
+{
+  "frames": {
+    "walk_0": { "x":0,"y":0,"w":16,"h":32 },
+    "walk_1": { "x":18,"y":0,"w":16,"h":32 }
+  }
+}
+```
+
+### 21st Dec 2025
+So we have a bunch of systems that need to be extended and improved namely our rudimentary level loading system, need to see if our animatio system is complete. 
+Finally we need to ensure that the player physics and interactions should be working.
+
+So since we are recreating the player
+
+**AABB Platformer Loop** : move->check->resolve->update
+
+we have basically reconstructed movement and a lot faster than we did the first time around knowing we don't have to refactor a lot of code. I was much less experienced the last time, but this code is a lot better than what we had the first time around
