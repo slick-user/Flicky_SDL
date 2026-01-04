@@ -2,14 +2,15 @@
 #include <core/world.hpp>
 #include <entities/enemy.hpp>
 #include <entities/nyannyan.hpp>
+#include <entities/spawner.hpp>
+#include <core/game.hpp>
 #include <fstream>
 #include <iostream>
 
 World::World(int screenW, int screenH, Renderer& r) : camera(screenW, screenH), r(&r) {
   entities.push_back(new Player(20, 0, r));
   Player* ptr = dynamic_cast<Player*>(entities[0]);
-  entities.push_back(new NyanNyan(500, 0, r, ptr));
-
+  entities.push_back(new Spawner(500, 0, r, ptr, this));
 }
 
 World::~World() {}
@@ -74,5 +75,13 @@ void World::update(float dt) {
  
   for (auto& ent : entities)
     ent->update(dt, platforms);
-  
+
+  // Camera following player
+  camera.follow(entities[0]);
+
+  // Clamping Camera to level bounds
+  camera.x = std::max(0.0f, std::min(camera.x, LEVEL_WIDTH - camera.width));
+  camera.y = std::max(0.0f, std::min(camera.y, LEVEL_HEIGHT - camera.height));
+
+
 }

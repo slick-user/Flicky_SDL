@@ -12,17 +12,13 @@
 #include <entities/player.hpp>
 #include <entities/enemy.hpp>
 #include <entities/projectile.hpp>
-#include <util/util.hpp>
 
 //class Util;
 
 // DIMENSIONS OF LEVEL
 
-const int LEVEL_WIDTH = 1280;
+const int LEVEL_WIDTH = 1190;
 const int LEVEL_HEIGHT = 480;
-
-const int PLAYER_HEIGHT = PLAYER_IMAGE_HEIGHT * 2;
-const int PLAYER_WIDTH = PLAYER_IMAGE_WIDTH * 2;
 
 // CAMERA CONSTANTS
 const int LEFT_WRAP_BOUNDS = 320;

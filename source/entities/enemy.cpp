@@ -1,14 +1,14 @@
 #include <entities/enemy.hpp>
 
 void Enemy::updateState(float dt) {
-    EnemyState newState = state;
+    State newState = state;
 
     if (!onGround)
-        newState = (v.y < 0) ? EnemyState::Jump : EnemyState::Fall;
+        newState = (v.y < 0) ? State::Jump : State::Fall;
     else if (std::abs(v.x) > 0.01f)
-        newState = EnemyState::Walk;
+        newState = State::Walk;
     else
-        newState = EnemyState::Idle;
+        newState = State::Idle;
 
     if (newState != state) {
         state = newState;
@@ -22,13 +22,13 @@ void Enemy::update(float dt, const std::vector<Platform>& platforms) {
   updateAnimation(dt, state);
 }
 
-void Enemy::updateAnimation(float dt, EnemyState s) {
+void Enemy::updateAnimation(float dt, State s) {
  
   switch (s) {
-    case EnemyState::Idle: animator->play("idle"); break;
-    case EnemyState::Walk: animator->play("walk"); break;
-    case EnemyState::Jump: animator->play("jump"); break;
-    case EnemyState::Fall: animator->play("fall"); break;
+    case State::Idle: animator->play("idle"); break;
+    case State::Walk: animator->play("walk"); break;
+    case State::Jump: animator->play("jump"); break;
+    case State::Fall: animator->play("fall"); break;
   }
 
   animator->update(dt);  

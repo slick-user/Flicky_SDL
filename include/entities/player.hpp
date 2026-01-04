@@ -11,25 +11,18 @@ class Projectile;
 
 class Projectile;
 
-enum class PlayerState {
-  Idle, 
-  Walk,
-  Jump,
-  Fall
-};
-
 class Player : public Entity{
 
 public:
   SDL_Texture* texture = nullptr;
   spriteSheet* sprite = nullptr;
 
-  PlayerState state;
+  State state;
 
   Player(SDL_Texture* tex, float x, float y) : Entity(x,y,18,36), texture(tex) {}
   Player(float x, float y, Renderer& r) : Entity(x,y,18,36) {
     
-    state = PlayerState::Idle;
+    state = State::Idle;
 
     sheet = r.loadSpriteSheetJSON("flicky", std::string(PROJECT_ROOT) + "/metadata/flicky.json");
 
@@ -41,7 +34,7 @@ public:
   void updateState(float dt);
 
   void handleInput(float dt);
-  void updateAnimation(float dt, PlayerState s);
+  void updateAnimation(float dt, State s);
 
   void update(float dt, const std::vector<Platform>& platforms) override;
 

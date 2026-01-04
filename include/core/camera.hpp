@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include <entities/entity.hpp>
 
 class Camera {
 public:
@@ -15,6 +16,11 @@ public:
   void follow(float targetX, float targetY) {
     x = targetX - width * 0.5f;
     y = targetY - height * 0.5f;
+  }
+
+  void follow(Entity* e) {
+    x = (e->x + e->w * 0.5f) - width * 0.5f;
+    y = (e->y + e->h * 0.5f) - height * 0.5f;
   }
 
   SDL_FRect apply(const SDL_FRect& worldRect) const {

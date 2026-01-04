@@ -1,6 +1,7 @@
 #include <entities/entity.hpp>
 #include <core/renderer.hpp>
 #include <core/camera.hpp>
+#include <core/game.hpp>
 
 bool intersects(const SDL_FRect& a, const SDL_FRect& b) {
   return !(a.x + a.w <= b.x ||  // a hpos is <= b hpos
@@ -129,9 +130,9 @@ void Entity::resolveHorizontal(const std::vector<Platform>& platforms) {
 
 void Entity::wrapHorizontal() {
   if (x + w < 0) {
-    x = SCREEN_WIDTH;
+    x = LEVEL_WIDTH;
   }
-  else if (x > SCREEN_WIDTH) {
+  else if (x > LEVEL_WIDTH) {
     x = -w;
   }
 }

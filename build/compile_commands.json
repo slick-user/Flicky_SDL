@@ -55,9 +55,9 @@
 },
 {
   "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",
-  "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -DPROJECT_ROOT=\"\\\"D:/Programming/C++ Scripts/Flicky Remake\\\"\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\FlickyEngine.dir\\source\\util\\util.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\util\\util.cpp\"",
-  "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\util\\util.cpp",
-  "output": "CMakeFiles\\FlickyEngine.dir\\source\\util\\util.cpp.obj"
+  "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -DPROJECT_ROOT=\"\\\"D:/Programming/C++ Scripts/Flicky Remake\\\"\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\FlickyEngine.dir\\source\\entities\\spawner.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\spawner.cpp\"",
+  "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\spawner.cpp",
+  "output": "CMakeFiles\\FlickyEngine.dir\\source\\entities\\spawner.cpp.obj"
 },
 {
   "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",

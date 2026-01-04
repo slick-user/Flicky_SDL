@@ -1,43 +1,203 @@
-Start testing: Dec 18 19:35 Pakistan Standard Time
+Start testing: Jan 04 04:58 Pakistan Standard Time
 ----------------------------------------------------------
-1/2 Testing: Renderer Initializes Correctly
-1/2 Test: Renderer Initializes Correctly
+1/4 Testing: Renderer Initializes Correctly
+1/4 Test: Renderer Initializes Correctly
 Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "Renderer Initializes Correctly"
 Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
-"Renderer Initializes Correctly" start time: Dec 18 19:35 Pakistan Standard Time
+"Renderer Initializes Correctly" start time: Jan 04 04:58 Pakistan Standard Time
 Output:
 ----------------------------------------------------------
 Filters: "Renderer Initializes Correctly"
-Randomness seeded to: 152429088
+Randomness seeded to: 3589400143
 ===============================================================================
 All tests passed (1 assertion in 1 test case)
 
 <end of output>
-Test time =   0.18 sec
+Test time =   0.19 sec
 ----------------------------------------------------------
 Test Passed.
-"Renderer Initializes Correctly" end time: Dec 18 19:35 Pakistan Standard Time
+"Renderer Initializes Correctly" end time: Jan 04 04:58 Pakistan Standard Time
 "Renderer Initializes Correctly" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-2/2 Testing: Animator advances frames correctly
-2/2 Test: Animator advances frames correctly
+2/4 Testing: Animator advances frames correctly
+2/4 Test: Animator advances frames correctly
 Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "Animator advances frames correctly"
 Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
-"Animator advances frames correctly" start time: Dec 18 19:35 Pakistan Standard Time
+"Animator advances frames correctly" start time: Jan 04 04:58 Pakistan Standard Time
 Output:
 ----------------------------------------------------------
 Filters: "Animator advances frames correctly"
-Randomness seeded to: 2020174792
+Randomness seeded to: 2465954847
 ===============================================================================
 All tests passed (3 assertions in 1 test case)
 
 <end of output>
-Test time =   0.06 sec
+Test time =   0.04 sec
 ----------------------------------------------------------
 Test Passed.
-"Animator advances frames correctly" end time: Dec 18 19:35 Pakistan Standard Time
+"Animator advances frames correctly" end time: Jan 04 04:58 Pakistan Standard Time
 "Animator advances frames correctly" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Dec 18 19:35 Pakistan Standard Time
+3/4 Testing: NyanNyan sprite sheet and animations
+3/4 Test: NyanNyan sprite sheet and animations
+Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "NyanNyan sprite sheet and animations"
+Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
+"NyanNyan sprite sheet and animations" start time: Jan 04 04:58 Pakistan Standard Time
+Output:
+----------------------------------------------------------
+Filters: "NyanNyan sprite sheet and animations"
+Randomness seeded to: 3098196484
+Color key = 0, 136, 136
+[SpriteSheet] Loaded 'flicky'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
+  Frames: 7
+  Animations: 5
+Color key = 0, 132, 132
+[SpriteSheet] Loaded 'Enemy'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Sega Genesis - Flicky - Characters - Flicky, Chirps, Tiger and Iggy.png
+  Frames: 5
+  Animations: 4
+Color key = 0, 132, 132
+[SpriteSheet] Loaded 'Enemy'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Sega Genesis - Flicky - Characters - Flicky, Chirps, Tiger and Iggy.png
+  Frames: 5
+  Animations: 4
+Color key = 0, 136, 136
+[SpriteSheet] Loaded 'flicky'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
+  Frames: 7
+  Animations: 5
+Color key = 0, 132, 132
+[SpriteSheet] Loaded 'Enemy'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Sega Genesis - Flicky - Characters - Flicky, Chirps, Tiger and Iggy.png
+  Frames: 5
+  Animations: 4
+Color key = 0, 132, 132
+[SpriteSheet] Loaded 'Enemy'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Sega Genesis - Flicky - Characters - Flicky, Chirps, Tiger and Iggy.png
+  Frames: 5
+  Animations: 4
+Color key = 0, 136, 136
+[SpriteSheet] Loaded 'flicky'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
+  Frames: 7
+  Animations: 5
+Color key = 0, 132, 132
+[SpriteSheet] Loaded 'Enemy'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Sega Genesis - Flicky - Characters - Flicky, Chirps, Tiger and Iggy.png
+  Frames: 5
+  Animations: 4
+Color key = 0, 132, 132
+[SpriteSheet] Loaded 'Enemy'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Sega Genesis - Flicky - Characters - Flicky, Chirps, Tiger and Iggy.png
+  Frames: 5
+  Animations: 4
+Color key = 0, 136, 136
+[SpriteSheet] Loaded 'flicky'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
+  Frames: 7
+  Animations: 5
+Color key = 0, 132, 132
+[SpriteSheet] Loaded 'Enemy'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Sega Genesis - Flicky - Characters - Flicky, Chirps, Tiger and Iggy.png
+  Frames: 5
+  Animations: 4
+Color key = 0, 132, 132
+[SpriteSheet] Loaded 'Enemy'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Sega Genesis - Flicky - Characters - Flicky, Chirps, Tiger and Iggy.png
+  Frames: 5
+  Animations: 4
+===============================================================================
+All tests passed (10 assertions in 1 test case)
+
+<end of output>
+Test time =   0.59 sec
+----------------------------------------------------------
+Test Passed.
+"NyanNyan sprite sheet and animations" end time: Jan 04 04:58 Pakistan Standard Time
+"NyanNyan sprite sheet and animations" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/4 Testing: Spawner sprite sheet and animations
+4/4 Test: Spawner sprite sheet and animations
+Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "Spawner sprite sheet and animations"
+Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
+"Spawner sprite sheet and animations" start time: Jan 04 04:58 Pakistan Standard Time
+Output:
+----------------------------------------------------------
+Filters: "Spawner sprite sheet and animations"
+Randomness seeded to: 4074576540
+Color key = 0, 136, 136
+[SpriteSheet] Loaded 'flicky'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
+  Frames: 7
+  Animations: 5
+Color key = 0, 0, 0
+[SpriteSheet] Loaded 'Spawner'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Tiger.png
+  Frames: 2
+  Animations: 2
+Color key = 0, 136, 136
+[SpriteSheet] Loaded 'flicky'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
+  Frames: 7
+  Animations: 5
+Color key = 0, 0, 0
+[SpriteSheet] Loaded 'Spawner'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Tiger.png
+  Frames: 2
+  Animations: 2
+Color key = 0, 136, 136
+[SpriteSheet] Loaded 'flicky'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
+  Frames: 7
+  Animations: 5
+Color key = 0, 0, 0
+[SpriteSheet] Loaded 'Spawner'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Tiger.png
+  Frames: 2
+  Animations: 2
+Color key = 0, 136, 136
+[SpriteSheet] Loaded 'flicky'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
+  Frames: 7
+  Animations: 5
+Color key = 0, 0, 0
+[SpriteSheet] Loaded 'Spawner'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Tiger.png
+  Frames: 2
+  Animations: 2
+Color key = 0, 136, 136
+[SpriteSheet] Loaded 'flicky'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
+  Frames: 7
+  Animations: 5
+Color key = 0, 0, 0
+[SpriteSheet] Loaded 'Spawner'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Tiger.png
+  Frames: 2
+  Animations: 2
+Color key = 0, 136, 136
+[SpriteSheet] Loaded 'flicky'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
+  Frames: 7
+  Animations: 5
+Color key = 0, 0, 0
+[SpriteSheet] Loaded 'Spawner'
+  Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Tiger.png
+  Frames: 2
+  Animations: 2
+===============================================================================
+All tests passed (6 assertions in 1 test case)
+
+<end of output>
+Test time =   0.43 sec
+----------------------------------------------------------
+Test Passed.
+"Spawner sprite sheet and animations" end time: Jan 04 04:58 Pakistan Standard Time
+"Spawner sprite sheet and animations" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Jan 04 04:58 Pakistan Standard Time

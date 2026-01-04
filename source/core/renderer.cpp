@@ -5,6 +5,7 @@
 #include <SDL3_image/SDL_image.h>
 #include <core/renderer.hpp>
 
+#include <core/game.hpp>
 #include <core/world.hpp>
 #include <entities/entity.hpp>
 
@@ -144,7 +145,33 @@ void Renderer::renderWorld(const World& world) {
 
   // draw Entities
   for (auto& e : world.entities) {
+    float entityX = e->x;
+    float entityW = e->w;
+    
+    // Check if entity is near wrap boundaries
+    bool nearLeftWrap = entityX < 100;  // Within 100 pixels of left edge
+    bool nearRightWrap = entityX + entityW > SCREEN_WIDTH - 100;  // Within 100 pixels of right edge
+    
+    // Render main entity
     e->render(*this, world.camera);
+    
+    // Render wrapped copy on opposite side if near boundary
+    if (nearLeftWrap) {
+      // Render copy on right side
+      float wrappedX = entityX + LEVEL_WIDTH;
+      float originalX = e->x;
+      e->x = wrappedX;
+      e->render(*this, world.camera);
+      e->x = originalX;  
+    }
+    else if (nearRightWrap) {
+      // Render copy on left side
+      float wrappedX = entityX - LEVEL_WIDTH;
+      float originalX = e->x;
+      e->x = wrappedX;
+      e->render(*this, world.camera);
+      e->x = originalX;  
+    }
   }
 
 }
@@ -285,30 +312,6 @@ spriteSheet* Renderer::loadSpriteSheetJSON(const std::string& id, const std::str
 
   return sheet;
 }
-
-/*
-void Renderer::renderBackground(const Camera& camera) {
-  if (!backgroundTexture)
-    return;
-
-  float texW = 0, texH = 0;
-  SDL_GetTextureSize(backgroundTexture, &texW, &texH);
-
-
-  float scaleX = (float)SCREEN_WIDTH / texW;
-  float scaleY = (float)SCREEN_HEIGHT / texH;
-  float scale = std::max(scaleX, scaleY);
-
-  SDL_FRect dst {
-    -(float)camera.x,
-    -(float)camera.y,
-    texW * scale,
-    texH * scale
-  };
-
-  SDL_RenderTexture(renderer, backgroundTexture, nullptr, &dst);
-}
-*/
 
 // INTERESTING TILE REPEATING BEHAVIOUR
 void Renderer::renderBackground(const Camera& camera)

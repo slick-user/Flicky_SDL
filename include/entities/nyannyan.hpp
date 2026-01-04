@@ -5,7 +5,7 @@ class NyanNyan : public Enemy {
 public:
 
   NyanNyan(float x, float y, Renderer& r, Player* p) : Enemy(x,y,r,p) { 
-    state = EnemyState::Idle;
+    state = State::Idle;
 
     facing = Facing::Left;
 

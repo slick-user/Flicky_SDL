@@ -2,6 +2,7 @@
 #include <entities/player.hpp>
 #include <core/camera.hpp>
 #include <core/renderer.hpp>
+#include <core/game.hpp>
 
 void Player::handleInput(float dt) {
   
@@ -37,14 +38,14 @@ void Player::handleInput(float dt) {
 }
 
 void Player::updateState(float dt) {
-    PlayerState newState = state;
+    State newState = state;
 
     if (!onGround)
-        newState = (v.y < 0) ? PlayerState::Jump : PlayerState::Fall;
+        newState = (v.y < 0) ? State::Jump : State::Fall;
     else if (std::abs(v.x) > 0.01f)
-        newState = PlayerState::Walk;
+        newState = State::Walk;
     else
-        newState = PlayerState::Idle;
+        newState = State::Idle;
 
     if (newState != state) {
         state = newState;
@@ -58,13 +59,13 @@ void Player::update(float dt, const std::vector<Platform>& platforms) {
   updateAnimation(dt, state);
 }
 
-void Player::updateAnimation(float dt, PlayerState s) {
+void Player::updateAnimation(float dt, State s) {
  
   switch (s) {
-    case PlayerState::Idle: animator->play("idle"); break;
-    case PlayerState::Walk: animator->play("walk"); break;
-    case PlayerState::Jump: animator->play("jump"); break;
-    case PlayerState::Fall: animator->play("fall"); break;
+    case State::Idle: animator->play("idle"); break;
+    case State::Walk: animator->play("walk"); break;
+    case State::Jump: animator->play("jump"); break;
+    case State::Fall: animator->play("fall"); break;
   }
 
   animator->update(dt);  

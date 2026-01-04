@@ -11,7 +11,6 @@
 #include <entities/player.hpp>
 #include <entities/enemy.hpp>
 #include <entities/projectile.hpp>
-#include <util/util.hpp>
 
 
 #include <iostream>

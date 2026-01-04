@@ -23,6 +23,12 @@ enum class Facing {
   None
 };
 
+enum class State {
+  Idle,
+  Walk,
+  Jump,
+  Fall
+};
 
 #include <iostream>
 #include <vector>

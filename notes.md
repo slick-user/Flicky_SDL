@@ -5,19 +5,25 @@ g++ -o Flicky main.cpp "Source Files/game.cpp" "Source Files/player.cpp" "Source
 For the Editor version:
 g++ -o Flicky main.cpp "Source Files/editor.cpp" "Source Files/util.cpp" -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
+*These are no longer used to compile the game*
+
+Instead now you have to use the CMake build system for compilations
+
 # To do
 
-    - Added Camera. we will begin development of enemies, chicks, level complete and projectiles
-    - Rewriting Game Engine
+    - CURRENT PRIORITY: SCREEN WRAPPING (DONE)
+
+    - Enemy Collision, Slight tweaks to the enemy jump (WIP)
+
+    - Fail State
+
+    - Replacing the Game Editor with a new one
+    - need to write the chicks, level complete and projectiles
+    - Rewriting Game Engine, (Main Rewrite is complete)
 
 ----------------------------------------------------------------
 
 ========================================================================================
-code for a debug hitbox for the player :
-  SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-  SDL_Rect debugBox = { player->p.x - camera.x, player->p.y - camera.y, PLAYER_WIDTH, PLAYER_HEIGHT };
-  SDL_RenderDrawRect(renderer, &debugBox);
-
 Lets start with the system, I feel like I should document this game a lot better than I have, for that I should have a place where I can document the development of this game, I know I will write a website that I will host and that is where I will write about the development of this software. I don't really feel like doing that... I can do that and do this, lets do both
 
 It's been a while since I have revisited this thing lets fix the bad bits rewrite all the systems that need rewriting so that we don't have to worry about factorization anymore and instead we can focus on implementing features
@@ -108,3 +114,7 @@ So since we are recreating the player
 **AABB Platformer Loop** : move->check->resolve->update
 
 we have basically reconstructed movement and a lot faster than we did the first time around knowing we don't have to refactor a lot of code. I was much less experienced the last time, but this code is a lot better than what we had the first time around
+
+### 4th January 2026
+Been a while decide to work on the spawner. I think we might just keep the spawner as an entity that follows the same collision system and the like that the rest of our entities do
+

@@ -6,23 +6,16 @@
 
 class Player;
 
-enum class EnemyState {
-  Idle, 
-  Walk,
-  Jump,
-  Fall
-};
-
 class Enemy : public Entity { 
   public:  
     SDL_Texture* texture = nullptr;
     spriteSheet* sprite = nullptr;
 
-    EnemyState state;
+    State state;
 
     Enemy(float x, float y, Renderer& r, Player* p) : Entity(x,y,32,38) { 
       player = p;
-      state = EnemyState::Idle;
+      state = State::Idle;
 
       sheet = r.loadSpriteSheetJSON("Enemy", std::string(PROJECT_ROOT) + "/metadata/enemy.json");
 
@@ -34,7 +27,7 @@ class Enemy : public Entity {
   virtual void ai(float dt, const std::vector<Platform>& platforms) = 0;
 
   virtual void updateState(float dt);
-  virtual void updateAnimation(float dt, EnemyState s); 
+  virtual void updateAnimation(float dt, State s); 
   virtual void update(float dt, const std::vector<Platform>& platforms) override;
 
 

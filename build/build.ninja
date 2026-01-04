@@ -116,13 +116,13 @@ build CMakeFiles/FlickyEngine.dir/source/entities/projectile.cpp.obj: CXX_COMPIL
   OBJECT_DIR = CMakeFiles\FlickyEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\FlickyEngine.dir\source\entities
 
-build CMakeFiles/FlickyEngine.dir/source/util/util.cpp.obj: CXX_COMPILER__FlickyEngine_unscanned_ D$:/Programming/C++$ Scripts/Flicky$ Remake/source/util/util.cpp || cmake_object_order_depends_target_FlickyEngine
+build CMakeFiles/FlickyEngine.dir/source/entities/spawner.cpp.obj: CXX_COMPILER__FlickyEngine_unscanned_ D$:/Programming/C++$ Scripts/Flicky$ Remake/source/entities/spawner.cpp || cmake_object_order_depends_target_FlickyEngine
   DEFINES = -DPROJECT_ROOT="\"D:/Programming/C++ Scripts/Flicky Remake\""
-  DEP_FILE = CMakeFiles\FlickyEngine.dir\source\util\util.cpp.obj.d
+  DEP_FILE = CMakeFiles\FlickyEngine.dir\source\entities\spawner.cpp.obj.d
   FLAGS = -std=gnu++17
   INCLUDES = -isystem "D:/Programming/C++ Scripts/Flicky Remake/include"
   OBJECT_DIR = CMakeFiles\FlickyEngine.dir
-  OBJECT_FILE_DIR = CMakeFiles\FlickyEngine.dir\source\util
+  OBJECT_FILE_DIR = CMakeFiles\FlickyEngine.dir\source\entities
 
 
 # =============================================================================
@@ -132,7 +132,7 @@ build CMakeFiles/FlickyEngine.dir/source/util/util.cpp.obj: CXX_COMPILER__Flicky
 #############################################
 # Link the static library libFlickyEngine.a
 
-build libFlickyEngine.a: CXX_STATIC_LIBRARY_LINKER__FlickyEngine_ CMakeFiles/FlickyEngine.dir/source/core/camera.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/game.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/renderer.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/world.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/NyanNyan.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/enemy.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/entity.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/player.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/projectile.cpp.obj CMakeFiles/FlickyEngine.dir/source/util/util.cpp.obj
+build libFlickyEngine.a: CXX_STATIC_LIBRARY_LINKER__FlickyEngine_ CMakeFiles/FlickyEngine.dir/source/core/camera.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/game.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/renderer.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/world.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/NyanNyan.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/enemy.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/entity.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/player.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/projectile.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/spawner.cpp.obj
   OBJECT_DIR = CMakeFiles\FlickyEngine.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
