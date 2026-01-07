@@ -26,9 +26,10 @@ const int RIGHT_WRAP_BOUNDS = LEVEL_WIDTH - 320;
 
 const int CAMERA_SCROLL_SPEED = 10;
 
-enum {
-  IDLE,
+enum class GameState{
+  PAUSED,
   RUNNING,
+  GAMEOVER
 };
 
 class Game {
@@ -46,6 +47,9 @@ class Game {
     void update(float dt);
     void render();
 
+    void resetGame();
+    void handleGameOver(float dt);
+
   private:
     Renderer renderer;
     World* world = nullptr;
@@ -54,5 +58,11 @@ class Game {
  
     std::vector<SDL_Rect> spawner; 
     std::vector<SDL_Rect> platform;
+
+    GameState state = GameState::RUNNING;
+    int lives = 3;
+    int score = 0;
+    float gameOverTimer = 0.0f;
+    const float GAME_OVER_DELAY = 2.0f;
 
 };

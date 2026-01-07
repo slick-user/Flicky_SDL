@@ -1,22 +1,52 @@
 #ChangeLog
+# Changelog
 
-## [0.3.1] - 2026-01-03
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+for now an example of what it could look like
+
 ### Added
-    - Added the Renderer System to deal with drawing from now on
-    - Added a Testing Frame Work
-    - Implemented a Build System to make game compilation easier and smoother
-    - Added a standalone Camera
-    - Added an Animation Player to handle spritesheets handling
-    - Completed Enemy AI
-    - Added Spawners
+- Feature X
+- Feature Y
+
 ### Changed
-    - Changed the engine layout, how game.cpp handles flow, order of events, Entitie loading
-    - Reduced the responsibilities of **game.cpp**, by adding **world.cpp**
-    - Changed the physics and Collision system
-    - Removed the usage of **Utils**
-    - Added Enemy Assets
-    - Changed Screen Wrapping
+- Improvement to system Z
+
 ### Fixed
+- Bug fix A
+
+## [0.3.1] - [date]
+
+### Added
+- Renderer System for drawing abstraction
+- Testing Framework (Catch2)
+- CMake Build System
+- Standalone Camera system
+- Animation Player for spritesheet handling
+- Enemy AI implementation
+- Spawner entities
+- Entity collision system
+
+### Changed
+- Engine layout and game.cpp flow
+- Reduced game.cpp responsibilities by adding world.cpp
+- Physics and collision system refactor
+- Removed Utils dependency
+- Screen wrapping implementation
+
+### Fixed
+- 
+
+## [0.2.0]
+- C++ rewrite from C prototype
+
+## [0.1.0]
+- Initial C prototype
 
 # Reasoning behind Version Control
 This is considering `0.1` to have been the prototype that was originally written in C. 

@@ -93,8 +93,12 @@ Renderer 0 0
 Animator 0 0
 NyanNyan 0 0
 Spawner 0 0
-Renderer Initializes Correctly 1 0.190398
-Animator advances frames correctly 1 0.0431783
-NyanNyan sprite sheet and animations 1 0.590771
-Spawner sprite sheet and animations 1 0.434462
+Renderer 0 0
+Animator 0 0
+NyanNyan 0 0
+Spawner 0 0
+Renderer Initializes Correctly 1 0.345253
+Animator advances frames correctly 1 0.0579295
+NyanNyan sprite sheet and animations 1 0.849982
+Spawner sprite sheet and animations 1 0.696213
 ---

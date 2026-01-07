@@ -11,11 +11,11 @@ Instead now you have to use the CMake build system for compilations
 
 # To do
 
-    - CURRENT PRIORITY: SCREEN WRAPPING (DONE)
+    - SCREEN WRAPPING (DONE)
 
-    - Enemy Collision, Slight tweaks to the enemy jump (WIP)
+    - Enemy Collision (DONE) , Slight tweaks to the enemy jump (WIP)
 
-    - Fail State
+    - Fail State (Will possibly be completed at a later date)
 
     - Replacing the Game Editor with a new one
     - need to write the chicks, level complete and projectiles
@@ -36,10 +36,53 @@ already off to a bad start with the main function
 
 ## Version Control
 I think I just found out about one of the best additions I can have to my process. Implementing and using version control. One way would be Having multiple branches 
-  - `main` branch for stable builds 
-  - `develop` branch for integration
-  - feature/* for my systems
-  - hotfix/* emergency fixes
+
+### Branch structure
+'main'          # Stable, production-ready code
+'develop'       # Integration branch for features
+'feature/*'     # Individual features (feature/collision-system)
+'hotfix/*'      # Emergency fixes (hotfix/crash-on-startup)
+'release/*'     # Release preparation (release/v0.4.0)
+
+### Possible Workflow
+# Start a new feature
+git checkout develop
+git pull origin develop
+git checkout -b feature/enemy-ai-improvements
+
+# Work on feature, commit frequently
+git add .
+git commit -m "feat: improve enemy ledge detection logic"
+
+# When done, merge to develop
+git checkout develop
+git merge --no-ff feature/enemy-ai-improvements
+git push origin develop
+
+# When ready for release
+git checkout main
+git merge --no-ff develop
+git tag -a v0.4.0 -m "Release v0.4.0"
+git push origin main --tags
+
+### Commit Conventions
+# Format: <type>(<scope>): <subject>
+
+# Types:
+feat:     # New feature
+fix:      # Bug fix
+docs:     # Documentation
+style:    # Formatting, no code change
+refactor: # Code restructuring
+test:     # Adding tests
+chore:    # Build, dependencies, etc.
+
+# Examples:
+feat(collision): add player-enemy collision detection
+fix(ai): enemy no longer falls through platforms
+refactor(renderer): extract sprite rendering to separate class
+docs(readme): add build instructions
+test(entity): add unit tests for collision detection
 
 ## Architecture and Design Questions
 
@@ -105,7 +148,7 @@ or we could have the frame data saved in a JSON style format and then read the m
 }
 ```
 
-### 21st Dec 2025
+### Thoughts
 So we have a bunch of systems that need to be extended and improved namely our rudimentary level loading system, need to see if our animatio system is complete. 
 Finally we need to ensure that the player physics and interactions should be working.
 
@@ -113,8 +156,9 @@ So since we are recreating the player
 
 **AABB Platformer Loop** : move->check->resolve->update
 
-we have basically reconstructed movement and a lot faster than we did the first time around knowing we don't have to refactor a lot of code. I was much less experienced the last time, but this code is a lot better than what we had the first time around
+we have basically reconstructed movement and a lot faster than we did the first time around knowing we don't have to refactor a lot of code. I was much less experienced the last time, but this code is a lot better than what we had the 
 
-### 4th January 2026
-Been a while decide to work on the spawner. I think we might just keep the spawner as an entity that follows the same collision system and the like that the rest of our entities do
+Been a while decide to work on the spawner. I think we might just keep the spawner as an entity that follows the same collision system and the like that the rest of our entities do.
+
+The engine itself will be handling all of the collisions instead of the entities dealing with the collisions
 

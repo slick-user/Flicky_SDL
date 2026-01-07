@@ -30,6 +30,8 @@ class Enemy : public Entity {
   virtual void updateAnimation(float dt, State s); 
   virtual void update(float dt, const std::vector<Platform>& platforms) override;
 
+  void onCollision(Entity* other) override;
+  virtual const char* getEntityType() const override { return "Enemy"; }
 
   protected:
     int frame = 0;

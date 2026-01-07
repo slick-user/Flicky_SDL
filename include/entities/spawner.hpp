@@ -5,6 +5,8 @@ class World;
 class NyanNyan;
 class Player;
 
+const float SPAWN_DELAY = 1.5f;
+
 class Spawner : public Entity {
 public:
 
@@ -21,7 +23,9 @@ public:
   World* world = nullptr;
   Enemy* enemy = nullptr;
   Player* player = nullptr;
-;
+
+  float timer = 0.0f;
+
   Spawner(float x, float y, Renderer& r, Player* p, World* w) : Entity(x,y,32,38), player(p), world(w) {
     state = State::Idle;
     sheet = r.loadSpriteSheetJSON("Spawner", std::string(PROJECT_ROOT) + "/metadata/spawner.json");

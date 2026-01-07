@@ -53,6 +53,7 @@ void Player::updateState(float dt) {
 }
 
 void Player::update(float dt, const std::vector<Platform>& platforms) {
+
   handleInput(dt);                
   Entity::update(dt, platforms);
   updateState(dt);
@@ -72,3 +73,19 @@ void Player::updateAnimation(float dt, State s) {
 
 }
 
+void Player::onCollision(Entity* e) {
+  if (e->getEntityType() == std::string("Enemy")) {
+    lives -= 1;
+    
+    if (world) {
+      world->startRespawnDelay();
+    }
+  } 
+}
+
+void Player::respawn() {
+  x = spawnX;
+  y = spawnY;
+  v.x = 0.0f;
+  v.y = 0.0f;
+}

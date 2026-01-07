@@ -77,11 +77,13 @@ public:
 
   void drawSprite(SDL_Texture* tex, const SDL_FRect& src, const SDL_FRect& dst, bool flipX);
 
-
   void renderWorld(const World& world);
 
   std::unordered_map<std::string, SDL_Texture*> textures;
   std::unordered_map<std::string, spriteSheet*> spriteSheets;
+
+  // Special Case Methods
+  void drawBlackScreen();
 
 private:
   SDL_Texture* backgroundTexture = nullptr;

@@ -10,16 +10,69 @@ bool intersects(const SDL_FRect& a, const SDL_FRect& b) {
            a.y >= b.y + b.h);   // a vpos is >= b vpos
 }
 
-Facing atEdge(const SDL_FRect& a, const SDL_FRect& b) {
-  // Check if enemy's left side is near platform's left edge
-  bool nearLeftEdge = std::abs(a.x - b.x) <=0.1f;
-    
-  // Check if enemy's right side is near platform's right edge
-  bool nearRightEdge = std::abs((a.x + a.w) - (b.x + b.w)) <= 0.1f;
+Facing atEdge(const SDL_FRect& entity, const SDL_FRect& platform) {
+  // Check to see if current platform is the one entity is standing on
+  float footY = entity.y + entity.h;
+  bool onPlatform = (footY >= platform.y - 2.0f) && 
+                    (footY <= platform.y + 2.0f);
+  
+  if (!onPlatform) return Facing::None;
+  
+  // Check horizontal overlap
+  bool overlaps = (entity.x < platform.x + platform.w) && 
+                  (entity.x + entity.w > platform.x);
+  if (!overlaps) return Facing::None;
+  
+  // Check if near left edge
+  float distToLeft = std::abs(entity.x - platform.x);
+  bool nearLeftEdge = distToLeft <= 5.0f;  // Increased tolerance
+  
+  // Check if near right edge  
+  float distToRight = std::abs((entity.x + entity.w) - (platform.x + platform.w));
+  bool nearRightEdge = distToRight <= 5.0f;
   
   if (nearLeftEdge) return Facing::Left;
-  else if (nearRightEdge) return Facing::Right;
-  else return Facing::None;
+  if (nearRightEdge) return Facing::Right;
+  return Facing::None;
+}
+
+// Helper function to check if there's a platform ahead to land on
+bool hasLandingPlatform(const SDL_FRect& entity, Facing direction, 
+                          const std::vector<Platform>& platforms, float jumpDistance) {
+
+  float checkX = (direction == Facing::Left) ? entity.x - jumpDistance : entity.x + entity.w + jumpDistance;
+
+  float checkY = entity.y + entity.h + 50.0f;  // Check below current platform
+
+  for (const auto& p : platforms) {
+    // Check if platform is in jump range
+    if (p.bounds.x <= checkX && checkX <= p.bounds.x + p.bounds.w) {
+      float platformTop = p.bounds.y;
+      float currentBottom = entity.y + entity.h;
+
+      // Platform should be below but not too far
+      if (platformTop > currentBottom && 
+          platformTop - currentBottom < 200.0f) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+bool isAtGap(const SDL_FRect& entity, Facing direction, 
+             const std::vector<Platform>& platforms) {
+  float checkX = (direction == Facing::Left) ? entity.x - 10.0f : entity.x + entity.w + 10.0f;
+  float checkY = entity.y + entity.h + 5.0f;  // Just below feet
+
+  // Check if there's a platform at this position
+  for (const auto& p : platforms) {
+    if (p.bounds.x <= checkX && checkX <= p.bounds.x + p.bounds.w &&
+    std::abs(p.bounds.y - checkY) < 20.0f) {
+    return false;  // Platform exists, not a gap
+    }
+  }
+  return true;  // No platform, it's a gap
 }
 
 void Entity::render(Renderer& renderer, const Camera& cam) {
@@ -78,7 +131,6 @@ void Entity::resolveVertical(const std::vector<Platform>& platforms) {
         if (!overlapX)
             continue;
 
-        // ---- 1️⃣ PENETRATION-BASED COLLISION ----
         if (intersects(box, p.bounds)) {
 
             if (v.y > 0) {
@@ -96,7 +148,6 @@ void Entity::resolveVertical(const std::vector<Platform>& platforms) {
             }
         }
 
-        // ---- 2️⃣ EPSILON-BASED GROUND STICKINESS ----
         float footDist = (box.y + box.h) - p.bounds.y;
 
         if (v.y == 0 &&

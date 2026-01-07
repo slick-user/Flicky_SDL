@@ -18,11 +18,16 @@ public:
 
   void update(float dt);
 
+  void startRespawnDelay();
+  bool isRespawning() const { return respawnTimer > 0.0f; }
+
 private:
 
   int platformCount = 0;
+  float respawnTimer = 0.0f;
+  const float RESPAWN_DELAY = 2.0f;
 
-  //later have to implement the remaining items
+  void checkEntityCollisions();
 
 public:
   std::vector<Platform> platforms;

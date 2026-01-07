@@ -67,8 +67,14 @@ void Game::update(float dt) {
 
 void Game::render() {
   renderer.clear();
-  renderer.renderBackground(world->camera);
-  renderer.renderWorld(*world);
+
+  if (!world->isRespawning()) {
+    renderer.renderBackground(world->camera);
+    renderer.renderWorld(*world);
+  } else {
+    renderer.drawBlackScreen();
+  }
+
   renderer.present();
 }
 

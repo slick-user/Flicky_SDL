@@ -75,6 +75,10 @@ public:
 
   virtual void applyPhysics(float dt, const std::vector<Platform>& platforms);
 
+  virtual void onCollision(Entity* other) {}
+
+  virtual const char* getEntityType() const { return "Entity"; } 
+
 private:
   void resolveVertical(const std::vector<Platform>& platforms);
   void resolveHorizontal(const std::vector<Platform>& platforms);

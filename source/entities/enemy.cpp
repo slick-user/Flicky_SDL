@@ -34,3 +34,8 @@ void Enemy::updateAnimation(float dt, State s) {
   animator->update(dt);  
 }
 
+void Enemy::onCollision(Entity* e) {
+  if (e->getEntityType() == std::string("Player")) {
+    // do nothing
+  } 
+}

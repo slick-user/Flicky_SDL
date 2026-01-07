@@ -4,14 +4,12 @@
 build/
 out/
 bin/
-lib/*.a
-lib/*.dll
-lib/*.dll.a
-lib/*.lib
 *.exe
 *.dll
 *.so
 *.dylib
+*.a
+*.lib
 
 # --------------------
 # CMake
@@ -22,6 +20,9 @@ cmake_install.cmake
 compile_commands.json
 CTestTestfile.cmake
 Makefile
+*.ninja
+.ninja_deps
+.ninja_log
 
 # --------------------
 # Object files
@@ -44,12 +45,21 @@ Makefile
 *.user
 *.suo
 *.log
+compile_flags.txt
+
+# --------------------
+# Language Server / Tools
+# --------------------
+.cache/
+.clangd/
+*.cache
 
 # --------------------
 # OS junk
 # --------------------
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # --------------------
 # Debug / profiling
@@ -63,9 +73,25 @@ Thumbs.db
 # Keep source assets, ignore generated ones
 assets/exported/
 assets/temp/
+build/assets/  # Generated assets in build dir
 
 # --------------------
 # CI artifacts
 # --------------------
 *.zip
 *.tar.gz
+*.7z
+
+# --------------------
+# Dependencies (if using git submodules, ignore these)
+# --------------------
+# Uncomment if you want to track SDL3 as submodule instead
+lib/SDL3/
+include/SDL3/
+
+# --------------------
+# Temporary files
+# --------------------
+*.tmp
+*.bak
+*~

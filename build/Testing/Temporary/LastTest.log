@@ -1,22 +1,22 @@
-Start testing: Jan 04 04:58 Pakistan Standard Time
+Start testing: Jan 05 03:00 Pakistan Standard Time
 ----------------------------------------------------------
 1/4 Testing: Renderer Initializes Correctly
 1/4 Test: Renderer Initializes Correctly
 Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "Renderer Initializes Correctly"
 Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
-"Renderer Initializes Correctly" start time: Jan 04 04:58 Pakistan Standard Time
+"Renderer Initializes Correctly" start time: Jan 05 03:00 Pakistan Standard Time
 Output:
 ----------------------------------------------------------
 Filters: "Renderer Initializes Correctly"
-Randomness seeded to: 3589400143
+Randomness seeded to: 4249207722
 ===============================================================================
 All tests passed (1 assertion in 1 test case)
 
 <end of output>
-Test time =   0.19 sec
+Test time =   0.35 sec
 ----------------------------------------------------------
 Test Passed.
-"Renderer Initializes Correctly" end time: Jan 04 04:58 Pakistan Standard Time
+"Renderer Initializes Correctly" end time: Jan 05 03:00 Pakistan Standard Time
 "Renderer Initializes Correctly" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -24,19 +24,19 @@ Test Passed.
 2/4 Test: Animator advances frames correctly
 Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "Animator advances frames correctly"
 Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
-"Animator advances frames correctly" start time: Jan 04 04:58 Pakistan Standard Time
+"Animator advances frames correctly" start time: Jan 05 03:00 Pakistan Standard Time
 Output:
 ----------------------------------------------------------
 Filters: "Animator advances frames correctly"
-Randomness seeded to: 2465954847
+Randomness seeded to: 2948087441
 ===============================================================================
 All tests passed (3 assertions in 1 test case)
 
 <end of output>
-Test time =   0.04 sec
+Test time =   0.06 sec
 ----------------------------------------------------------
 Test Passed.
-"Animator advances frames correctly" end time: Jan 04 04:58 Pakistan Standard Time
+"Animator advances frames correctly" end time: Jan 05 03:00 Pakistan Standard Time
 "Animator advances frames correctly" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -44,11 +44,11 @@ Test Passed.
 3/4 Test: NyanNyan sprite sheet and animations
 Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "NyanNyan sprite sheet and animations"
 Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
-"NyanNyan sprite sheet and animations" start time: Jan 04 04:58 Pakistan Standard Time
+"NyanNyan sprite sheet and animations" start time: Jan 05 03:00 Pakistan Standard Time
 Output:
 ----------------------------------------------------------
 Filters: "NyanNyan sprite sheet and animations"
-Randomness seeded to: 3098196484
+Randomness seeded to: 3197400354
 Color key = 0, 136, 136
 [SpriteSheet] Loaded 'flicky'
   Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
@@ -113,10 +113,10 @@ Color key = 0, 132, 132
 All tests passed (10 assertions in 1 test case)
 
 <end of output>
-Test time =   0.59 sec
+Test time =   0.85 sec
 ----------------------------------------------------------
 Test Passed.
-"NyanNyan sprite sheet and animations" end time: Jan 04 04:58 Pakistan Standard Time
+"NyanNyan sprite sheet and animations" end time: Jan 05 03:00 Pakistan Standard Time
 "NyanNyan sprite sheet and animations" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -124,11 +124,11 @@ Test Passed.
 4/4 Test: Spawner sprite sheet and animations
 Command: "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests.exe" "Spawner sprite sheet and animations"
 Directory: D:/Programming/C++ Scripts/Flicky Remake/build/test
-"Spawner sprite sheet and animations" start time: Jan 04 04:58 Pakistan Standard Time
+"Spawner sprite sheet and animations" start time: Jan 05 03:00 Pakistan Standard Time
 Output:
 ----------------------------------------------------------
 Filters: "Spawner sprite sheet and animations"
-Randomness seeded to: 4074576540
+Randomness seeded to: 1203519414
 Color key = 0, 136, 136
 [SpriteSheet] Loaded 'flicky'
   Texture: D:/Programming/C++ Scripts/Flicky Remake/assets/Arcade - Flicky - Playable Characters - Flicky.png
@@ -193,11 +193,11 @@ Color key = 0, 0, 0
 All tests passed (6 assertions in 1 test case)
 
 <end of output>
-Test time =   0.43 sec
+Test time =   0.70 sec
 ----------------------------------------------------------
 Test Passed.
-"Spawner sprite sheet and animations" end time: Jan 04 04:58 Pakistan Standard Time
+"Spawner sprite sheet and animations" end time: Jan 05 03:00 Pakistan Standard Time
 "Spawner sprite sheet and animations" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Jan 04 04:58 Pakistan Standard Time
+End testing: Jan 05 03:00 Pakistan Standard Time

@@ -338,3 +338,10 @@ void Renderer::renderBackground(const Camera& camera)
     }
 }
 
+
+void Renderer::drawBlackScreen() {
+  SDL_FRect screen = {0, 0, (float)screenWidth, (float)screenHeight};
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+  SDL_RenderRect(renderer, &screen);
+}
+

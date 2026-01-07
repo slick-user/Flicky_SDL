@@ -16,11 +16,14 @@ class Player : public Entity{
 public:
   SDL_Texture* texture = nullptr;
   spriteSheet* sprite = nullptr;
+  World* world = nullptr;
 
   State state;
 
+  int lives = 3;
+
   Player(SDL_Texture* tex, float x, float y) : Entity(x,y,18,36), texture(tex) {}
-  Player(float x, float y, Renderer& r) : Entity(x,y,18,36) {
+  Player(float x, float y, Renderer& r) : Entity(x,y,18,36), spawnX(x), spawnY(y) {
     
     state = State::Idle;
 
@@ -38,10 +41,21 @@ public:
 
   void update(float dt, const std::vector<Platform>& platforms) override;
 
+  void onCollision(Entity* other) override;
+  void respawn();
+  virtual const char* getEntityType() const override { return "Player"; }
+
+  void setWorld(World* w) { world = w; }
+
 public:
   int frame = 0;
   float animTimer = 0.0f;
   float animSpeed = 0.0f;
   std::string spriteId;
+
+  float spawnX;
+  float spawnY;
+
+  bool isHit = false;
 };
 
