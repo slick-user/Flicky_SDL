@@ -4,6 +4,7 @@
 #include <entities/enemy.hpp>
 #include <entities/entity.hpp>
 #include <entities/nyannyan.hpp>
+#include <entities/projectile.hpp>
 #include <entities/spawner.hpp>
 #include <core/game.hpp>
 #include <fstream>
@@ -17,6 +18,8 @@ World::World(int screenW, int screenH, Renderer& r) : camera(screenW, screenH), 
   ptr->setWorld(this);
 
   entities.push_back(new Spawner(500, 0, r, ptr, this));
+
+  entities.push_back(new Projectile(30, 0, r, this));
 }
 
 World::~World() {}
@@ -35,7 +38,8 @@ void World::loadLevel(const std::string& filename) {
     platforms.resize(platformCount);
 
     for (int i = 0; i < platformCount; i++) {
-        file >> platforms[i].bounds.x >> platforms[i].bounds.y >> platforms[i].bounds.w >> platforms[i].bounds.h;
+        file >> platforms[i].bounds.x >> platforms[i].bounds.y 
+             >> platforms[i].bounds.w >> platforms[i].bounds.h;
     }
 }
 
@@ -64,11 +68,17 @@ void World::loadLevel(const std::string& filename) {
       file >> x >> y;
       entities.push_back(new Player(x, y, *r));
       ptr = dynamic_cast<Player*>(entities[0]);
+      ptr->setWorld(this);
     }
     else if (type == "enemy") {
       float x, y;
       file >> x >> y;
       entities.push_back(new NyanNyan(x, y, *r, ptr));
+    }
+    else if (type == "projectile") {
+      float x, y;
+      file >> x >> y;
+      entities.push_back(new Projectile(x, y, *r, ptr));
     }
         
   }

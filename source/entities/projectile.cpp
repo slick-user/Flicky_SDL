@@ -1,108 +1,110 @@
-/*
-#include "../../include/entities/projectile.hpp"
+#include <entities/projectile.hpp>
+#include <entities/player.hpp>
+#include <entities/enemy.hpp>
+#include <core/world.hpp>
+#include <core/game.hpp>
 
-Projectile::Projectile(Player* player, SDL_Renderer* renderer, int x, int y, int w, int h) : Entity(renderer, x, y, w, h), player(player) {
-  texture = loadTexture(renderer, "./assets/Custom Edited - Sonic the Hedgehog Customs - Flicky Sonic 1-Style Expanded.png");
-}
-
-void Projectile::setState(int i) {
-  state = i;
-}
-
-void Projectile::setDir(int i) {
-  dir = i;
-}
-
-void Projectile::update(const std::vector<SDL_Rect>& platform, const int platformCount) {
-  
-  moved = 0;
-
-  if (state == 1) {
-    p.x = player->p.x;
-    p.y = player->p.y; 
-  }
-
-  if (state == 2) {  
-    if (dir == 1) {
-      vel[0] = SPEED; 
-      moved = 1;
-    }
-    else if (dir == 2) {
-      vel[0] = -SPEED;
-      moved = 2;
-    }  
-  }
-
-  if (vel[1] > MAX_FALL_SPEED) vel[1] = MAX_FALL_SPEED;
-  
-  p.x += vel[0];
-  p.y += vel[1];
-
-  checkCollision(platform, platformCount); 
-
-}
-
-void Projectile::checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount) {
-   
-  // storing old position for collision response
-  SDL_Rect oldPosition = p;
-
-  int i = 0;
-
-  // Gravity  
-  if (p.y < GROUND_LEVEL){
-    vel[1] += 1;
-  }
-  else if (p.y > GROUND_LEVEL) {
-    vel[1] = 0;
-    can_jump = true;
-    p.y = GROUND_LEVEL;
-  }
- 
-  
-  // Player Collision
-  if (SDL_HasRectIntersection(&p, &player->p)) {
-    if (!player->getPot() && state == 0) {
-      player->setPot(true);
-      player->setProjectile(this);
-      state = 1;
-    }
-  }
-
-  // Enemy Collision
-  
-  // Collision Check
-  for (i=0; i<platformCount; i++) {
-
-    if (SDL_HasRectIntersection(&p, &platform[i])) {
-      CollisionSide side = getCollisionSide(oldPosition, p, platform[i]);
-    
-      switch (side) {
-        
-        case CollisionSide::TOP:
-          //landing on platform from below
-          p.y = platform[i].y - p.h;
-          vel[1] = 0;
-          can_jump = true;
-          //onPlatform = true;
-          break;
-
-        case CollisionSide::BOTTOM:
-          //Hitting platform from below
-          p.y = platform[i].y + platform[i].h;
-          vel[1] = 0;
-          break;
-
-        case CollisionSide::LEFT:
-        case CollisionSide::RIGHT:
-          p.x = oldPosition.x;
-          vel[0] = 0;
-          break;
+void Projectile::update(float dt, const std::vector<Platform>& platforms) {
+  switch (state) {
+    case State::Pickable:
+      Entity::update(dt, platforms);
+      break;
+      
+    case State::Carried:
+      // Follow player position
+      if (carrier) {
+        // Position relative to player
+        x = carrier->x + (carrier->w - w) * 0.5f;
+        y = carrier->y - h - 2.0f;  // Slightly above player
+        v.x = 0.0f;
+        v.y = 0.0f;
+        onGround = false; // on Ground disables physics
       }
-    break;
-    }
+      break;
+      
+    case State::Thrown:
+      Entity::update(dt, platforms);
+      
+      // Check if hit wall or went off screen
+      if (x < 0 || x > LEVEL_WIDTH + 100) {
+        auto& entities = world->entities;
+        // Kills Enemy, (before that we will need to send the enemy flying)
+        auto it = std::find(entities.begin(), entities.end(), this);
+        if (it != entities.end()) {
+          delete *it;
+          entities.erase(it);
+        }
+      }
+      break;
+  }
+  
+  updateAnimation(dt);
+}
 
+void Projectile::pickUp(Player* player) {
+  if (state != State::Pickable) return;
+  
+  state = State::Carried;
+  carrier = player;
+  v.x = 0.0f;
+  v.y = 0.0f;
+}
+
+void Projectile::throwProjectile(Facing direction) {
+  if (state != State::Carried || !carrier) return;
+  
+  state = State::Thrown;
+  facing = direction;
+  
+  v.x = (direction == Facing::Left) ? -THROW_SPEED : THROW_SPEED;
+  //v.y = THROW_VELOCITY_Y;  // Upward arc
+  
+  // Position at player's position when thrown
+  x = carrier->x + (carrier->w - w) * 0.5f;
+  y = carrier->y - h;
+  
+  carrier = nullptr;
+}
+
+void Projectile::drop() {
+  if (state != State::Carried) return;
+  
+  state = State::Pickable;
+  carrier = nullptr;
+  v.x = 0.0f;
+  v.y = 0.0f;
+}
+
+void Projectile::onCollision(Entity* other) {
+  if (state != State::Thrown) return;
+  
+  // Hit enemy - stun or damage them
+  if (other->getEntityType() == std::string("Enemy")) {
+    Enemy* enemy = dynamic_cast<Enemy*>(other);
+    if (enemy) {
+      auto& entities = world->entities;
+      // Kills Enemy, (before that we will need to send the enemy flying)
+      auto it = std::find(entities.begin(), entities.end(), enemy);
+      if (it != entities.end()) {
+        delete *it;
+        entities.erase(it);
+      }
+      
+    }
   }
 }
 
-*/
+void Projectile::updateAnimation(float dt) {
+  switch (state) {
+    case State::Pickable:
+      animator->play("idle");
+      break;
+    case State::Carried:
+      animator->play("carried");
+      break;
+    case State::Thrown:
+      animator->play("thrown");
+      break;
+  }
+  animator->update(dt);
+}

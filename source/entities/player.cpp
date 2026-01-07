@@ -1,8 +1,10 @@
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_rect.h>
 #include <entities/player.hpp>
 #include <core/camera.hpp>
 #include <core/renderer.hpp>
 #include <core/game.hpp>
+#include <entities/projectile.hpp>
 
 void Player::handleInput(float dt) {
   
@@ -28,11 +30,20 @@ void Player::handleInput(float dt) {
     v.y = -JUMP_VELOCITY;
     onGround = false;
     coyoteTimer = 0.0f;
+
+    // Throwing Projectile
+    if (projectile) {
+      throwProjectile();
+    }
   }
-  
+
+  if (keys[SDL_SCANCODE_DOWN] && projectile) {
+    dropProjectile();
+  }
+
   // Variable jump height
   if (!(keys[SDL_SCANCODE_SPACE] || keys[SDL_SCANCODE_UP]) && v.y < 0) {
-        v.y *= JUMP_CUT_MULT;
+    v.y *= JUMP_CUT_MULT;
   }
 
 }
@@ -81,11 +92,41 @@ void Player::onCollision(Entity* e) {
       world->startRespawnDelay();
     }
   } 
+
+  if (e->getEntityType() == std::string("Projectile")) {
+    Projectile* proj = dynamic_cast<Projectile*>(e);
+    if (proj && proj->state == Projectile::State::Pickable && !projectile) {
+      proj->pickUp(this);
+      projectile = proj;
+    }
+  }
 }
 
 void Player::respawn() {
-  x = spawnX;
-  y = spawnY;
+  x = originX;
+  y = originY;
   v.x = 0.0f;
   v.y = 0.0f;
+}
+
+// Projectile Functions
+
+void Player::tryPickUpProjectile() {
+  if (projectile) return;
+
+  SDL_FRect playerBounds = bounds();
+}
+
+void Player::throwProjectile() {
+  if (!projectile) return;
+  
+  projectile->throwProjectile(facing);
+  projectile = nullptr;
+}
+
+void Player::dropProjectile() {
+  if (!projectile) return;
+  
+  projectile->drop();
+  projectile = nullptr;
 }

@@ -1,4 +1,3 @@
-#ChangeLog
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -8,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-for now an example of what it could look like
+for now an example of what it could look like, 0.3.1 
 
 ### Added
 - Feature X

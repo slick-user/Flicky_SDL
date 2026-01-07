@@ -1,0 +1,20 @@
+{
+    "image": "Sega Genesis - Flicky - Characters - Flicky, Chirps, Tiger and Iggy.png",
+  
+    "frames": [
+      { "name": "idle_0", "x": 1, "y": 1, "w": 16, "h": 16 },
+      { "name": "idle_1", "x": 20, "y": 1, "w": 16, "h": 16 },
+      
+      { "name": "carried_0", "x": 1, "y": 20, "w": 16, "h": 16 },
+      
+      { "name": "thrown_0", "x": 1, "y": 40, "w": 16, "h": 16 },
+      { "name": "thrown_1", "x": 20, "y": 40, "w": 16, "h": 16 },
+      { "name": "thrown_2", "x": 40, "y": 40, "w": 16, "h": 16 }
+    ],
+  
+    "animations": {
+      "idle": { "frames": ["idle_0", "idle_1"], "fps": 2 },
+      "carried": { "frames": ["carried_0"], "fps": 1 },
+      "thrown": { "frames": ["thrown_0", "thrown_1", "thrown_2"], "fps": 12 }
+    }
+  }

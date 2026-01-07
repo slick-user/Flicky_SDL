@@ -17,13 +17,15 @@ public:
   SDL_Texture* texture = nullptr;
   spriteSheet* sprite = nullptr;
   World* world = nullptr;
+  
+  Projectile* projectile = nullptr;
 
   State state;
 
   int lives = 3;
 
   Player(SDL_Texture* tex, float x, float y) : Entity(x,y,18,36), texture(tex) {}
-  Player(float x, float y, Renderer& r) : Entity(x,y,18,36), spawnX(x), spawnY(y) {
+  Player(float x, float y, Renderer& r) : Entity(x,y,18,36), originX(x), originY(y) {
     
     state = State::Idle;
 
@@ -46,6 +48,10 @@ public:
   virtual const char* getEntityType() const override { return "Player"; }
 
   void setWorld(World* w) { world = w; }
+  
+  void tryPickUpProjectile();
+  void throwProjectile();
+  void dropProjectile();
 
 public:
   int frame = 0;
@@ -53,8 +59,8 @@ public:
   float animSpeed = 0.0f;
   std::string spriteId;
 
-  float spawnX;
-  float spawnY;
+  float originX;
+  float originY;
 
   bool isHit = false;
 };

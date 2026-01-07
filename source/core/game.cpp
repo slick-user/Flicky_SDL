@@ -15,7 +15,7 @@ bool Game::init() {
   renderer.loadBackground(BGpath);
 
   world = new World(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
-  world->loadLevel((std::string(PROJECT_ROOT) + "/levels/level1.txt").c_str());
+  world->loadLevel(std::string(PROJECT_ROOT) + "/levels/level1.txt");
   //world->loadLevel((std::string(PROJECT_ROOT) + "/levels/level1 - Copy.txt"));
 
   return true;

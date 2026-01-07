@@ -1,28 +1,47 @@
 #pragma once
 
 #include <entities/entity.hpp>
-#include <util/headers.hpp>
+#include <core/renderer.hpp>
 
 class Player;
+class World;
 
-class Projectile : public Entity {  
+class Projectile : public Entity {
+public:
+  enum class State {
+    Pickable,    // On ground, can be picked up
+    Carried,     // Being carried by player
+    Thrown       // Flying through air
+  };
 
-  protected:   
-
-    // 0 for pickable, 1 for picked, 2 for thrown
-    int state = 0;
-    int dir = 0;
-
-  public:
+  State state = State::Pickable;
+  Player* carrier = nullptr;  // Player carrying this projectile
+  World* world = nullptr;
+  
+  const float THROW_SPEED = 400.0f;  // Horizontal throw speed
+  const float THROW_VELOCITY_Y = -300.0f;  // Upward throw velocity
+  
+  Projectile(float x, float y, Renderer& r, World* w) 
+    : Entity(x, y, 16, 16), world(w) {
     
-    Player* player;
-
-    Projectile(Player* player, SDL_Renderer* renderer, int x=20, int y=200, int w=18, int h=36); 
-   
-    void setState(int i);
-    void setDir(int i);
-
-    virtual void checkCollision(const std::vector<SDL_Rect>& platform, const int platformCount);
-
-    virtual void update(const std::vector<SDL_Rect>& platform, const int platformCount);
+    // Load projectile sprite sheet
+    sheet = r.loadSpriteSheetJSON("Projectile", 
+      std::string(PROJECT_ROOT) + "/metadata/projectile.json");
+    
+    animator = new Animator();
+    animator->setSheet(sheet);
+    animator->play("idle");
+  }
+  
+  void update(float dt, const std::vector<Platform>& platforms) override;
+  void onCollision(Entity* other) override;
+  const char* getEntityType() const override { return "Projectile"; }
+  
+  void pickUp(Player* player);
+  void throwProjectile(Facing direction);
+  void drop();
+  
+private:
+  void updateState(float dt);
+  void updateAnimation(float dt);
 };
