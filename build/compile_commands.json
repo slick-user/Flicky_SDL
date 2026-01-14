@@ -31,6 +31,12 @@
 },
 {
   "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",
+  "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -DPROJECT_ROOT=\"\\\"D:/Programming/C++ Scripts/Flicky Remake\\\"\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\FlickyEngine.dir\\source\\entities\\chick.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\chick.cpp\"",
+  "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\chick.cpp",
+  "output": "CMakeFiles\\FlickyEngine.dir\\source\\entities\\chick.cpp.obj"
+},
+{
+  "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",
   "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -DPROJECT_ROOT=\"\\\"D:/Programming/C++ Scripts/Flicky Remake\\\"\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\FlickyEngine.dir\\source\\entities\\enemy.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\enemy.cpp\"",
   "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\enemy.cpp",
   "output": "CMakeFiles\\FlickyEngine.dir\\source\\entities\\enemy.cpp.obj"
@@ -40,6 +46,12 @@
   "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -DPROJECT_ROOT=\"\\\"D:/Programming/C++ Scripts/Flicky Remake\\\"\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\FlickyEngine.dir\\source\\entities\\entity.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\entity.cpp\"",
   "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\entity.cpp",
   "output": "CMakeFiles\\FlickyEngine.dir\\source\\entities\\entity.cpp.obj"
+},
+{
+  "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",
+  "command": "\"D:\\Programming\\C++ Libraries and APIs\\mingw64\\bin\\c++.exe\" -DPROJECT_ROOT=\"\\\"D:/Programming/C++ Scripts/Flicky Remake\\\"\" -isystem \"D:/Programming/C++ Scripts/Flicky Remake/include\" -std=gnu++17 -o CMakeFiles\\FlickyEngine.dir\\source\\entities\\entrance.cpp.obj -c \"D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\entrance.cpp\"",
+  "file": "D:\\Programming\\C++ Scripts\\Flicky Remake\\source\\entities\\entrance.cpp",
+  "output": "CMakeFiles\\FlickyEngine.dir\\source\\entities\\entrance.cpp.obj"
 },
 {
   "directory": "D:/Programming/C++ Scripts/Flicky Remake/build",

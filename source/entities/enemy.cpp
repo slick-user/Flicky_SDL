@@ -10,9 +10,8 @@ void Enemy::updateState(float dt) {
     else
         newState = State::Idle;
 
-    if (newState != state) {
+    if (newState != state)
         state = newState;
-    }
 }
 
 void Enemy::update(float dt, const std::vector<Platform>& platforms) {

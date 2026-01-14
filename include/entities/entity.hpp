@@ -49,6 +49,7 @@ public:
 
   SDL_FPoint v = {0.0f, 0.0f};
   bool onGround;
+  bool active = true;
 
   Facing facing = Facing::Left;
 
@@ -64,6 +65,9 @@ public:
     onGround = false; 
     coyoteTimer = 0.0f;
   }
+
+  void destroy() { active = false; }
+  bool isActive() const { return active; }
 
   virtual ~Entity() = default;  
   virtual void update(float dt, const std::vector<Platform>& platforms) = 0;

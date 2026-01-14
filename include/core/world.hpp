@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <SDL3/SDL.h>
+#include <memory>
 
 #include <core/camera.hpp>
 //#include <entities/enemy.hpp>
@@ -17,9 +18,17 @@ public:
   void loadLevel(const std::string& filename);
 
   void update(float dt);
-
+  void cleanup();
+  
   void startRespawnDelay();
   bool isRespawning() const { return respawnTimer > 0.0f; }
+
+  Entity* addEntity(std::unique_ptr<Entity> e);
+  
+  void checkEntityCollisions();
+
+  void onChickRescued();
+  bool checkWinCondition() const;
 
 private:
 
@@ -27,11 +36,13 @@ private:
   float respawnTimer = 0.0f;
   const float RESPAWN_DELAY = 2.0f;
 
-  void checkEntityCollisions();
+  int totalChicks = 0;
+  int chicksExited = 0;
 
 public:
   std::vector<Platform> platforms;
-  std::vector<Entity*> entities;
+  std::vector<std::unique_ptr<Entity>> entities;
+  std::vector<std::unique_ptr<Entity>> pendingEntities;
   
   Player* player;
   Enemy* enemy;
@@ -43,5 +54,8 @@ public:
   SDL_Texture* backgroundTexture = nullptr;
   SDL_FRect backgroundSrc{0,0,510,446};
   SDL_FRect backgroundDst{0,0,510,446};
+
+  bool won = false; 
+  bool lost = false; 
 
 };

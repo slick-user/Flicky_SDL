@@ -11,26 +11,18 @@ Instead now you have to use the CMake build system for compilations
 
 # To do
 
-    - SCREEN WRAPPING (DONE)
-
-    - Enemy Collision (DONE) , Slight tweaks to the enemy jump (WIP)
-
+    - Write Projectile (DONE)
+    - Write Chicks (DONE)
     - Fail State (Will possibly be completed at a later date)
 
     - Replacing the Game Editor with a new one
-    - need to write the chicks, level complete and projectiles
+    - level complete (DONE) 
     - Rewriting Game Engine, (Main Rewrite is complete)
 
 ----------------------------------------------------------------
 
 ========================================================================================
-Lets start with the system, I feel like I should document this game a lot better than I have, for that I should have a place where I can document the development of this game, I know I will write a website that I will host and that is where I will write about the development of this software. I don't really feel like doing that... I can do that and do this, lets do both
 
-It's been a while since I have revisited this thing lets fix the bad bits rewrite all the systems that need rewriting so that we don't have to worry about factorization anymore and instead we can focus on implementing features
-
-Lets begin with our Logic separation and how we plan to sort and plan those things
-
-already off to a bad start with the main function
 
 # Stuff I am learning about during the process
 
@@ -38,6 +30,8 @@ already off to a bad start with the main function
 I think I just found out about one of the best additions I can have to my process. Implementing and using version control. One way would be Having multiple branches 
 
 ### Branch structure
+Still have not implemented this and we might not... It was a nice thought though
+
 'main'          # Stable, production-ready code
 'develop'       # Integration branch for features
 'feature/*'     # Individual features (feature/collision-system)
@@ -45,30 +39,30 @@ I think I just found out about one of the best additions I can have to my proces
 'release/*'     # Release preparation (release/v0.4.0)
 
 ### Possible Workflow
-# Start a new feature
+#### Start a new feature
 git checkout develop
 git pull origin develop
 git checkout -b feature/enemy-ai-improvements
 
-# Work on feature, commit frequently
+#### Work on feature, commit frequently
 git add .
 git commit -m "feat: improve enemy ledge detection logic"
 
-# When done, merge to develop
+#### When done, merge to develop
 git checkout develop
 git merge --no-ff feature/enemy-ai-improvements
 git push origin develop
 
-# When ready for release
+#### When ready for release
 git checkout main
 git merge --no-ff develop
 git tag -a v0.4.0 -m "Release v0.4.0"
 git push origin main --tags
 
-### Commit Conventions
+#### Commit Conventions
 # Format: <type>(<scope>): <subject>
 
-# Types:
+#### Types:
 feat:     # New feature
 fix:      # Bug fix
 docs:     # Documentation
@@ -77,14 +71,12 @@ refactor: # Code restructuring
 test:     # Adding tests
 chore:    # Build, dependencies, etc.
 
-# Examples:
+#### Examples:
 feat(collision): add player-enemy collision detection
 fix(ai): enemy no longer falls through platforms
 refactor(renderer): extract sprite rendering to separate class
 docs(readme): add build instructions
 test(entity): add unit tests for collision detection
-
-## Architecture and Design Questions
 
 # The Rewrite
 
@@ -106,7 +98,7 @@ main.cpp
         └── loop (processEvents → update → render)
 ```
 
-So we implemented the Camera Model as it will be now and to be honest the engine is kind of looking quite a bit like our old one just instead slightly cleaner as less broken? Can't even be sure about that yet, good programming still has a long way to go. I need to be a lot more independent when it comes to programming.
+Camera does exactly what it is supposed completely functional
 
 ```
 GAME LOOP
@@ -117,7 +109,7 @@ GAME LOOP
           renderer.endFrame()
 ```
 
-After that we have been working on our animation player and changing the responsibilities of items. The game is basically being completely rewritten in the hope that this will make development a lot faster for this one and future game implementations
+After that we have been working on our animation player and changing the responsibilities of items. The game is basically being completely rewritten in the hope that this will make development a lot faster for this one and future game implementations. That was not the case, our rewrite took longer than if we were primarily focused on simply making the game
 
 ### Animation Player
 Since our Sprite Sheets are irregular in their spacing and how they have the frames set
@@ -148,10 +140,14 @@ or we could have the frame data saved in a JSON style format and then read the m
 }
 ```
 
-### Thoughts
-So we have a bunch of systems that need to be extended and improved namely our rudimentary level loading system, need to see if our animatio system is complete. 
-Finally we need to ensure that the player physics and interactions should be working.
+we decided that maving the frame data and editing it that way was the way to go
 
+### Level Loading 
+Level loading still uses .txt files we just made the data in our levels more verbose, the level loading also now works for all sorts of entities
+
+Need to integrate the level saving with the level editing tool that we are going to implement and that should complete our dev flow
+
+### Physics
 So since we are recreating the player
 
 **AABB Platformer Loop** : move->check->resolve->update

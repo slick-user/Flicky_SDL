@@ -13,7 +13,6 @@ void Spawner::update(float dt, const std::vector<Platform>& platforms) {
     is a method for a timer could be worth consideration in the future */
   if (state == State::Spawning) {
     timer += dt;
-    std::cout << timer << std::endl;
 
     if (timer >= SPAWN_DELAY) {
       spawn();
@@ -29,18 +28,24 @@ void Spawner::updateAnimation(float dt, State s) {
   switch (s) {
     case State::Idle: animator->play("idle"); break;
     case State::Spawning: animator->play("spawning"); break;
-
-    animator->update(dt);
   }
+
+  animator->update(dt);
 }
 
 void Spawner::updateState(float dt) {
   State newState = state;
 
-  if (enemy != nullptr) 
-    newState = State::Idle;
-  else 
+  if (enemy) {
+    if (!enemy->active) {
+      enemy = nullptr;
+      newState = State::Spawning;
+    } else {
+      newState = State::Idle;
+    }
+  } else {
     newState = State::Spawning;
+  }
 
   if (newState != state) {
     state = newState;
@@ -49,7 +54,16 @@ void Spawner::updateState(float dt) {
 }
 
 void Spawner::spawn() {
+  if (!world || !world->r || !player) {
+    std::cerr << "Spawner::spawn() failed: invalid pointers!" << std::endl;
+    return;
+  }
+
   std::cout << "spawned!" << std::endl;
-  world->entities.push_back(new NyanNyan(x,y, *world->r, player));
-  enemy = dynamic_cast<NyanNyan*>(world->entities.back());
+  Entity* newEntity = world->addEntity(std::make_unique<NyanNyan>(x,y, *world->r, player));
+  enemy = dynamic_cast<NyanNyan*>(newEntity);
+  
+  if (!enemy) {
+    std::cerr << "Spawner::spawn() failed: dynamic_cast returned nullptr!" << std::endl;
+  }
 }

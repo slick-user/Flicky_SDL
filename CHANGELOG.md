@@ -5,21 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-for now an example of what it could look like, 0.3.1 
-
-### Added
-- Feature X
-- Feature Y
-
-### Changed
-- Improvement to system Z
-
-### Fixed
-- Bug fix A
-
-## [0.3.1] - [date]
+## [0.3.1] - 
 
 ### Added
 - Renderer System for drawing abstraction
@@ -30,6 +16,8 @@ for now an example of what it could look like, 0.3.1
 - Enemy AI implementation
 - Spawner entities
 - Entity collision system
+- Projectile system
+- Added Chirps
 
 ### Changed
 - Engine layout and game.cpp flow
@@ -37,6 +25,8 @@ for now an example of what it could look like, 0.3.1
 - Physics and collision system refactor
 - Removed Utils dependency
 - Screen wrapping implementation
+- Swapped out Raw Pointers entities array for Smart Pointers
+- Changed Level Loading
 
 ### Fixed
 - 

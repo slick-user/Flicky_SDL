@@ -1,0 +1,14 @@
+{
+  "image": "Tiger.png",
+
+  "frames": [
+    { "name": "idle_0", "x": 0, "y": 0,"w":84, "h": 99 },
+    
+    { "name": "spawning_0", "x":  0,  "y": 0,"w":84, "h": 99 }
+  ],
+
+  "animations": {
+    "idle": { "frames": ["idle_0"], "fps": 1 },
+    "win": { "frames": ["spawning_0"], "fps": 1 }
+  }
+}

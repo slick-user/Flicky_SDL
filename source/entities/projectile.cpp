@@ -27,13 +27,7 @@ void Projectile::update(float dt, const std::vector<Platform>& platforms) {
       
       // Check if hit wall or went off screen
       if (x < 0 || x > LEVEL_WIDTH + 100) {
-        auto& entities = world->entities;
-        // Kills Enemy, (before that we will need to send the enemy flying)
-        auto it = std::find(entities.begin(), entities.end(), this);
-        if (it != entities.end()) {
-          delete *it;
-          entities.erase(it);
-        }
+        destroy();
       }
       break;
   }
@@ -82,14 +76,7 @@ void Projectile::onCollision(Entity* other) {
   if (other->getEntityType() == std::string("Enemy")) {
     Enemy* enemy = dynamic_cast<Enemy*>(other);
     if (enemy) {
-      auto& entities = world->entities;
-      // Kills Enemy, (before that we will need to send the enemy flying)
-      auto it = std::find(entities.begin(), entities.end(), enemy);
-      if (it != entities.end()) {
-        delete *it;
-        entities.erase(it);
-      }
-      
+      enemy->destroy();
     }
   }
 }

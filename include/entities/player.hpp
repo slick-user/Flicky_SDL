@@ -5,11 +5,10 @@
 #include <core/renderer.hpp>
 
 class Enemy;
+class Chick;
 class Projectile;
 
 // PLAYER PROPERTIES
-
-class Projectile;
 
 class Player : public Entity{
 
@@ -19,6 +18,7 @@ public:
   World* world = nullptr;
   
   Projectile* projectile = nullptr;
+  std::vector<Chick*> chicks;
 
   State state;
 
@@ -29,12 +29,15 @@ public:
     
     state = State::Idle;
 
-    sheet = r.loadSpriteSheetJSON("flicky", std::string(PROJECT_ROOT) + "/metadata/flicky.json");
+    sheet = r.loadSpriteSheetJSON("Flicky", std::string(PROJECT_ROOT) + "/metadata/flicky.json");
 
     animator = new Animator();
     animator->setSheet(sheet);
     animator->play("idle");
   }
+
+  void setWorld(World* w) { world = w; }
+  void respawn();
 
   void updateState(float dt);
 
@@ -44,14 +47,15 @@ public:
   void update(float dt, const std::vector<Platform>& platforms) override;
 
   void onCollision(Entity* other) override;
-  void respawn();
   virtual const char* getEntityType() const override { return "Player"; }
-
-  void setWorld(World* w) { world = w; }
-  
+ 
   void tryPickUpProjectile();
   void throwProjectile();
   void dropProjectile();
+
+  void addChick(Chick* c);
+  void removeChick(Chick* c);
+  Chick* getLastChick();
 
 public:
   int frame = 0;

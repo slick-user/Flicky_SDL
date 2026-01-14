@@ -5,6 +5,7 @@
 #include <core/renderer.hpp>
 #include <core/game.hpp>
 #include <entities/projectile.hpp>
+#include <entities/chick.hpp>
 
 void Player::handleInput(float dt) {
   
@@ -81,12 +82,17 @@ void Player::updateAnimation(float dt, State s) {
   }
 
   animator->update(dt);  
-
 }
 
 void Player::onCollision(Entity* e) {
   if (e->getEntityType() == std::string("Enemy")) {
     lives -= 1;
+    std::cout << "Lives Remaining: " << lives << std::endl; 
+
+    if (lives <= 0) {
+      active = false;
+      if (world) world->lost = true;
+    }
     
     if (world) {
       world->startRespawnDelay();
@@ -98,6 +104,14 @@ void Player::onCollision(Entity* e) {
     if (proj && proj->state == Projectile::State::Pickable && !projectile) {
       proj->pickUp(this);
       projectile = proj;
+    }
+  }
+
+  if (e->getEntityType() == std::string("Chick")) {
+    Chick* chick = dynamic_cast<Chick*>(e);
+    if (chick && chick->state == Chick::State::Flying) {
+       chick->attach(this, getLastChick(), chicks.size());
+       addChick(chick);
     }
   }
 }
@@ -130,3 +144,33 @@ void Player::dropProjectile() {
   projectile->drop();
   projectile = nullptr;
 }
+
+void Player::addChick(Chick* c) {
+    chicks.push_back(c);
+}
+
+void Player::removeChick(Chick* c) {
+  auto it = std::find(chicks.begin(), chicks.end(), c);
+  if (it != chicks.end()) {
+    // Relink the chain if needed
+    auto nextIt = it + 1;
+    if (nextIt != chicks.end()) {
+      Chick* nextChick = *nextIt;
+      // The chick before 'c' is the new target for 'nextChick'
+      // If 'c' was first (it == begin), new target is Player
+      Entity* newTarget = (it == chicks.begin()) ? static_cast<Entity*>(this) : static_cast<Entity*>(*(it - 1));
+      nextChick->target = newTarget;
+    }
+    chicks.erase(it);
+        
+    // Re-index remaining chicks
+    for (int i = 0; i < chicks.size(); ++i) {
+      chicks[i]->index = i;
+    }
+  }
+}
+
+Chick* Player::getLastChick() {
+    return chicks.empty() ? nullptr : chicks.back();
+}
+
