@@ -1,6 +1,8 @@
 #pragma once
 
+
 #include <stdio.h>
+#include <tools/editor.hpp>
 
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
@@ -12,6 +14,9 @@
 #include <entities/player.hpp>
 #include <entities/enemy.hpp>
 #include <entities/projectile.hpp>
+
+#include "../tools/editor.hpp"
+#include "../tools/editorcam.cpp"
 
 //class Util;
 
@@ -53,8 +58,11 @@ class Game {
   private:
     Renderer renderer;
     World* world = nullptr;
-    
+    Editor editor;
+    EditorCam edcam;
+
     bool running = true;
+    bool pause = false;
  
     std::vector<SDL_Rect> spawner; 
     std::vector<SDL_Rect> platform;

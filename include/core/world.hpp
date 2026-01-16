@@ -23,8 +23,11 @@ public:
   void startRespawnDelay();
   bool isRespawning() const { return respawnTimer > 0.0f; }
 
+  Entity* spawnEntity(const std::string& type, float x, float y);
   Entity* addEntity(std::unique_ptr<Entity> e);
-  
+  void removeEntity(Entity* e);
+  std::vector<std::unique_ptr<Entity>>& getEntities();
+
   void checkEntityCollisions();
 
   void onChickRescued();
@@ -32,7 +35,6 @@ public:
 
 private:
 
-  int platformCount = 0;
   float respawnTimer = 0.0f;
   const float RESPAWN_DELAY = 2.0f;
 
@@ -58,4 +60,5 @@ public:
   bool won = false; 
   bool lost = false; 
 
+  int platformCount = 0;
 };

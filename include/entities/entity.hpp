@@ -59,6 +59,7 @@ public:
   Animator* animator;
   spriteSheet* sheet;
 
+  // int ID;        Might need to change the vector array to a sort of hashmap might fix that when we get to our major rafactor
 public:
 
   Entity(float x, float y, float w, float h) : x(x), y(y), w(w), h(h) {

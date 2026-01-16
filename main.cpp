@@ -1,6 +1,4 @@
 #include "include/core/game.hpp"
-//#include "Header Files/editor.hpp"
-
 
 int main(int argc, char* args[]) {
 
@@ -12,6 +10,6 @@ int main(int argc, char* args[]) {
 
   game.run();
   game.shutdown();
-    //Editor editor;
+
   return 0;
 }

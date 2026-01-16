@@ -11,6 +11,8 @@
 #include <core/game.hpp>
 #include <fstream>
 #include <iostream>
+#include <libs/json.hpp>
+#include <memory>
 #include <type_traits>
 
 World::World(int screenW, int screenH, Renderer& r) : camera(screenW, screenH), r(&r) {
@@ -49,55 +51,32 @@ void World::loadLevel(const std::string& filename) {
     }
 }
 
-/*void World::loadLevel(const std::string& filename) {
+/*
+void World::loadLevel(const std::string& path) {
   platforms.clear();
   entities.clear();
 
-  std::ifstream file(filename);
-  if (!file.is_open()) {
-    std::cerr << "Failed to load level: " << filename << "\n";
-    return;
+  json j = loadJson(path);
+
+  //LEVEL_WIDTH = j["meta"]["width"];
+  //LEVEL_HEIGHT = j["meta"]["height"];
+
+  // Players
+  auto& p = j["player"];
+  player = static_cast<Player*>(spawnEntity("Player", p["x"], p["y"]));
+
+  // Platforms
+  for (auto& pl : j["platforms"]) {
+    platforms.push_back({pl["x"], pl["y"],
+                        pl["w"], pl["h"]});
   }
 
-  Player* ptr;
-
-  std::string type;
-  while (file >> type) {
-    if (type == "platform") {
-      Platform p;
-      file >> p.bounds.x >> p.bounds.y
-           >> p.bounds.w >> p.bounds.h;
-      platforms.push_back(p);
-    }
-    else if (type == "player") {
-      float x, y;
-      file >> x >> y;
-      entities.push_back(new Player(x, y, *r));
-      ptr = dynamic_cast<Player*>(entities[0]);
-      ptr->setWorld(this);
-    }
-    else if (type == "enemy") {
-      float x, y;
-      file >> x >> y;
-      entities.push_back(new NyanNyan(x, y, *r, ptr));
-    }
-    else if (type == "projectile") {
-      float x, y;
-      file >> x >> y;
-      addEntity(std::make_unique<Projectile>(x, y, *r, ptr));
-    }
-    else if (type == "chick") {
-      float x, y;
-      file >> x >> y;
-      addEntity(std::make_unique<Chick>(x, y, *r));
-      
-    }
-        
+  // entities
+  for (auto& e : j["entities"]) {
+    spawnEntity(e["type"], e["x"], e["y"]);
   }
-
-  std::cout << "Level loaded: "
-            << platforms.size() << " platforms\n";
-}*/
+}
+*/
 
 void World::update(float dt) {
 
@@ -123,7 +102,6 @@ void World::update(float dt) {
      Player* player = dynamic_cast<Player*>(entities[0].get());
       if (player) {
         player->respawn();
-        camera.follow(player);
       }
     }
 
@@ -158,21 +136,66 @@ void World::update(float dt) {
 }
 
 void World::cleanup() {
-
   entities.erase(
     std::remove_if(entities.begin(), entities.end(),
       [](const std::unique_ptr<Entity>& e) { return !e->isActive(); }),
     entities.end());
 }
 
+// This is an almost useless function that is only used by the spawner, it can be repurposed to make the engine easier in the future 
 Entity* World::addEntity(std::unique_ptr<Entity> e) {
   Entity* ptr = e.get();
   pendingEntities.push_back(std::move(e));
   return ptr;
 }
 
+void World::removeEntity(Entity* e) {
+    auto it = std::remove_if(entities.begin(), entities.end(),
+        [e](const std::unique_ptr<Entity>& ptr) {
+            return ptr.get() == e;
+        });
+    entities.erase(it, entities.end());
+}
+
+std::vector<std::unique_ptr<Entity>>& World::getEntities() {
+    return entities;
+}
+
+Entity* World::spawnEntity(const std::string& type, float x, float y) {
+  if (type == "Player") {
+
+    auto e = std::make_unique<Player>(x, y, *r);
+    player = e.get();
+    player->setWorld(this);
+    entities.push_back(std::move(e));
+  } 
+  else if (type == "Spawner") {
+    entities.push_back(std::make_unique<Spawner>(x, y, *r, player, this));
+  } 
+  else if (type == "Nyannyan") {
+    addEntity(std::unique_ptr<NyanNyan>());
+  }
+  else if (type == "Chick") {
+    totalChicks++;
+    entities.push_back(std::make_unique<Chick>(x, y, *r));
+  } 
+  else if (type == "Entrance") {
+    entities.push_back(std::make_unique<Entrance>(x, y, *r, this));
+  }
+  else if (type == "Projectile") {
+    entities.push_back(std::make_unique<Projectile>(x, y, *r, this));
+  }
+  else {
+    std::cerr << "Unknown Entity Type: " << type << std::endl;
+    return nullptr;
+  }
+
+  return entities.back().get();
+}
+
 void World::checkEntityCollisions() {
 
+  // For the Player to be invulnerable after being hit
   if (respawnTimer > 0.0f) return;
 
   for (int i=0; i<entities.size(); ++i) {

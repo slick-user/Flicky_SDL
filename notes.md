@@ -7,17 +7,15 @@ g++ -o Flicky main.cpp "Source Files/editor.cpp" "Source Files/util.cpp" -O1 -Wa
 
 *These are no longer used to compile the game*
 
-Instead now you have to use the CMake build system for compilations
+Instead now you have to use the CMake build system for compilations, that is make build directory
+cmake.. inside build directory
+then use ninja to make tests and executable
 
 # To do
 
-    - Write Projectile (DONE)
-    - Write Chicks (DONE)
-    - Fail State (Will possibly be completed at a later date)
-
-    - Replacing the Game Editor with a new one
-    - level complete (DONE) 
-    - Rewriting Game Engine, (Main Rewrite is complete)
+    - Writing Level Editor (WIP)
+    - Writing Animation/Sprite Loader 
+    - Fix Broken Behavior
 
 ----------------------------------------------------------------
 
@@ -78,7 +76,7 @@ refactor(renderer): extract sprite rendering to separate class
 docs(readme): add build instructions
 test(entity): add unit tests for collision detection
 
-# The Rewrite
+# Engine Architecture / Notes
 
 ## Rewriting the engine
 Starting out with **game.cpp** we have simplified the logic, we want the right functions in the right areas so I don't have to worry about everything and take too long in configurations and setups
@@ -98,7 +96,7 @@ main.cpp
         └── loop (processEvents → update → render)
 ```
 
-Camera does exactly what it is supposed completely functional
+Camera does exactly what it is supposed to completely functional
 
 ```
 GAME LOOP
@@ -142,10 +140,13 @@ or we could have the frame data saved in a JSON style format and then read the m
 
 we decided that maving the frame data and editing it that way was the way to go
 
+Will be implement a tool to configure the entity animation frames. (might also be similarly developed to the level editor), might also have to implement hot reloading 
+
 ### Level Loading 
 Level loading still uses .txt files we just made the data in our levels more verbose, the level loading also now works for all sorts of entities
 
-Need to integrate the level saving with the level editing tool that we are going to implement and that should complete our dev flow
+Need to integrate the level saving with the level editing tool that we are going to implement and that should complete our dev flow.
+That also means that levels will now follow the JSON format as specified in the unused loadlevel function in World Class
 
 ### Physics
 So since we are recreating the player
@@ -156,5 +157,25 @@ we have basically reconstructed movement and a lot faster than we did the first 
 
 Been a while decide to work on the spawner. I think we might just keep the spawner as an entity that follows the same collision system and the like that the rest of our entities do.
 
-The engine itself will be handling all of the collisions instead of the entities dealing with the collisions
+World handles all of the collisions instead of the entities dealing with the collisions, the entities do utilize "signals" which is on Collision specifying their own special behaviours
 
+## Architecture Concerns
+Have been considering creating a new abstraction layer (might be overkill) or atleast more reasonable would be redistribute responsibilities between the layers that we have. With the new non-game external tooling being integrated this becomes ever more important to ensure that the **Engine**, **Game**, **Editor** all handle their own specific duties. Currently Game and World classes both do things that the engine layer is responsible for as well as the games own game-specific logic with no separation between the two. making factories and other design abstractions could prove useful in time when engine refactorization becomes paramount. For now we can let things be with getting a complete showable MVP being my main concern as of this moment.
+
+## Tooling
+With some of the main components being developed (despite the fact that the game entities are not really in a finished state)
+I want to work on the development tools, make sprite loading much simpler, not have a need to do it manually. Create a level Editing tool that can configure entities, set properties and properly place entities in their locations without having to manually change our level files. 
+To begin with I wonder if developing this tool with SDL/C++ is really the ideal way of doing this or should I instead write this with some thing else. Would writing the editor with something like RubyToolkit, or Love2D be a viable way of doing this? I think that would be a terrible idea.... the novelty of such an undertaking will wear off quickly
+
+I am ~~considering~~ using ImGui to write the Editor UI.  
+
+```
+Editor
+ ├── Selection
+ ├── Placement Tool
+ ├── Platform Tool
+ ├── Entity Palette
+ └── Save/Load
+```
+
+Lots to do for next time, need to be able to place entities on mouse positioning, pause game, EditorCam Controller, Platform Placing,Entity Preview at mouse, background Texture Load configuration (Are those all the editor features I need?)

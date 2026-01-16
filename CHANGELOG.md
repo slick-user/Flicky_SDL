@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Entity collision system
 - Projectile system
 - Added Chirps
+- ImGui Integration
+- Level Editor
 
 ### Changed
 - Engine layout and game.cpp flow
@@ -27,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Screen wrapping implementation
 - Swapped out Raw Pointers entities array for Smart Pointers
 - Changed Level Loading
+- Level Loading
 
 ### Fixed
 - 

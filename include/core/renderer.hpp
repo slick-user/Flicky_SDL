@@ -55,6 +55,7 @@ public:
 
   // GETTER
   SDL_Renderer* getSDLRenderer() const { return renderer; }
+  SDL_Window* getWindow() const { return window; }
 
   bool init(const char* title, int width, int height);
   void shutdown();
