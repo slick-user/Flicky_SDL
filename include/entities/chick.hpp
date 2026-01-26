@@ -1,6 +1,7 @@
 #include <entities/entity.hpp>
 #include <core/renderer.hpp>
 
+
 class Player;
 
 class Chick : public Entity {
@@ -9,7 +10,8 @@ public:
     enum class State {
         Idle,
         Flying,
-        Following 
+        Following, 
+        Rescued
     };
 
     State state = State::Flying;

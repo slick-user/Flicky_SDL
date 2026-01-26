@@ -16,7 +16,16 @@ void Chick::updateState(float dt) {
       if (target) {
         const float FOLLOW_STRENGTH = 6.0f;
 
-        float dx = target->x - x;
+        float dx = 0;
+        if (target->facing == Facing::Left) { 
+          dx = (target->x + 20) - x;
+          facing = target->facing;
+        }
+        else {
+          dx = (target->x - 20) - x;
+          facing = target->facing;
+        } 
+    
         float dy = target->y - y;
 
         x += dx * dt * FOLLOW_STRENGTH;
@@ -26,6 +35,9 @@ void Chick::updateState(float dt) {
 
     case State::Idle:
       // regular Idle state as in all entities
+      break;
+
+    case State::Rescued:
       break;
   }
 
@@ -51,6 +63,7 @@ void Chick::updateAnimation(float dt, State s) {
     case State::Idle: animator->play("idle"); break;
     case State::Following: animator->play("following"); break;
     case State::Flying: animator->play("flying"); break;
+    case State::Rescued: animator->play("idle"); break;
   }
 
   animator->update(dt);
@@ -58,7 +71,7 @@ void Chick::updateAnimation(float dt, State s) {
 
 void Chick::onCollision(Entity* e) {
   if (e->getEntityType() == std::string("Player")) {
-    if (state == State::Flying) {
+    if (state == State::Flying || state == State::Idle) {
       Player* p = static_cast<Player*>(e);
 
       Chick* prev = p->getLastChick();
@@ -74,6 +87,9 @@ void Chick::onCollision(Entity* e) {
     if (state == State::Following) {
       state = State::Flying;
       target = nullptr;
+      
+      player->removeChick(this);
+      player = nullptr;
     }
   }
 }

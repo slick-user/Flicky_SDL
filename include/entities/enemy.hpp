@@ -33,6 +33,8 @@ class Enemy : public Entity {
   void onCollision(Entity* other) override;
   virtual const char* getEntityType() const override { return "Enemy"; }
 
+  Player* getPlayer() { return player; }
+
   protected:
     int frame = 0;
     float animTimer = 0.0f;

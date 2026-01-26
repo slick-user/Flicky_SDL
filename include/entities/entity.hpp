@@ -30,8 +30,9 @@ enum class State {
   Fall
 };
 
-#include <iostream>
 #include <vector>
+#include <iostream>  // IDE says iostream is not used here, ignore it
+#include <string>
 #include <SDL3/SDL.h>
 
 bool intersects(const SDL_FRect& a, const SDL_FRect& b);

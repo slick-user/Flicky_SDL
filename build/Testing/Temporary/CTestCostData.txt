@@ -97,8 +97,25 @@ Renderer 0 0
 Animator 0 0
 NyanNyan 0 0
 Spawner 0 0
-Renderer Initializes Correctly 1 0.345253
-Animator advances frames correctly 1 0.0579295
-NyanNyan sprite sheet and animations 1 0.849982
-Spawner sprite sheet and animations 1 0.696213
+Renderer 0 0
+Animator 0 0
+NyanNyan 0 0
+Spawner 0 0
+Renderer Initializes Correctly 1 0.351714
+World initializes with empty state 1 0.331908
+World update runs safely 1 0.492451
+World respawn delay works 1 0.374038
+Player initializes correctly 1 0.302487
+Player animation state changes are safe 1 0.338589
+NyanNyan updates safely 1 0.298899
+NyanNyan requires valid player 1 0.332759
+Chick starts in flying state 1 0.492725
+Chick can attach to player 1 0.337927
+Animator advances frames correctly 1 0.0577623
+NyanNyan sprite sheet and animations 1 0.950574
+Spawner enters spawning state 1 0.290314
+Spawner spawns enemy safely 1 0.373152
+Spawner sprite sheet and animations 1 0.766707
+Entity collision does not crash 1 0.314494
+Multiple updates do not crash 1 0.353663
 ---

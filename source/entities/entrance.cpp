@@ -34,12 +34,13 @@ void Entrance::updateState(float dt) {
 void Entrance::onCollision(Entity* e) {
   if (state == State::Win) return;  
 
-  Chick* chick = dynamic_cast<Chick*>(e);
-  if (!chick) return;
-
-  if (chick->state == Chick::State::Following) {
-    chick->state = Chick::State::Idle;
-    world->onChickRescued();
+  if (e->getEntityType() == std::string("Chick")) {
+    Chick* chick = dynamic_cast<Chick*>(e);
+    if (chick->state == Chick::State::Following) {
+      chick->player->removeChick(chick);
+      chick->state = Chick::State::Rescued;
+      world->onChickRescued();
+    }
   }
   
 }

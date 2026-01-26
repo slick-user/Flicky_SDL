@@ -1,11 +1,16 @@
+// SDL Libraries
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keycode.h>
+
+// Game
 #include <core/game.hpp>
 #include <entities/entity.hpp>
 
+// Editor
 #include <tools/editor.hpp>
 #include "tools/editorCam.cpp"
 
+// Level Editor Dependent Libraries
 #include "imgui.h"
 #include "backends/imgui_impl_sdl3.h"
 #include "backends/imgui_impl_sdlrenderer3.h"
@@ -18,6 +23,8 @@ bool Game::init() {
   // Initialize SDL and Graphics with our Renderer
   if (!renderer.init("Flicky", SCREEN_WIDTH, SCREEN_HEIGHT)) return false;
 
+  /* I wanted to put the ImGui stuff directly in the Editor Files but I that would take
+     me more time for no reason having this directly in game, set a bool to decide if it gets used or not*/
   // ==== IMGUI SETUP / EDITOR SETUP ====
   // Setup Dear ImGui context
   IMGUI_CHECKVERSION();
@@ -40,8 +47,8 @@ bool Game::init() {
   renderer.loadBackground(BGpath);
 
   world = new World(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
-  world->loadLevel(std::string(PROJECT_ROOT) + "/levels/level1.txt");
-  //world->loadLevel((std::string(PROJECT_ROOT) + "/levels/level1 - Copy.txt"));
+  //world->loadLevel(std::string(PROJECT_ROOT) + "/levels/level1.txt");
+  world->loadLevel((std::string(PROJECT_ROOT) + "/levels/leveltestnew.json"));
 
   return true;
 } 

@@ -15,7 +15,6 @@ then use ninja to make tests and executable
 
     - Writing Level Editor (WIP)
     - Writing Animation/Sprite Loader 
-    - Fix Broken Behavior
 
 ----------------------------------------------------------------
 
@@ -178,4 +177,4 @@ Editor
  └── Save/Load
 ```
 
-Lots to do for next time, need to be able to place entities on mouse positioning, pause game, EditorCam Controller, Platform Placing,Entity Preview at mouse, background Texture Load configuration (Are those all the editor features I need?)
+Lots to do for next time, need to implement background Texture Load configuration (Are those all the editor features I need?)

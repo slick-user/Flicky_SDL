@@ -107,13 +107,13 @@ void Player::onCollision(Entity* e) {
     }
   }
 
-  if (e->getEntityType() == std::string("Chick")) {
-    Chick* chick = dynamic_cast<Chick*>(e);
-    if (chick && chick->state == Chick::State::Flying) {
-       chick->attach(this, getLastChick(), chicks.size());
-       addChick(chick);
-    }
-  }
+  //if (e->getEntityType() == std::string("Chick")) {
+    //Chick* chick = dynamic_cast<Chick*>(e);
+    //if (chick && chick->state == Chick::State::Flying) {
+       //chick->attach(this, getLastChick(), chicks.size());
+       //addChick(chick);
+   //}
+  //}
 }
 
 void Player::respawn() {

@@ -3,6 +3,7 @@
 #include <vector>
 #include <SDL3/SDL.h>
 #include <memory>
+#include <libs/json.hpp>
 
 #include <core/camera.hpp>
 //#include <entities/enemy.hpp>
@@ -16,6 +17,7 @@ public:
   ~World();
 
   void loadLevel(const std::string& filename);
+  void loadLevelViaTxt(const std::string& filename);
 
   void update(float dt);
   void cleanup();

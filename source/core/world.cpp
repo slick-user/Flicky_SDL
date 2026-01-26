@@ -15,24 +15,38 @@
 #include <memory>
 #include <type_traits>
 
+json loadJson(const std::string& path) {
+    std::ifstream file(path);
+    json j;
+    if (file.is_open()) {
+        file >> j;
+    } else {
+        throw std::runtime_error("Cannot open JSON file: " + path);
+    }
+    return j;
+}
+
 World::World(int screenW, int screenH, Renderer& r) : camera(screenW, screenH), r(&r) {
+  // Player Initialization
   auto player = std::make_unique<Player>(20, 0, r);
   
   Player* ptr = player.get();
   ptr->setWorld(this);
   this->player = ptr;
 
+  // Entity Hardcoded setup
   entities.push_back(std::move(player));
   entities.push_back(std::make_unique<Spawner>(500, 0, r, ptr, this));
   entities.push_back(std::make_unique<Chick>(700, 0, r));
-  this->totalChicks++;
+  entities.push_back(std::make_unique<Chick>(300, 50, r));
+  this->totalChicks += 2;
   entities.push_back(std::make_unique<Entrance>(900, 0, r, this));
   entities.push_back(std::make_unique<Projectile>(30, 0, r, this));
 }
 
 World::~World() {}
 
-void World::loadLevel(const std::string& filename) {
+void World::loadLevelViaTxt(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cout << "Failed to load level: " << filename << "\n";
@@ -51,7 +65,6 @@ void World::loadLevel(const std::string& filename) {
     }
 }
 
-/*
 void World::loadLevel(const std::string& path) {
   platforms.clear();
   entities.clear();
@@ -76,7 +89,6 @@ void World::loadLevel(const std::string& path) {
     spawnEntity(e["type"], e["x"], e["y"]);
   }
 }
-*/
 
 void World::update(float dt) {
 
@@ -98,6 +110,7 @@ void World::update(float dt) {
       respawnTimer = 0.0f;
     }
     
+  // If the first entities have been added to our array (Player exists)
     if (!entities.empty()) {
      Player* player = dynamic_cast<Player*>(entities[0].get());
       if (player) {
