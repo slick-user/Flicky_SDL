@@ -13,8 +13,6 @@ then use ninja to make tests and executable
 
 # To do
 
-    - Writing Level Editor (WIP)
-    - Writing Animation/Sprite Loader 
 
 ----------------------------------------------------------------
 
@@ -176,5 +174,3 @@ Editor
  ├── Entity Palette
  └── Save/Load
 ```
-
-Lots to do for next time, need to implement background Texture Load configuration (Are those all the editor features I need?)

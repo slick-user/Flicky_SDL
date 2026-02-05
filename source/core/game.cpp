@@ -60,7 +60,7 @@ void Game::run() {
 
   while (running) {
     Uint64 now = SDL_GetPerformanceCounter();
-    float dt = float((now - last) / freq);
+    dt = float((now - last) / freq);
     last = now;
 
     processEvents();
@@ -136,7 +136,7 @@ void Game::update(float dt) {
     world->camera.follow(edcam.x, edcam.y);
   }
 
-  editor.update(*world, renderer);
+  editor.update(*world, renderer, dt);
 }
 
 void Game::render() {

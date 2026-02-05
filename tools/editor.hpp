@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "./spriteEditor.hpp"
 
 class World;
 class Renderer;
@@ -10,7 +11,7 @@ class Editor {
 public:
 
   void toggle();
-  void update(World& world, Renderer& r);
+  void update(World& world, Renderer& r, float dt);
 
   void renderPreviews(World* world);
 
@@ -27,6 +28,7 @@ private:
   char levelPath[260] = "";
   std::string currentLevelPath;
 
-  std::string openFileDialog();
-  std::string saveFileDialog();
+  SpriteEditor spriteEditor;
+  bool spriteEditorOpen = false;
 };
+

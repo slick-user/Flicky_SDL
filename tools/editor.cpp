@@ -1,6 +1,7 @@
 #include "editor.hpp"
 
-#include "editor.hpp"
+#include "editorUtils.hpp"
+
 #include <core/game.hpp>
 #include <imgui.h>
 
@@ -9,60 +10,9 @@
 
 #include <fstream>
 
-#ifdef _WIN32
-#include <windows.h>
-#include <commdlg.h>
-#include <shlobj.h>
-#endif
-
 float cw = 140.0f;  // c width
 float ch = 8.0f; // c height
 
-// this is some of the most rediculous looking code in the entire code base, I don't think I like WinAPI
-std::string Editor::saveFileDialog() {
-#ifdef _WIN32
-  OPENFILENAMEA ofn;
-  char szFile[260] = {0};
-
-  ZeroMemory(&ofn, sizeof(ofn));
-  ofn.lStructSize = sizeof(ofn);
-  ofn.lpstrFile = szFile;
-  ofn.nMaxFile = sizeof(szFile);
-  ofn.lpstrFilter = "Level Files\0*.lvl\0All Files\0*.*\0";
-  ofn.nFilterIndex = 1;
-  ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT;
-  ofn.lpstrDefExt = "lvl";
-
-  if (GetSaveFileNameA(&ofn)) {
-    return std::string(szFile);
-  }
-#endif
-  return "";
-}
-
-std::string Editor::openFileDialog() {
-    #ifdef _WIN32
-        OPENFILENAMEA ofn;
-        char szFile[260] = {0};
-        
-        ZeroMemory(&ofn, sizeof(ofn));
-        ofn.lStructSize = sizeof(ofn);
-        ofn.hwndOwner = nullptr;
-        ofn.lpstrFile = szFile;
-        ofn.nMaxFile = sizeof(szFile);
-        ofn.lpstrFilter = "Image Files\0*.png;*.jpg;*.jpeg;*.bmp\0All Files\0*.*\0";
-        ofn.nFilterIndex = 1;
-        ofn.lpstrFileTitle = nullptr;
-        ofn.nMaxFileTitle = 0;
-        ofn.lpstrInitialDir = nullptr;
-        ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-        
-        if (GetOpenFileNameA(&ofn) == TRUE) {
-            return std::string(szFile);
-        }
-    #endif
-        return "";
-    }
 
 void getEntityPreviewSize(const std::string& type, float& w, float& h) {
     if (type == "Player") {
@@ -182,147 +132,156 @@ void Editor::toggle() {
     open = !open;
 }
 
-void Editor::update(World& world, Renderer& r) {
-    if (!open) return;
+void Editor::update(World& world, Renderer& r, float dt) {
+  if (!open) return;
 
     ImGui::Begin("Level Editor");
+  
 
-        // ---- Background Texture ----
-        ImGui::Separator();
-        ImGui::Text("Background Texture");
-        
-        // Text input for background path
-        ImGui::InputText("Path", backgroundPath, sizeof(backgroundPath));
-        
-        // Helper buttons for common paths
-        if (ImGui::Button("Use Assets Folder")) {
-            std::string assetsPath = std::string(PROJECT_ROOT) + "/assets/";
-            strncpy(backgroundPath, assetsPath.c_str(), sizeof(backgroundPath) - 1);
-            backgroundPath[sizeof(backgroundPath) - 1] = '\0';
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Default Background")) {
-            std::string defaultPath = std::string(PROJECT_ROOT) + "/assets/Sega Genesis 32X - Flicky - Area 1.png";
-            strncpy(backgroundPath, defaultPath.c_str(), sizeof(backgroundPath) - 1);
-            backgroundPath[sizeof(backgroundPath) - 1] = '\0';
-        }
-        
-        if (ImGui::Button("Browse...")) {
-            std::string selectedFile = openFileDialog();
-            if (!selectedFile.empty()) {
-                strncpy(backgroundPath, selectedFile.c_str(), sizeof(backgroundPath) - 1);
-                backgroundPath[sizeof(backgroundPath) - 1] = '\0';
-            }
-        }
+  if (ImGui::Button("Open Sprite Editor")) {
+    spriteEditorOpen = !spriteEditorOpen;
+    printf("Sprite editor toggled: %d\n", spriteEditorOpen);
+  }
 
-        // Load background button
-        if (ImGui::Button("Load Background")) {
-            if (strlen(backgroundPath) > 0) {
-                if (r.loadBackground(backgroundPath)) {
-                    currentBackgroundPath = backgroundPath;
-                    ImGui::OpenPopup("Background Loaded");
-                } else {
-                    ImGui::OpenPopup("Background Load Failed");
-                }
-            }
-        }
+  if (spriteEditorOpen)
+    spriteEditor.drawSpriteEditor(r, dt);
+
+  // ---- Background Texture ----
+  ImGui::Separator();
+  ImGui::Text("Background Texture");
         
-        // Show current background path
-        if (!currentBackgroundPath.empty()) {
-            ImGui::Text("Current: %s", currentBackgroundPath.c_str());
-        }
+  // Text input for background path
+  ImGui::InputText("Path", backgroundPath, sizeof(backgroundPath));
         
-        // Popup for success/failure
-        if (ImGui::BeginPopupModal("Background Loaded", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("Background loaded successfully!");
-            if (ImGui::Button("OK")) {
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::EndPopup();
-        }
+  // Helper buttons for common paths
+  if (ImGui::Button("Use Assets Folder")) {
+    std::string assetsPath = std::string(PROJECT_ROOT) + "/assets/";
+    strncpy_s(backgroundPath, assetsPath.c_str(), sizeof(backgroundPath) - 1);
+    backgroundPath[sizeof(backgroundPath) - 1] = '\0';
+  }
+  ImGui::SameLine();
+  if (ImGui::Button("Default Background")) {
+    std::string defaultPath = std::string(PROJECT_ROOT) + "/assets/Sega Genesis 32X - Flicky - Area 1.png";
+    strncpy_s(backgroundPath, defaultPath.c_str(), sizeof(backgroundPath) - 1);
+    backgroundPath[sizeof(backgroundPath) - 1] = '\0';
+  }
         
-        if (ImGui::BeginPopupModal("Background Load Fail", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("Failed to load background!");
-            ImGui::Text("Check the path and file format.");
-            if (ImGui::Button("OK")) {
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::EndPopup();
-        }
+  if (ImGui::Button("Browse...")) {
+    std::string selectedFile = openFileDialog();
+    if (!selectedFile.empty()) {
+      strncpy_s(backgroundPath, selectedFile.c_str(), sizeof(backgroundPath) - 1);
+      backgroundPath[sizeof(backgroundPath) - 1] = '\0';
+    }
+  }
+
+  // Load background button
+  if (ImGui::Button("Load Background")) {
+    if (strlen(backgroundPath) > 0) {
+      if (r.loadBackground(backgroundPath)) {
+        currentBackgroundPath = backgroundPath;
+        ImGui::OpenPopup("Background Loaded");
+      } else {
+        ImGui::OpenPopup("Background Load Failed");
+      }
+    }
+  }
+        
+  // Show current background path
+  if (!currentBackgroundPath.empty()) {
+    ImGui::Text("Current: %s", currentBackgroundPath.c_str());
+  }
+        
+  // Popup for success/failure
+  if (ImGui::BeginPopupModal("Background Loaded", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+    ImGui::Text("Background loaded successfully!");
+    if (ImGui::Button("OK")) {
+      ImGui::CloseCurrentPopup();
+    }
+    ImGui::EndPopup();
+  }
+  
+  if (ImGui::BeginPopupModal("Background Load Fail", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+    ImGui::Text("Failed to load background!");
+    ImGui::Text("Check the path and file format.");
+    if (ImGui::Button("OK")) {
+      ImGui::CloseCurrentPopup();
+    }
+    ImGui::EndPopup();
+  }
+  ImGui::Separator();
+
+  // ---- Entity Palette ----
+  ImGui::Text("Spawn Entity");
+  const char* types[] = {
+    "Player",
+    "Spawner",
+    //"Nyannyan"   seems to crash my game,
+    "Chick",
+    "Entrance",
+    "Projectile"
+  };
+
+  for (auto t : types) {
+    if (ImGui::Selectable(t, selectedType == t))
+      selectedType = t;
+  }
+
+  if (ImGui::Button("Spawn at Camera")) {
+    float cx = world.camera.x + world.camera.width * 0.5f;
+    float cy = world.camera.y + world.camera.height * 0.5f;
+    world.spawnEntity(selectedType, cx, cy);
+  }
+  //                                                                  IsMouseClicked(2) is onMiddleClick 
+  if (ImGui::Button("Spawn at Cursor") || ImGui::IsMouseClicked(2)) {
+    float cx = ImGui::GetMousePos().x + world.camera.x; 
+    float cy = ImGui::GetMousePos().y + world.camera.y; 
+    world.spawnEntity(selectedType, cx, cy);
+  }
+  if (ImGui::IsMouseClicked(1)) {     // For Platform Creation
+    float cx = ImGui::GetMousePos().x + world.camera.x; 
+    float cy = ImGui::GetMousePos().y + world.camera.y; 
+    world.platformCount++;
+    world.platforms.emplace_back();
+    world.platforms.back().bounds = {cx, cy, cw, ch};
+
+    // Rendering the possible entity that could be here?
+
+    // Rendering the platform that could be here?
+  }
+  if (ImGui::Button("Increase Width")) cw += 10.0f;
+  if (ImGui::Button("Decrease Width")) cw -= 10.0f;
+
+  ImGui::Text("Platform Width: %.1f", cw);
+  ImGui::Text("Platform Height: %.1f", ch);
+
+  ImGui::Separator();
+
+  // ---- Entity List ----
+  ImGui::Text("Entities");
+  for (auto& e : world.getEntities()) {
+    if (!e) continue;
+    if (ImGui::Selectable(e->getEntityType(), selectedEntity == e.get())) {
+      selectedEntity = e.get();
+    }
+  }
+
+  // ---- Inspector ----
+  if (selectedEntity) {
     ImGui::Separator();
+    ImGui::Text("Inspector");
+    float x = selectedEntity->x;
+    float y = selectedEntity->y;
 
-    // ---- Entity Palette ----
-    ImGui::Text("Spawn Entity");
-    const char* types[] = {
-        "Player",
-        "Spawner",
-        //"Nyannyan"   seems to crash my game,
-        "Chick",
-        "Entrance",
-        "Projectile"
-    };
+    if (ImGui::DragFloat("X", &x, 1.0f))
+      selectedEntity->x = x;
+    if (ImGui::DragFloat("Y", &y, 1.0f))
+      selectedEntity->y = y;
 
-    for (auto t : types) {
-        if (ImGui::Selectable(t, selectedType == t))
-            selectedType = t;
+    if (ImGui::Button("Delete")) {
+      world.removeEntity(selectedEntity);
+      selectedEntity = nullptr;
     }
-
-    if (ImGui::Button("Spawn at Camera")) {
-        float cx = world.camera.x + world.camera.width * 0.5f;
-        float cy = world.camera.y + world.camera.height * 0.5f;
-        world.spawnEntity(selectedType, cx, cy);
-    }
-    //                                                                  IsMouseClicked(2) is onMiddleClick 
-    if (ImGui::Button("Spawn at Cursor") || ImGui::IsMouseClicked(2)) {
-      float cx = ImGui::GetMousePos().x + world.camera.x; 
-      float cy = ImGui::GetMousePos().y + world.camera.y; 
-      world.spawnEntity(selectedType, cx, cy);
-    }
-    if (ImGui::IsMouseClicked(1)) {     // For Platform Creation
-      float cx = ImGui::GetMousePos().x + world.camera.x; 
-      float cy = ImGui::GetMousePos().y + world.camera.y; 
-      world.platformCount++;
-      world.platforms.emplace_back();
-      world.platforms.back().bounds = {cx, cy, cw, ch};
-
-      // Rendering the possible entity that could be here?
-
-      // Rendering the platform that could be here?
-    }
-    if (ImGui::Button("Increase Width")) cw += 10.0f;
-    if (ImGui::Button("Decrease Width")) cw -= 10.0f;
-
-    ImGui::Text("Platform Width: %.1f", cw);
-    ImGui::Text("Platform Height: %.1f", ch);
-
-    ImGui::Separator();
-
-    // ---- Entity List ----
-    ImGui::Text("Entities");
-    for (auto& e : world.getEntities()) {
-        if (!e) continue;
-        if (ImGui::Selectable(e->getEntityType(), selectedEntity == e.get())) {
-            selectedEntity = e.get();
-        }
-    }
-
-    // ---- Inspector ----
-    if (selectedEntity) {
-        ImGui::Separator();
-        ImGui::Text("Inspector");
-        float x = selectedEntity->x;
-        float y = selectedEntity->y;
-
-        if (ImGui::DragFloat("X", &x, 1.0f))
-            selectedEntity->x = x;
-        if (ImGui::DragFloat("Y", &y, 1.0f))
-            selectedEntity->y = y;
-
-        if (ImGui::Button("Delete")) {
-            world.removeEntity(selectedEntity);
-            selectedEntity = nullptr;
-        }
-    }
+  }
 
   // Levels 
   ImGui::Separator();

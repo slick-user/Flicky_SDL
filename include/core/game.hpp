@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <stdio.h>
 #include <tools/editor.hpp>
 
@@ -46,6 +45,8 @@ class Game {
     bool init();
     void run(); 
     void shutdown();
+
+    float dt;
 
   private:
     void processEvents();

@@ -228,6 +228,30 @@ build CMakeFiles/FlickyEngine.dir/tools/editor.cpp.obj: CXX_COMPILER__FlickyEngi
   OBJECT_DIR = CMakeFiles\FlickyEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\FlickyEngine.dir\tools
 
+build CMakeFiles/FlickyEngine.dir/tools/editorCam.cpp.obj: CXX_COMPILER__FlickyEngine_unscanned_ D$:/Programming/C++$ Scripts/Flicky$ Remake/tools/editorCam.cpp || cmake_object_order_depends_target_FlickyEngine
+  DEFINES = -DPROJECT_ROOT="\"D:/Programming/C++ Scripts/Flicky Remake\""
+  DEP_FILE = CMakeFiles\FlickyEngine.dir\tools\editorCam.cpp.obj.d
+  FLAGS = -std=gnu++17
+  INCLUDES = -I"D:/Programming/C++ Scripts/Flicky Remake" -I"D:/Programming/C++ Scripts/Flicky Remake/lib/imgui" -I"D:/Programming/C++ Scripts/Flicky Remake/lib/imgui/backends" -isystem "D:/Programming/C++ Scripts/Flicky Remake/include"
+  OBJECT_DIR = CMakeFiles\FlickyEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\FlickyEngine.dir\tools
+
+build CMakeFiles/FlickyEngine.dir/tools/editorUtils.cpp.obj: CXX_COMPILER__FlickyEngine_unscanned_ D$:/Programming/C++$ Scripts/Flicky$ Remake/tools/editorUtils.cpp || cmake_object_order_depends_target_FlickyEngine
+  DEFINES = -DPROJECT_ROOT="\"D:/Programming/C++ Scripts/Flicky Remake\""
+  DEP_FILE = CMakeFiles\FlickyEngine.dir\tools\editorUtils.cpp.obj.d
+  FLAGS = -std=gnu++17
+  INCLUDES = -I"D:/Programming/C++ Scripts/Flicky Remake" -I"D:/Programming/C++ Scripts/Flicky Remake/lib/imgui" -I"D:/Programming/C++ Scripts/Flicky Remake/lib/imgui/backends" -isystem "D:/Programming/C++ Scripts/Flicky Remake/include"
+  OBJECT_DIR = CMakeFiles\FlickyEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\FlickyEngine.dir\tools
+
+build CMakeFiles/FlickyEngine.dir/tools/spriteEditor.cpp.obj: CXX_COMPILER__FlickyEngine_unscanned_ D$:/Programming/C++$ Scripts/Flicky$ Remake/tools/spriteEditor.cpp || cmake_object_order_depends_target_FlickyEngine
+  DEFINES = -DPROJECT_ROOT="\"D:/Programming/C++ Scripts/Flicky Remake\""
+  DEP_FILE = CMakeFiles\FlickyEngine.dir\tools\spriteEditor.cpp.obj.d
+  FLAGS = -std=gnu++17
+  INCLUDES = -I"D:/Programming/C++ Scripts/Flicky Remake" -I"D:/Programming/C++ Scripts/Flicky Remake/lib/imgui" -I"D:/Programming/C++ Scripts/Flicky Remake/lib/imgui/backends" -isystem "D:/Programming/C++ Scripts/Flicky Remake/include"
+  OBJECT_DIR = CMakeFiles\FlickyEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\FlickyEngine.dir\tools
+
 
 # =============================================================================
 # Link build statements for STATIC_LIBRARY target FlickyEngine
@@ -236,7 +260,7 @@ build CMakeFiles/FlickyEngine.dir/tools/editor.cpp.obj: CXX_COMPILER__FlickyEngi
 #############################################
 # Link the static library libFlickyEngine.a
 
-build libFlickyEngine.a: CXX_STATIC_LIBRARY_LINKER__FlickyEngine_ CMakeFiles/FlickyEngine.dir/source/core/camera.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/game.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/renderer.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/world.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/NyanNyan.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/chick.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/enemy.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/entity.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/entrance.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/player.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/projectile.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/spawner.cpp.obj CMakeFiles/FlickyEngine.dir/tools/editor.cpp.obj || libImGui.a
+build libFlickyEngine.a: CXX_STATIC_LIBRARY_LINKER__FlickyEngine_ CMakeFiles/FlickyEngine.dir/source/core/camera.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/game.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/renderer.cpp.obj CMakeFiles/FlickyEngine.dir/source/core/world.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/NyanNyan.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/chick.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/enemy.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/entity.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/entrance.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/player.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/projectile.cpp.obj CMakeFiles/FlickyEngine.dir/source/entities/spawner.cpp.obj CMakeFiles/FlickyEngine.dir/tools/editor.cpp.obj CMakeFiles/FlickyEngine.dir/tools/editorCam.cpp.obj CMakeFiles/FlickyEngine.dir/tools/editorUtils.cpp.obj CMakeFiles/FlickyEngine.dir/tools/spriteEditor.cpp.obj || libImGui.a
   OBJECT_DIR = CMakeFiles\FlickyEngine.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
