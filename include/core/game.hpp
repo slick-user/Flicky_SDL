@@ -7,6 +7,10 @@
 #include <SDL3_image/SDL_image.h>
 #include <vector>
 
+#include <imgui.h>
+#include "backends/imgui_impl_sdl3.h"
+#include "backends/imgui_impl_sdlrenderer3.h"
+
 #include <core/world.hpp>
 #include <core/renderer.hpp>
 #include <core/camera.hpp>
@@ -16,6 +20,8 @@
 
 #include "../tools/editor.hpp"
 #include "../tools/editorcam.cpp"
+
+// Level Editor Dependent Libraries
 
 //class Util;
 

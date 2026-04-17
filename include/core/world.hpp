@@ -16,8 +16,8 @@ public:
   World(int screenW, int screenH, Renderer& r);
   ~World();
 
-  void loadLevel(const std::string& filename);
-  void loadLevelViaTxt(const std::string& filename);
+  bool loadLevel(const std::string& filename);
+  bool loadLevelViaTxt(const std::string& filename);
 
   void update(float dt);
   void cleanup();

@@ -77,6 +77,14 @@ void SpriteEditor::drawImageWindow() {
         return;
     }
 
+    // ---- Snap To Grid ----
+    ImGui::Checkbox("Snap to Grid", &gridSnap);
+    ImGui::SameLine();
+    ImGui::Checkbox("Show Grid", &showGrid);
+    ImGui::SetNextItemWidth(100);
+    ImGui::DragInt("Grid Size", &gridSize, 1, 1, 128);
+    ImGui::Separator();
+
     // ---- Zoom handling ----
     if (ImGui::IsWindowHovered()) {
         float wheel = ImGui::GetIO().MouseWheel;
@@ -97,6 +105,12 @@ void SpriteEditor::drawImageWindow() {
         (mouse.x - imgPos.x) / zoom,
         (mouse.y - imgPos.y) / zoom
     };
+
+    // Snapping
+    if (gridSnap && gridSize > 0) {
+      imgMouse.x = float(int(imgMouse.x / gridSize) * gridSize);
+      imgMouse.y = float(int(imgMouse.y / gridSize) * gridSize);
+    }
 
     // ---- Click-based selection state machine ----
     if (ImGui::IsItemHovered() &&
@@ -124,6 +138,27 @@ void SpriteEditor::drawImageWindow() {
     }
 
     ImDrawList* dl = ImGui::GetWindowDrawList();
+
+    // ---- Draw Grid Lines ----
+    if (showGrid && gridSize > 0) {
+        ImU32 gridColor = IM_COL32(255, 255, 255, 40); // subtle white
+
+        // Vertical lines
+        for (int x = 0; x < sheet.texW; x += gridSize) {
+            float screenX = imgPos.x + x * zoom;
+            float screenY0 = imgPos.y;
+            float screenY1 = imgPos.y + sheet.texH * zoom;
+            dl->AddLine(ImVec2(screenX, screenY0), ImVec2(screenX, screenY1), gridColor);
+        }
+
+        // Horizontal lines
+        for (int y = 0; y < sheet.texH; y += gridSize) {
+            float screenY = imgPos.y + y * zoom;
+            float screenX0 = imgPos.x;
+            float screenX1 = imgPos.x + sheet.texW * zoom;
+            dl->AddLine(ImVec2(screenX0, screenY), ImVec2(screenX1, screenY), gridColor);
+        }
+    }
 
     // ---- Live preview while selecting ----
     if (selectState == SelectState::Selecting) {

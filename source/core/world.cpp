@@ -9,11 +9,12 @@
 #include <entities/chick.hpp>
 #include <entities/entrance.hpp>
 #include <core/game.hpp>
+
 #include <fstream>
 #include <iostream>
 #include <libs/json.hpp>
 #include <memory>
-#include <type_traits>
+#include <sstream>
 
 json loadJson(const std::string& path) {
     std::ifstream file(path);
@@ -46,11 +47,11 @@ World::World(int screenW, int screenH, Renderer& r) : camera(screenW, screenH), 
 
 World::~World() {}
 
-void World::loadLevelViaTxt(const std::string& filename) {
+bool World::loadLevelViaTxt(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cout << "Failed to load level: " << filename << "\n";
-        return;
+        return false;
     }
     else {
       std::cout << "Level Loaded!" << std::endl; 
@@ -63,30 +64,61 @@ void World::loadLevelViaTxt(const std::string& filename) {
         file >> platforms[i].bounds.x >> platforms[i].bounds.y 
              >> platforms[i].bounds.w >> platforms[i].bounds.h;
     }
+    return true;
 }
 
-void World::loadLevel(const std::string& path) {
-  platforms.clear();
-  entities.clear();
-
-  json j = loadJson(path);
-
-  //LEVEL_WIDTH = j["meta"]["width"];
-  //LEVEL_HEIGHT = j["meta"]["height"];
-
-  // Players
-  auto& p = j["player"];
-  player = static_cast<Player*>(spawnEntity("Player", p["x"], p["y"]));
-
-  // Platforms
-  for (auto& pl : j["platforms"]) {
-    platforms.push_back({pl["x"], pl["y"],
-                        pl["w"], pl["h"]});
+bool World::loadLevel(const std::string& path) {
+  std::ifstream file(path);
+  if (!file.is_open()) {
+    std::cerr << "Could not open file: " << path << std::endl;
+    return false;
   }
 
-  // entities
-  for (auto& e : j["entities"]) {
-    spawnEntity(e["type"], e["x"], e["y"]);
+  // read file into a string
+  std::stringstream buffer;
+  buffer << file.rdbuf();
+  std::string content = buffer.str();
+
+  // guard against empty files
+  if (content.empty()) {
+    std::cerr << "File is empty: " << path << std::endl;
+    return false;
+  }
+
+  if (content[0] != '{' && content[0] != '[') {
+    std::cerr << "File does not appear to be JSON: " << path << std::endl;
+    return false;
+  }
+
+  try {
+    json j = json::parse(content);
+
+    platforms.clear();
+    entities.clear();
+
+    // json j = loadJson(path);
+
+    //LEVEL_WIDTH = j["meta"]["width"];
+    //LEVEL_HEIGHT = j["meta"]["height"];
+
+    // Players
+    auto& p = j["player"];
+    player = static_cast<Player*>(spawnEntity("Player", p["x"], p["y"]));
+
+    // Platforms
+    for (auto& pl : j["platforms"]) {
+      platforms.push_back({pl["x"], pl["y"],
+                          pl["w"], pl["h"]});
+    }
+
+    // entities
+    for (auto& e : j["entities"]) {
+      spawnEntity(e["type"], e["x"], e["y"]);
+    }
+    return true;
+  } catch (const nlohmann::detail::parse_error& e) {
+    std::cerr << "JSON Parse Error in: " << path << ": " << e.what() << std::endl;
+    return false;
   }
 }
 

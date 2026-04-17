@@ -8,50 +8,30 @@
 
 // Editor
 #include <tools/editor.hpp>
-#include "tools/editorCam.cpp"
-
-// Level Editor Dependent Libraries
-#include "imgui.h"
-#include "backends/imgui_impl_sdl3.h"
-#include "backends/imgui_impl_sdlrenderer3.h"
+#include <tools/editorCam.cpp>
 
 Game::Game() : running(true) {}
 Game::~Game() {}
 
 bool Game::init() {
-
   // Initialize SDL and Graphics with our Renderer
   if (!renderer.init("Flicky", SCREEN_WIDTH, SCREEN_HEIGHT)) return false;
 
-  /* I wanted to put the ImGui stuff directly in the Editor Files but I that would take
-     me more time for no reason having this directly in game, set a bool to decide if it gets used or not*/
-  // ==== IMGUI SETUP / EDITOR SETUP ====
-  // Setup Dear ImGui context
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-  ImGuiIO& io = ImGui::GetIO(); (void)io;
-  io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-  io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
-  // Setup Dear ImGui style
-  ImGui::StyleColorsDark();
-
-  // Setup Platform/Renderer backends
-  ImGui_ImplSDL3_InitForSDLRenderer(renderer.getWindow(), renderer.getSDLRenderer());
-  ImGui_ImplSDLRenderer3_Init(renderer.getSDLRenderer());
-
+  editor.init(renderer.getSDLRenderer(), renderer.getWindow());
   // ==== GAME SETUP ====
 
   // Background Rendering
+  // TODO Move to Renderer Initialization
   std::string BGpath = std::string(PROJECT_ROOT) + "/assets/Sega Genesis 32X - Flicky - Area 1.png";
   renderer.loadBackground(BGpath);
 
+  // TODO Refactor the abstraction layers: main, game, world
   world = new World(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
-  //world->loadLevel(std::string(PROJECT_ROOT) + "/levels/level1.txt");
+  //world->loadLevelViaTxt(std::string(PROJECT_ROOT) + "/levels/level1.txt");
   world->loadLevel((std::string(PROJECT_ROOT) + "/levels/leveltestnew.json"));
 
   return true;
-} 
+}
 
 void Game::run() {
 
@@ -65,14 +45,10 @@ void Game::run() {
 
     processEvents();
 
-    // Start the Dear ImGui frame
-    ImGui_ImplSDLRenderer3_NewFrame();
-    ImGui_ImplSDL3_NewFrame();
-    ImGui::NewFrame();
-    
+    editor.update();
     update(dt);
-    
-    ImGui::Render();
+
+    editor.render();
     render();
   }
 }
@@ -80,12 +56,8 @@ void Game::run() {
 void Game::shutdown() {
   delete world;
 
-  ImGui_ImplSDLRenderer3_Shutdown();
-  ImGui_ImplSDL3_Shutdown();
-  ImGui::DestroyContext();
-
-  renderer.shutdown();  
-
+  editor.shutdown();
+  renderer.shutdown();
   SDL_Quit();
 }
 
@@ -100,11 +72,13 @@ void Game::processEvents() {
     if (e.type == SDL_EVENT_KEY_DOWN) {
 
       if (e.key.key == SDLK_R) {
-        world->loadLevel((std::string(PROJECT_ROOT) + "/levels/level1 - Copy.txt"));
+        world->loadLevelViaTxt((std::string(PROJECT_ROOT) + "/levels/level1.txt"));
+        // world->loadLevel((std::string(PROJECT_ROOT) + "/levels/leveltestnew.json"));
       }
 
       if (e.key.key == SDLK_F1) {
-        editor.toggle();  
+        // Here we could have this trigger an editor loop instead
+        editor.toggle();
       }
 
       if (e.key.key == SDLK_F2) {
@@ -117,21 +91,18 @@ void Game::processEvents() {
           // Sync editor camera to current view center
           edcam.x = world->camera.x + world->camera.width * 0.5f;
           edcam.y = world->camera.y + world->camera.height * 0.5f;
-          
+
           world->camera.follow(edcam.x, edcam.y);
         }
       }
-      
     }
-
   }
-
 }
 
 void Game::update(float dt) {
   if (!pause) {
     world->update(dt);
-  } else { 
+  } else {
     edcam.handleInput(dt);
     world->camera.follow(edcam.x, edcam.y);
   }
@@ -149,8 +120,8 @@ void Game::render() {
     renderer.drawBlackScreen();
   }
 
+  // Could move this into proposed Editor loop
   ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer.getSDLRenderer());
 
   renderer.present();
 }
-

@@ -66,7 +66,7 @@ private:
     Idle,
     Selecting,
     Selected
-};
+  };
 
   SelectState selectState = SelectState::Idle;
 
@@ -74,4 +74,7 @@ private:
   float zoomMin = 0.25f;
   float zoomMax = 4.0f;
 
+  int gridSize = 16;
+  bool gridSnap = false;
+  bool showGrid = false;
 };

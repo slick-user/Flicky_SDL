@@ -1,4 +1,12 @@
 # --------------------
+# Game Specific runtime files
+# --------------------
+*.ini     # imgui.ini, game settings, etc.
+*.log
+*.sav
+*.pid
+
+# --------------------
 # Build artifacts
 # --------------------
 build/

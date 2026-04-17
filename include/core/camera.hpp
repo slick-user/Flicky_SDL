@@ -23,6 +23,7 @@ public:
     y = (e->y + e->h * 0.5f) - height * 0.5f;
   }
 
+  // TODO change the name of function apply (does not explain what it does, or importance)
   SDL_FRect apply(const SDL_FRect& worldRect) const {
     SDL_FRect r = worldRect;
     r.x -= x;

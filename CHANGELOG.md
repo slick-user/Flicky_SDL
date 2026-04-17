@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.1] - 
 
+### TODO
+- Grid system for Tile Placement
+
 ### Added
 - Renderer System for drawing abstraction
 - Testing Framework (Catch2)
@@ -20,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Chirps
 - ImGui Integration
 - Level Editor
+- Animated Sprite Editor
 
 ### Changed
 - Engine layout and game.cpp flow

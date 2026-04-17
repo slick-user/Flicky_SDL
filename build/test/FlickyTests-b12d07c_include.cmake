@@ -1,5 +1,0 @@
-if(EXISTS "D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests-b12d07c_tests.cmake")
-  include("D:/Programming/C++ Scripts/Flicky Remake/build/test/FlickyTests-b12d07c_tests.cmake")
-else()
-  add_test(FlickyTests_NOT_BUILT-b12d07c FlickyTests_NOT_BUILT-b12d07c)
-endif()

@@ -13,13 +13,12 @@ then use ninja to make tests and executable
 
 # To do
 
-
 ----------------------------------------------------------------
 
 ========================================================================================
 
 
-# Stuff I am learning about during the process
+# New learnings During the Process
 
 ## Version Control
 I think I just found out about one of the best additions I can have to my process. Implementing and using version control. One way would be Having multiple branches 
@@ -58,13 +57,14 @@ git push origin main --tags
 # Format: <type>(<scope>): <subject>
 
 #### Types:
-feat:     # New feature
-fix:      # Bug fix
-docs:     # Documentation
-style:    # Formatting, no code change
-refactor: # Code restructuring
-test:     # Adding tests
-chore:    # Build, dependencies, etc.
+feat:     # New feature                 | feat(player): add coyote timing
+fix:      # Bug fix                     | fix(physics): correct collision detection
+docs:     # Documentation               | docs(readme): update build instructions
+style:    # Formatting, no code change  | style: format code with ___format
+refactor: # Code restructuring          | refactor(ai): simplify pathfinding logic
+test:     # Adding tests                | test(damage)
+chore:    # Build, dependencies, etc.   |
+ci, perf, revert
 
 #### Examples:
 feat(collision): add player-enemy collision detection
@@ -143,7 +143,7 @@ Will be implement a tool to configure the entity animation frames. (might also b
 Level loading still uses .txt files we just made the data in our levels more verbose, the level loading also now works for all sorts of entities
 
 Need to integrate the level saving with the level editing tool that we are going to implement and that should complete our dev flow.
-That also means that levels will now follow the JSON format as specified in the unused loadlevel function in World Class
+That also means that levels will now follow the JSON format as specified in the loadlevel function in World Class
 
 ### Physics
 So since we are recreating the player
@@ -161,8 +161,10 @@ Have been considering creating a new abstraction layer (might be overkill) or at
 
 ## Tooling
 With some of the main components being developed (despite the fact that the game entities are not really in a finished state)
+
 I want to work on the development tools, make sprite loading much simpler, not have a need to do it manually. Create a level Editing tool that can configure entities, set properties and properly place entities in their locations without having to manually change our level files. 
-To begin with I wonder if developing this tool with SDL/C++ is really the ideal way of doing this or should I instead write this with some thing else. Would writing the editor with something like RubyToolkit, or Love2D be a viable way of doing this? I think that would be a terrible idea.... the novelty of such an undertaking will wear off quickly
+
+To begin with I wonder if developing this tool with SDL/C++ is really the ideal way of doing this or should I instead write this with some thing else. Would writing the editor with something like RubyToolkit, or Love2D be a viable way of doing this? the novelty of such an undertaking will wear off quickly
 
 I am ~~considering~~ using ImGui to write the Editor UI.  
 
