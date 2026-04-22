@@ -155,6 +155,35 @@ void Editor::renderPreviews(World *world) {
                         0.0f, 0, 3.0f);
     }
   }
+
+  // TODO Fix the Grid Line Display
+  
+  // Draw Grid Lines
+  if (showGrid && GRID_WIDTH > 0) {
+    
+    ImU32 gridColor = IM_COL32(255, 255, 255, 40); // subtle white
+    ImGuiIO& io = ImGui::GetIO();
+
+    float screenW = io.DisplaySize.x;
+    float screenH = io.DisplaySize.y;
+    
+    float startX = fmod(world->camera.x, GRID_WIDTH);
+    float startY = fmod(world->camera.y, GRID_WIDTH);
+    
+    // Vertical lines
+    for (int x = -startX; x < screenW; x += GRID_WIDTH) {
+        drawList->AddLine(ImVec2(x, 0),
+                          ImVec2(x, screenH),
+                          gridColor);
+    }
+
+    // Horizontal lines
+    for (int y = -startY; y < screenH; y += GRID_HEIGHT) {
+        drawList->AddLine(ImVec2(0, y),
+                          ImVec2(screenW, y),
+                          gridColor);
+    }
+  }
 }
 
 void Editor::toggle() { open = !open; }
@@ -224,7 +253,90 @@ void Editor::drawBackgroundLoader(Renderer* r) {
     }
     ImGui::EndPopup();
   }
+
+  ImGui::Checkbox("Show Grid", &showGrid);
 }
+
+
+void Editor::drawEntityPallete(Renderer* r, World* world, ImGuiIO* io) {
+  
+  // ---- Entity Palette ----
+  ImGui::Text("Spawn Entity");
+  const char *types[] = {"Player", "Spawner",
+                         //"Nyannyan"   seems to crash my game,
+                         "Chick", "Entrance", "Projectile"};
+
+  for (auto t : types) {
+    if (ImGui::Selectable(t, selectedType == t))
+      selectedType = t;
+  }
+
+  if (ImGui::Button("Spawn at Camera")) {
+    float cx = world->camera.x + world->camera.width * 0.5f;
+    float cy = world->camera.y + world->camera.height * 0.5f;
+    world->spawnEntity(selectedType, cx, cy);
+  }
+  //                                        IsMouseClicked(2) is MiddleClick
+  if (ImGui::Button("Spawn at Cursor") || (!io->WantCaptureMouse && ImGui::IsMouseClicked(0)) || ImGui::IsKeyPressed(ImGuiKey_E)) {
+    world->spawnEntity(selectedType, worldX, worldY);
+  }
+  if (!io->WantCaptureMouse && ImGui::IsMouseClicked(1) || ImGui::IsKeyPressed(ImGuiKey_Q)) { // For Platform Creation
+    world->platformCount++;
+    world->platforms.emplace_back();
+    world->platforms.back().bounds = {worldX, worldY, cw, ch};
+  // TODO Deletion
+  /* is a bit longer due to the fact it needs to detect the entity first*/
+  }
+  if (ImGui::Button("Increase Width") || (ImGui::IsKeyPressed(ImGuiKey_X)))
+    cw += 10.0f;
+  if (ImGui::Button("Decrease Width") || (ImGui::IsKeyPressed(ImGuiKey_Z))) 
+    cw -= 10.0f;
+
+  if (!io->WantCaptureMouse) {
+    if (io->MouseWheel != 0.0f) {
+      if (io->KeyCtrl)
+        ch += io->MouseWheel * GRID_HEIGHT;
+      else
+        cw += io->MouseWheel * GRID_WIDTH;
+
+      cw = std::max(cw, 10.0f);
+      ch = std::max(ch, 10.0f);
+    }
+  }
+
+  ImGui::Text("Platform Width: %.1f", cw);
+  ImGui::Text("Platform Height: %.1f", ch);
+
+  ImGui::Separator();
+
+  // ---- Entity List ----
+  ImGui::Text("Entities");
+  for (auto &e : world->getEntities()) {
+    if (!e)
+      continue;
+    if (ImGui::Selectable(e->getEntityType(), selectedEntity == e.get())) {
+      selectedEntity = e.get();
+    }
+  }
+
+  // ---- Inspector ----
+  if (selectedEntity) {
+    ImGui::Separator();
+    ImGui::Text("Inspector");
+    float x = selectedEntity->x;
+    float y = selectedEntity->y;
+
+    if (ImGui::DragFloat("X", &x, 1.0f))
+      selectedEntity->x = x;
+    if (ImGui::DragFloat("Y", &y, 1.0f))
+      selectedEntity->y = y;
+
+    if (ImGui::Button("Delete")) {
+      world->removeEntity(selectedEntity);
+      selectedEntity = nullptr;
+    }
+  }
+} 
 
 void Editor::update(World &world, Renderer &r, float dt) {
   if (!open)
@@ -256,88 +368,18 @@ void Editor::update(World &world, Renderer &r, float dt) {
 
   if (ImGui::Button(backgroundLoaderOpen ? "Close Background Loader" : "Open Background Loader")) {
     backgroundLoaderOpen = !backgroundLoaderOpen;
-    printf("Background Texture Loader toggled: %d\n", backgroundLoaderOpen);
+    // printf("Background Texture Loader toggled: %d\n", backgroundLoaderOpen);
   }
   if (backgroundLoaderOpen)
     drawBackgroundLoader(&r);
   
-  // ---- Entity Palette ----
-  ImGui::Text("Spawn Entity");
-  const char *types[] = {"Player", "Spawner",
-                         //"Nyannyan"   seems to crash my game,
-                         "Chick", "Entrance", "Projectile"};
-
-  for (auto t : types) {
-    if (ImGui::Selectable(t, selectedType == t))
-      selectedType = t;
+  if (ImGui::Button(entityPalleteOpen ? "Close Enttiy Selector" : "Open Entity Selector")) {
+    entityPalleteOpen = !entityPalleteOpen;
+    // printf("Entity Selector toggled: %d\n", entityPalleteOpen);
   }
-
-  if (ImGui::Button("Spawn at Camera")) {
-    float cx = world.camera.x + world.camera.width * 0.5f;
-    float cy = world.camera.y + world.camera.height * 0.5f;
-    world.spawnEntity(selectedType, cx, cy);
-  }
-  //                                        IsMouseClicked(2) is MiddleClick
-  if (ImGui::Button("Spawn at Cursor") || (!io.WantCaptureMouse && ImGui::IsMouseClicked(0)) || ImGui::IsKeyPressed(ImGuiKey_E)) {
-    world.spawnEntity(selectedType, worldX, worldY);
-  }
-  if (!io.WantCaptureMouse && ImGui::IsMouseClicked(1) || ImGui::IsKeyPressed(ImGuiKey_Q)) { // For Platform Creation
-    world.platformCount++;
-    world.platforms.emplace_back();
-    world.platforms.back().bounds = {worldX, worldY, cw, ch};
-  // TODO Deletion
-  /* is a bit longer due to the fact it needs to detect the entity first*/
-  }
-  if (ImGui::Button("Increase Width") || (ImGui::IsKeyPressed(ImGuiKey_X)))
-    cw += 10.0f;
-  if (ImGui::Button("Decrease Width") || (ImGui::IsKeyPressed(ImGuiKey_Z))) 
-    cw -= 10.0f;
-
-  if (!io.WantCaptureMouse) {
-    if (io.MouseWheel != 0.0f) {
-      if (io.KeyCtrl)
-        ch += io.MouseWheel * GRID_HEIGHT;
-      else
-        cw += io.MouseWheel * GRID_WIDTH;
-
-      cw = std::max(cw, 10.0f);
-      ch = std::max(ch, 10.0f);
-    }
-  }
-
-  ImGui::Text("Platform Width: %.1f", cw);
-  ImGui::Text("Platform Height: %.1f", ch);
-
-  ImGui::Separator();
-
-  // ---- Entity List ----
-  ImGui::Text("Entities");
-  for (auto &e : world.getEntities()) {
-    if (!e)
-      continue;
-    if (ImGui::Selectable(e->getEntityType(), selectedEntity == e.get())) {
-      selectedEntity = e.get();
-    }
-  }
-
-  // ---- Inspector ----
-  if (selectedEntity) {
-    ImGui::Separator();
-    ImGui::Text("Inspector");
-    float x = selectedEntity->x;
-    float y = selectedEntity->y;
-
-    if (ImGui::DragFloat("X", &x, 1.0f))
-      selectedEntity->x = x;
-    if (ImGui::DragFloat("Y", &y, 1.0f))
-      selectedEntity->y = y;
-
-    if (ImGui::Button("Delete")) {
-      world.removeEntity(selectedEntity);
-      selectedEntity = nullptr;
-    }
-  }
-
+  if (entityPalleteOpen)
+    drawEntityPallete(&r, &world, &io);
+  
   // Levels
   ImGui::Separator();
 

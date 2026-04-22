@@ -8,8 +8,15 @@ g++ -o Flicky main.cpp "Source Files/editor.cpp" "Source Files/util.cpp" -O1 -Wa
 *These are no longer used to compile the game*
 
 Instead now you have to use the CMake build system for compilations, that is make build directory
-cmake.. inside build directory
-then use ninja to make tests and executable
+
+``` sh
+  mkdir build
+  cd build
+  cmake ..
+  ninja
+```
+
+*ninja* to make tests and executable
 
 # To do
 
@@ -18,7 +25,7 @@ then use ninja to make tests and executable
 ========================================================================================
 
 
-# New learnings During the Process
+# Things I learnt about
 
 ## Version Control
 I think I just found out about one of the best additions I can have to my process. Implementing and using version control. One way would be Having multiple branches 

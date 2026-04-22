@@ -42,13 +42,19 @@ private:
   char levelPath[260] = "";
   std::string currentLevelPath;
 
+
+  void drawEntityPallete(Renderer* r, World* world, ImGuiIO* io);
+  
   SpriteEditor spriteEditor;
   bool spriteEditorOpen = false;
   bool backgroundLoaderOpen = false;
+  bool entityPalleteOpen = false;
   
   float worldX;
   float worldY;
 
+  bool showGrid = false; // Don't have a button for show or hide grid
+  
   // Game References
   SDL_Renderer* renderer;
   SDL_Window* window;
