@@ -189,4 +189,4 @@ For entity Selection I would have to add the change to the classes most likely, 
 ```
   First Two digits would be for the entity type, Player, Chick, Cat, and the remaining digits would be the number. Which **one** of said entity it is. So the 5th cat could look something like 025. (though that means that entity count increases and the digits are stored in an Little-Endian like manner?)
 
-  Apparently this is an existing ID Layout called Composite ID or Bit-Packed ID. 
+  Apparently this is an existing ID Layout called Composite ID or Bit-Packed ID. Use BitPackedID with the entityID packed inside a uint32 with 8 bits for the *type* and 24 bits for the *index*

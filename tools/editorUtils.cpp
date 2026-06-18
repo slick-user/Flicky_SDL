@@ -17,10 +17,10 @@ std::string saveFileDialog() {
   ofn.lStructSize = sizeof(ofn);
   ofn.lpstrFile = szFile;
   ofn.nMaxFile = sizeof(szFile);
-  ofn.lpstrFilter = "Level Files\0*.lvl\0All Files\0*.*\0";
+  ofn.lpstrFilter = "JSON Files\0*.json\0All Files\0*.*\0";
   ofn.nFilterIndex = 1;
   ofn.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT;
-  ofn.lpstrDefExt = "lvl";
+  ofn.lpstrDefExt = "json";
 
   if (GetSaveFileNameA(&ofn)) {
     return std::string(szFile);

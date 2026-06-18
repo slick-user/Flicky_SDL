@@ -156,6 +156,19 @@ void Editor::renderPreviews(World *world) {
     }
   }
 
+  // Highlight selected platform
+  if (selectedPlatformID != INVALID_PLATFORM_ID) {
+    for (const auto& p : world->platforms) {
+      if (p.id == selectedPlatformID) {
+        SDL_FRect sr = world->camera.apply(p.bounds);
+        drawList->AddRect(ImVec2(sr.x - 3, sr.y - 3),
+                          ImVec2(sr.x + sr.w + 3, sr.y + sr.h + 3),
+                          IM_COL32(255, 255, 0, 255), 0.0f, 0, 3.0f);
+        break;
+      }
+    }
+  }
+
   // TODO Fix the Grid Line Display
   
   // Draw Grid Lines
@@ -283,9 +296,8 @@ void Editor::drawEntityPallete(Renderer* r, World* world, ImGuiIO* io) {
   if (!io->WantCaptureMouse && ImGui::IsMouseClicked(1) || ImGui::IsKeyPressed(ImGuiKey_Q)) { // For Platform Creation
     world->platformCount++;
     world->platforms.emplace_back();
+    world->platforms.back().id = World::s_nextPlatformId++;
     world->platforms.back().bounds = {worldX, worldY, cw, ch};
-  // TODO Deletion
-  /* is a bit longer due to the fact it needs to detect the entity first*/
   }
   if (ImGui::Button("Increase Width") || (ImGui::IsKeyPressed(ImGuiKey_X)))
     cw += 10.0f;
@@ -347,6 +359,43 @@ void Editor::drawEntityPallete(Renderer* r, World* world, ImGuiIO* io) {
     } else {
       // Entity was deleted or invalid
       selectedEntityID = INVALID_ID;
+    }
+  }
+
+  // ---- Platforms ----
+  ImGui::Separator();
+  ImGui::Text("Platforms");
+  for (auto& p : world->platforms) {
+    bool sel = (selectedPlatformID != INVALID_PLATFORM_ID && p.id == selectedPlatformID);
+    std::string label = "Platform #" + std::to_string(p.id);
+    if (ImGui::Selectable(label.c_str(), sel)) {
+      selectedPlatformID = p.id;
+      selectedEntityID = INVALID_ID;
+    }
+  }
+
+  // ---- Platform Inspector ----
+  if (selectedPlatformID != INVALID_PLATFORM_ID) {
+    Platform* plat = world->findPlatform(selectedPlatformID);
+    if (plat) {
+      ImGui::Separator();
+      ImGui::Text("Platform Inspector");
+      ImGui::Text("ID: %u", plat->id);
+
+      float x = plat->bounds.x, y = plat->bounds.y;
+      float w = plat->bounds.w, h = plat->bounds.h;
+
+      if (ImGui::DragFloat("X", &x, 1.0f)) plat->bounds.x = x;
+      if (ImGui::DragFloat("Y", &y, 1.0f)) plat->bounds.y = y;
+      if (ImGui::DragFloat("W", &w, 1.0f)) plat->bounds.w = w;
+      if (ImGui::DragFloat("H", &h, 1.0f)) plat->bounds.h = h;
+
+      if (ImGui::Button("Delete Platform")) {
+        world->removePlatformByID(selectedPlatformID);
+        selectedPlatformID = INVALID_PLATFORM_ID;
+      }
+    } else {
+      selectedPlatformID = INVALID_PLATFORM_ID;
     }
   }
 } 
@@ -425,6 +474,22 @@ void Editor::update(World &world, Renderer &r, float dt) {
     }
   }
 
+  ImGui::SameLine();
+
+  // Load Level button
+  if ((ImGui::Button("Load Level")) || (io.KeyCtrl && ImGui::IsKeyPressed(ImGuiKey_L))) {
+    if (strlen(levelPath) > 0) {
+      if (world.loadLevel(levelPath)) {
+        currentLevelPath = levelPath;
+        selectedEntityID = INVALID_ID;
+        selectedPlatformID = INVALID_PLATFORM_ID;
+        ImGui::OpenPopup("Level Loaded");
+      } else {
+        ImGui::OpenPopup("Level Load Failed");
+      }
+    }
+  }
+
   if (!currentLevelPath.empty())
     ImGui::Text("Current: %s", currentLevelPath.c_str());  
 
@@ -437,18 +502,31 @@ void Editor::update(World &world, Renderer &r, float dt) {
     ImGui::EndPopup();
   }
 
+  if (ImGui::BeginPopupModal("Level Loaded", nullptr,
+                             ImGuiWindowFlags_AlwaysAutoResize)) {
+    ImGui::Text("Level loaded successfully!");
+    if (ImGui::Button("OK")) {
+      ImGui::CloseCurrentPopup();
+    }
+    ImGui::EndPopup();
+  }
+
+  if (ImGui::BeginPopupModal("Level Load Failed", nullptr,
+                             ImGuiWindowFlags_AlwaysAutoResize)) {
+    ImGui::Text("Failed to load level!");
+    ImGui::Text("Check the path and file format.");
+    if (ImGui::Button("OK")) {
+      ImGui::CloseCurrentPopup();
+    }
+    ImGui::EndPopup();
+  }
+
   ImGui::End();
 
   renderPreviews(&world);
 }
 
-void Editor::saveLevel(const std::string &originalPath, World *world) const {
-  std::string path = originalPath;
-
-  if (path.size() < 5 || path.substr(path.size() - 5) != ".json") {
-    path += ".json";
-  }
-
+void Editor::saveLevel(const std::string &path, World *world) const {
   json j;
 
   j["meta"] = {{"width", LEVEL_WIDTH}, {"height", LEVEL_HEIGHT}};
@@ -469,7 +547,8 @@ void Editor::saveLevel(const std::string &originalPath, World *world) const {
     j["platforms"].push_back({{"x", p.bounds.x},
                               {"y", p.bounds.y},
                               {"w", p.bounds.w},
-                              {"h", p.bounds.h}});
+                              {"h", p.bounds.h},
+                              {"id", p.id}});
   }
 
   // Entities

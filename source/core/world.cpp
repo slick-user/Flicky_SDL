@@ -12,6 +12,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 #include <libs/json.hpp>
 #include <memory>
 #include <sstream>
@@ -26,6 +27,8 @@ json loadJson(const std::string& path) {
     }
     return j;
 }
+
+PlatformID World::s_nextPlatformId = 1;
 
 World::World(int screenW, int screenH, Renderer& r) : camera(screenW, screenH), r(&r) {
   // Player Initialization
@@ -107,8 +110,15 @@ bool World::loadLevel(const std::string& path) {
 
     // Platforms
     for (auto& pl : j["platforms"]) {
-      platforms.push_back({pl["x"], pl["y"],
-                          pl["w"], pl["h"]});
+      Platform p = {INVALID_PLATFORM_ID, {pl["x"], pl["y"], pl["w"], pl["h"]}};
+      if (pl.contains("id")) {
+        p.id = pl["id"];
+        if (p.id >= s_nextPlatformId)
+          s_nextPlatformId = p.id + 1;
+      } else {
+        p.id = s_nextPlatformId++;
+      }
+      platforms.push_back(p);
     }
 
     // entities
@@ -225,6 +235,26 @@ Entity* World::findEntity(EntityID id) {
             return e.get();
     }
     return nullptr;
+}
+
+Platform* World::findPlatform(PlatformID id) {
+    for (auto& p : platforms) {
+        if (p.id == id)
+            return &p;
+    }
+    return nullptr;
+}
+
+void World::removePlatformByID(PlatformID id) {
+    platforms.erase(
+        std::remove_if(platforms.begin(), platforms.end(),
+            [id](const Platform& p) { return p.id == id; }),
+        platforms.end());
+}
+
+void World::resetIDCounters() {
+    std::fill(Entity::s_nextId.begin(), Entity::s_nextId.end(), 0);
+    s_nextPlatformId = 1;
 }
 
 std::vector<std::unique_ptr<Entity>>& World::getEntities() {

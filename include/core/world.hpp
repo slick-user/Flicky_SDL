@@ -32,6 +32,10 @@ public:
   Entity* findEntity(EntityID id);
   std::vector<std::unique_ptr<Entity>>& getEntities();
 
+  Platform* findPlatform(PlatformID id);
+  void removePlatformByID(PlatformID id);
+  void resetIDCounters();
+
   void checkEntityCollisions();
 
   void onChickRescued();
@@ -46,6 +50,7 @@ private:
   int chicksExited = 0;
 
 public:
+  static PlatformID s_nextPlatformId;
   std::vector<Platform> platforms;
   std::vector<std::unique_ptr<Entity>> entities;
   std::vector<std::unique_ptr<Entity>> pendingEntities;

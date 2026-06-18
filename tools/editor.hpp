@@ -31,6 +31,7 @@ private:
   bool open = false;
   std::string selectedType = "Chick";
   EntityID selectedEntityID = INVALID_ID;
+  PlatformID selectedPlatformID = INVALID_PLATFORM_ID;
 
   char backgroundPath[512] = "";
   std::string currentBackgroundPath = "";

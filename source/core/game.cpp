@@ -28,7 +28,7 @@ bool Game::init() {
   // TODO Refactor the abstraction layers: main, game, world
   world = new World(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
   //world->loadLevelViaTxt(std::string(PROJECT_ROOT) + "/levels/level1.txt");
-  world->loadLevel((std::string(PROJECT_ROOT) + "/levels/leveltestnew.json"));
+  world->loadLevel((std::string(PROJECT_ROOT) + "/levels/level1.json"));
 
   return true;
 }

@@ -39,7 +39,11 @@ enum class State {
 bool intersects(const SDL_FRect& a, const SDL_FRect& b);
 Facing atEdge(const SDL_FRect& a, const SDL_FRect& b);
 
+using PlatformID = uint32_t;
+constexpr PlatformID INVALID_PLATFORM_ID = 0;
+
 struct Platform {
+  PlatformID id = INVALID_PLATFORM_ID;
   SDL_FRect bounds;
 };
 

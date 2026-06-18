@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Level Editor
 - Animated Sprite Editor
 - Grids for Tile Placement
-- ID and Entity Selection
+- ID and Entity Selection and for Platforms
 
 ### Changed
 - Engine layout and game.cpp flow
@@ -34,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Screen wrapping implementation
 - Swapped out Raw Pointers entities array for Smart Pointers
 - Changed Level Loading
-- Level Loading
+- Level Loading*
 
 ### Fixed
 - 
