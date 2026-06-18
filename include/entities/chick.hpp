@@ -21,7 +21,7 @@ public:
   
     int index = 0;
 
-    Chick(float x, float y, Renderer& r) : Entity(x, y, 24, 24), originX(x), originY(y) {
+    Chick(float x, float y, Renderer& r) : Entity(x, y, 24, 24, EntityType::Chick), originX(x), originY(y) {
 
         state = State::Flying;
 
@@ -43,6 +43,7 @@ public:
     bool isStart() const { return index == 0; }
 
     virtual const char* getEntityType() const override { return "Chick"; }
+    virtual EntityType getEntityTypeEnum() const override { return EntityType::Chick; }
 
 private:
     float originX;

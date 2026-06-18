@@ -19,7 +19,7 @@ public:
 
   World* world = nullptr;
 
-  Entrance(float x, float y, Renderer& r, World* w) : Entity(x, y, 32, 32), world(w) {
+  Entrance(float x, float y, Renderer& r, World* w) : Entity(x, y, 32, 32, EntityType::Entrance), world(w) {
     state = State::Idle;
     sheet = r.loadSpriteSheetJSON("Spawner", std::string(PROJECT_ROOT) + "/metadata/entrance.json");
 
@@ -34,6 +34,7 @@ public:
   void update(float dt, const std::vector<Platform>& platforms) override;
 
   const char* getEntityType() const override { return "Entrance"; }
+  EntityType getEntityTypeEnum() const override { return EntityType::Entrance; }
 
   void onCollision(Entity* e) override;
   

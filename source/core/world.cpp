@@ -113,7 +113,16 @@ bool World::loadLevel(const std::string& path) {
 
     // entities
     for (auto& e : j["entities"]) {
-      spawnEntity(e["type"], e["x"], e["y"]);
+      Entity* ent = spawnEntity(e["type"], e["x"], e["y"]);
+      if (ent && e.contains("id")) {
+        EntityID savedId = e["id"];
+        ent->id = savedId;
+        // Advance the per-type counter past this restored ID
+        uint8_t t = static_cast<uint8_t>(getTypeFromID(savedId));
+        uint32_t idx = getIndexFromID(savedId) + 1;
+        if (idx > Entity::s_nextId[t])
+          Entity::s_nextId[t] = idx;
+      }
     }
     return true;
   } catch (const nlohmann::detail::parse_error& e) {
@@ -200,6 +209,22 @@ void World::removeEntity(Entity* e) {
             return ptr.get() == e;
         });
     entities.erase(it, entities.end());
+}
+
+void World::removeEntityByID(EntityID id) {
+    auto it = std::remove_if(entities.begin(), entities.end(),
+        [id](const std::unique_ptr<Entity>& ptr) {
+            return ptr->id == id;
+        });
+    entities.erase(it, entities.end());
+}
+
+Entity* World::findEntity(EntityID id) {
+    for (auto& e : entities) {
+        if (e && e->id == id)
+            return e.get();
+    }
+    return nullptr;
 }
 
 std::vector<std::unique_ptr<Entity>>& World::getEntities() {

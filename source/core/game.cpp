@@ -45,7 +45,7 @@ void Game::run() {
 
     processEvents();
 
-    editor.update();
+    editor.frameUpdate();
     update(dt);
 
     editor.render();

@@ -22,7 +22,7 @@ public:
   const float THROW_VELOCITY_Y = -300.0f;  // Upward throw velocity
   
   Projectile(float x, float y, Renderer& r, World* w) 
-    : Entity(x, y, 16, 16), world(w) {
+    : Entity(x, y, 16, 16, EntityType::Projectile), world(w) {
     
     // Load projectile sprite sheet
     sheet = r.loadSpriteSheetJSON("Projectile", 
@@ -36,6 +36,7 @@ public:
   void update(float dt, const std::vector<Platform>& platforms) override;
   void onCollision(Entity* other) override;
   const char* getEntityType() const override { return "Projectile"; }
+  EntityType getEntityTypeEnum() const override { return EntityType::Projectile; }
   
   void pickUp(Player* player);
   void throwProjectile(Facing direction);

@@ -28,6 +28,8 @@ public:
   Entity* spawnEntity(const std::string& type, float x, float y);
   Entity* addEntity(std::unique_ptr<Entity> e);
   void removeEntity(Entity* e);
+  void removeEntityByID(EntityID id);
+  Entity* findEntity(EntityID id);
   std::vector<std::unique_ptr<Entity>>& getEntities();
 
   void checkEntityCollisions();

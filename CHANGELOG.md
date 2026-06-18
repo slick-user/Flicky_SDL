@@ -8,8 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.1] - 
 
 ### TODO
-- Grid system for Tile Placement
-- ID and Entity Selection
 
 ### Added
 - Renderer System for drawing abstraction
@@ -26,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Level Editor
 - Animated Sprite Editor
 - Grids for Tile Placement
+- ID and Entity Selection
 
 ### Changed
 - Engine layout and game.cpp flow

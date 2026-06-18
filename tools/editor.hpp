@@ -7,24 +7,21 @@
 #include "backends/imgui_impl_sdlrenderer3.h"
 
 #include "./spriteEditor.hpp"
+#include <entities/entity.hpp>
 
 class World;
 class Renderer;
-class Entity;
-
-// TODO make difference between update functions clear
 
 class Editor {
 public:
 
   void init(SDL_Renderer* renderer, SDL_Window* window);
-  // Is for Game to update
-  void update(); // Is for certain frame updates
+  void frameUpdate(); // Is for certain frame updates
   void render();
   void shutdown();
   
   void toggle();
-  void update(World& world, Renderer& r, float dt);
+  void update(World& world, Renderer& r, float dt);  // Is for Game to update
 
   void renderPreviews(World* world);
 
@@ -33,7 +30,7 @@ public:
 private:  
   bool open = false;
   std::string selectedType = "Chick";
-  Entity* selectedEntity = nullptr;
+  EntityID selectedEntityID = INVALID_ID;
 
   char backgroundPath[512] = "";
   std::string currentBackgroundPath = "";

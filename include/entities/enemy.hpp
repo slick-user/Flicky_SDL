@@ -13,7 +13,7 @@ class Enemy : public Entity {
 
     State state;
 
-    Enemy(float x, float y, Renderer& r, Player* p) : Entity(x,y,32,38) { 
+    Enemy(float x, float y, Renderer& r, Player* p, EntityType type = EntityType::Enemy) : Entity(x,y,32,38, type) { 
       player = p;
       state = State::Idle;
 
@@ -32,6 +32,7 @@ class Enemy : public Entity {
 
   void onCollision(Entity* other) override;
   virtual const char* getEntityType() const override { return "Enemy"; }
+  virtual EntityType getEntityTypeEnum() const override { return EntityType::Enemy; }
 
   Player* getPlayer() { return player; }
 

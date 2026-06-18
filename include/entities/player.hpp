@@ -24,8 +24,8 @@ public:
 
   int lives = 3;
 
-  Player(SDL_Texture* tex, float x, float y) : Entity(x,y,18,36), texture(tex) {}
-  Player(float x, float y, Renderer& r) : Entity(x,y,18,36), originX(x), originY(y) {
+  Player(SDL_Texture* tex, float x, float y) : Entity(x,y,18,36, EntityType::Player), texture(tex) {}
+  Player(float x, float y, Renderer& r) : Entity(x,y,18,36, EntityType::Player), originX(x), originY(y) {
     
     state = State::Idle;
 
@@ -48,6 +48,7 @@ public:
 
   void onCollision(Entity* other) override;
   virtual const char* getEntityType() const override { return "Player"; }
+  virtual EntityType getEntityTypeEnum() const override { return EntityType::Player; }
  
   void tryPickUpProjectile();
   void throwProjectile();

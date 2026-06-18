@@ -5,7 +5,7 @@ g++ -o Flicky main.cpp "Source Files/game.cpp" "Source Files/player.cpp" "Source
 For the Editor version:
 g++ -o Flicky main.cpp "Source Files/editor.cpp" "Source Files/util.cpp" -O1 -Wall -I include -L lib/ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
-*These are no longer used to compile the game*
+*Deprecated*
 
 Instead now you have to use the CMake build system for compilations, that is make build directory
 
@@ -17,10 +17,6 @@ Instead now you have to use the CMake build system for compilations, that is mak
 ```
 
 *ninja* to make tests and executable
-
-# To do
-
-----------------------------------------------------------------
 
 ========================================================================================
 
@@ -183,3 +179,14 @@ Editor
  ├── Entity Palette
  └── Save/Load
 ```
+
+### Entity IDs 
+For entity Selection I would have to add the change to the classes most likely, so any entity that is made would be set with an ID. Through a callback editor would be aware of it. For the ID standard I propose
+```
+  ____________
+  |xx|xxxxxxx|
+  ------------
+```
+  First Two digits would be for the entity type, Player, Chick, Cat, and the remaining digits would be the number. Which **one** of said entity it is. So the 5th cat could look something like 025. (though that means that entity count increases and the digits are stored in an Little-Endian like manner?)
+
+  Apparently this is an existing ID Layout called Composite ID or Bit-Packed ID. 

@@ -3,6 +3,8 @@
 #include <core/camera.hpp>
 #include <core/game.hpp>
 
+std::array<uint32_t, 256> Entity::s_nextId = {};
+
 bool intersects(const SDL_FRect& a, const SDL_FRect& b) {
   return !(a.x + a.w <= b.x ||  // a hpos is <= b hpos
            a.x >= b.x + b.w ||  // b hpos is >= a hpos

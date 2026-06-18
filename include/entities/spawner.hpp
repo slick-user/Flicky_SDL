@@ -27,7 +27,7 @@ public:
 
   float timer = 0.0f;
 
-  Spawner(float x, float y, Renderer& r, Player* p, World* w) : Entity(x,y,32,38), player(p), world(w) {
+  Spawner(float x, float y, Renderer& r, Player* p, World* w) : Entity(x,y,32,38, EntityType::Spawner), player(p), world(w) {
     state = State::Idle;
     sheet = r.loadSpriteSheetJSON("Spawner", std::string(PROJECT_ROOT) + "/metadata/spawner.json");
 

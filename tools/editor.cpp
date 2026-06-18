@@ -36,7 +36,7 @@ void Editor::init(SDL_Renderer* renderer, SDL_Window* window) {
   ImGui_ImplSDLRenderer3_Init(renderer);  
 }
 
-void Editor::update() {
+void Editor::frameUpdate() {
   ImGui_ImplSDLRenderer3_NewFrame();
   ImGui_ImplSDL3_NewFrame();
   ImGui::NewFrame();
@@ -147,10 +147,10 @@ void Editor::renderPreviews(World *world) {
         ImVec2(screenRect.x + screenRect.w, screenRect.y + screenRect.h), color,
         0.0f, 0, 1.0f);
 
-    // Highlight selected
-    if (selectedEntity == e.get()) {  
-      drawList->AddRect(ImVec2(screenRect.x - 2, screenRect.y - 2),
-                        ImVec2(screenRect.w + 2, screenRect.y + screenRect.h + 2),
+    // Highlight selected (via EntityID)
+    if (selectedEntityID != INVALID_ID && e->id == selectedEntityID) {  
+      drawList->AddRect(ImVec2(screenRect.x - 3, screenRect.y - 3),
+                        ImVec2(screenRect.x + screenRect.w + 3, screenRect.y + screenRect.h + 3),
                         IM_COL32(255, 255, 0, 255), // Yellow highlight
                         0.0f, 0, 3.0f);
     }
@@ -311,29 +311,42 @@ void Editor::drawEntityPallete(Renderer* r, World* world, ImGuiIO* io) {
 
   // ---- Entity List ----
   ImGui::Text("Entities");
+  ImGui::Text("ID        Type");
   for (auto &e : world->getEntities()) {
     if (!e)
       continue;
-    if (ImGui::Selectable(e->getEntityType(), selectedEntity == e.get())) {
-      selectedEntity = e.get();
+    bool selected = (selectedEntityID != INVALID_ID && e->id == selectedEntityID);
+    std::string label = std::to_string(e->id) + " " + e->getEntityType();
+    if (ImGui::Selectable(label.c_str(), selected)) {
+      selectedEntityID = e->id;
     }
   }
 
   // ---- Inspector ----
-  if (selectedEntity) {
-    ImGui::Separator();
-    ImGui::Text("Inspector");
-    float x = selectedEntity->x;
-    float y = selectedEntity->y;
+  if (selectedEntityID != INVALID_ID) {
+    Entity* ent = world->findEntity(selectedEntityID);
+    if (ent) {
+      ImGui::Separator();
+      ImGui::Text("Inspector");
+      ImGui::Text("ID: 0x%08X", ent->id);
+      ImGui::Text("Type: %s", ent->getEntityType());
+      ImGui::Text("Index: %u", getIndexFromID(ent->id));
 
-    if (ImGui::DragFloat("X", &x, 1.0f))
-      selectedEntity->x = x;
-    if (ImGui::DragFloat("Y", &y, 1.0f))
-      selectedEntity->y = y;
+      float x = ent->x;
+      float y = ent->y;
 
-    if (ImGui::Button("Delete")) {
-      world->removeEntity(selectedEntity);
-      selectedEntity = nullptr;
+      if (ImGui::DragFloat("X", &x, 1.0f))
+        ent->x = x;
+      if (ImGui::DragFloat("Y", &y, 1.0f))
+        ent->y = y;
+
+      if (ImGui::Button("Delete")) {
+        world->removeEntityByID(selectedEntityID);
+        selectedEntityID = INVALID_ID;
+      }
+    } else {
+      // Entity was deleted or invalid
+      selectedEntityID = INVALID_ID;
     }
   }
 } 
@@ -373,7 +386,7 @@ void Editor::update(World &world, Renderer &r, float dt) {
   if (backgroundLoaderOpen)
     drawBackgroundLoader(&r);
   
-  if (ImGui::Button(entityPalleteOpen ? "Close Enttiy Selector" : "Open Entity Selector")) {
+  if (ImGui::Button(entityPalleteOpen ? "Close Entity Selector" : "Open Entity Selector")) {
     entityPalleteOpen = !entityPalleteOpen;
     // printf("Entity Selector toggled: %d\n", entityPalleteOpen);
   }
@@ -469,7 +482,7 @@ void Editor::saveLevel(const std::string &originalPath, World *world) const {
     if (type == "Player")
       continue;
 
-    j["entities"].push_back({{"type", type}, {"x", e->x}, {"y", e->y}});
+    j["entities"].push_back({{"type", type}, {"x", e->x}, {"y", e->y}, {"id", e->id}});
   }
 
   std::ofstream file(path);
