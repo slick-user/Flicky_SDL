@@ -73,9 +73,10 @@ void Projectile::onCollision(Entity* other) {
   if (state != State::Thrown) return;
   
   // Hit enemy - stun or damage them
-  if (other->getEntityType() == std::string("Enemy")) {
+  if (other->getEntityType() == std::string("Enemy") || other->getEntityType() == std::string("NyanNyan")) {
     Enemy* enemy = dynamic_cast<Enemy*>(other);
     if (enemy) {
+      world->addScore(200);
       enemy->destroy();
     }
   }

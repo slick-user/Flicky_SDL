@@ -41,4 +41,7 @@ public:
   virtual void updateState(float dt);
   virtual void updateAnimation(float dt, State s);
   void update(float dt, const std::vector<Platform>& platforms) override;
+
+  const char* getEntityType() const override { return "Spawner"; }
+  EntityType getEntityTypeEnum() const override { return EntityType::Spawner; }
 };

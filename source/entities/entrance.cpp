@@ -39,6 +39,7 @@ void Entrance::onCollision(Entity* e) {
     if (chick->state == Chick::State::Following) {
       chick->player->removeChick(chick);
       chick->state = Chick::State::Rescued;
+      world->addScore(100);
       world->onChickRescued();
     }
   }

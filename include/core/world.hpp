@@ -41,6 +41,11 @@ public:
   void onChickRescued();
   bool checkWinCondition() const;
 
+  void addScore(int points) { score += points; }
+  int getScore() const { return score; }
+  int getTotalChicks() const { return totalChicks; }
+  int getChicksExited() const { return chicksExited; }
+
 private:
 
   float respawnTimer = 0.0f;
@@ -48,6 +53,7 @@ private:
 
   int totalChicks = 0;
   int chicksExited = 0;
+  int score = 0;
 
 public:
   static PlatformID s_nextPlatformId;

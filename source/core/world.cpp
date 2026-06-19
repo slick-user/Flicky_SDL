@@ -98,6 +98,9 @@ bool World::loadLevel(const std::string& path) {
 
     platforms.clear();
     entities.clear();
+    totalChicks = 0;
+    chicksExited = 0;
+    score = 0;
 
     // json j = loadJson(path);
 
@@ -273,7 +276,7 @@ Entity* World::spawnEntity(const std::string& type, float x, float y) {
     entities.push_back(std::make_unique<Spawner>(x, y, *r, player, this));
   } 
   else if (type == "Nyannyan") {
-    addEntity(std::unique_ptr<NyanNyan>());
+    addEntity(std::make_unique<NyanNyan>(x, y, *r, player));
   }
   else if (type == "Chick") {
     totalChicks++;

@@ -276,7 +276,7 @@ void Editor::drawEntityPallete(Renderer* r, World* world, ImGuiIO* io) {
   // ---- Entity Palette ----
   ImGui::Text("Spawn Entity");
   const char *types[] = {"Player", "Spawner",
-                         //"Nyannyan"   seems to crash my game,
+                         "Nyannyan",
                          "Chick", "Entrance", "Projectile"};
 
   for (auto t : types) {
